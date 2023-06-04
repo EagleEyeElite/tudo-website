@@ -11,7 +11,7 @@ export default function Avatar({ author }) {
       <div className="w-12 h-12 relative mr-4">
         <Image
           src={author.node.avatar.url}
-          layout="fill"
+          fill
           className="rounded-full"
           alt={name}
         />
