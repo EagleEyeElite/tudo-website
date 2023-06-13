@@ -20,7 +20,7 @@ export default function Index({ allPosts: { edges }, preview }) {
         <Head>
           <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
         </Head>
-        <Intro />
+        <Intro/>
         <Container>
           {heroPost && (
             <HeroPost

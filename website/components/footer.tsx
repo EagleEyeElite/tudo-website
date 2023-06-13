@@ -2,6 +2,7 @@ import Container from './container'
 import Image from 'next/image';
 import TuDoLogo from '../public/assets/tudo-logo.svg'
 import React from "react";
+import {Links} from "./links";
 
 function Logo() {
   return <div className="flex flex-col xl:flex-row items-center">
@@ -13,32 +14,6 @@ function Logo() {
   </div>
 }
 
-function Links() {
-  const links = [
-    {text: "Impressum", href: "https://tu-do.net/impressum"},
-    {text: "Wegbeschreibung", href: "https://tu-do.net/wie-man-uns-findet"},
-    {text: "Projekte", href: "https://github.com/TU-DO-Makerspace"},
-    {text: "Events"},
-  ].map((e, idx) =>
-    <li key={idx} className="my-2.5">
-      <a href={e.href} className="mx-3 font-bold hover:underline">{e.text}</a>
-    </li>
-  );
-  links.push(
-    <li key={links.length} className="flex my-2.5">
-      <a href="https://t.me/+MW8nzEwFLuFiOGE0"
-         className="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors">
-        Öffnungszeiten
-      </a>
-    </li>
-  );
-
-  return <>
-    <ol className="flex flex-col mt-14 lg:mt-0 lg:flex-row justify-center items-center">
-      {links}
-    </ol>
-  </>
-}
 
 export default function Footer() {
   return (
@@ -46,7 +21,13 @@ export default function Footer() {
       <Container>
         <div className="py-28 flex flex-col lg:flex-row justify-between">
           <Logo/>
-          <Links/>
+          <Links links = {[
+            {text: "Impressum", href: "https://tu-do.net/impressum"},
+            {text: "Wegbeschreibung", href: "https://tu-do.net/wie-man-uns-findet"},
+            {text: "Projekte", href: "https://github.com/TU-DO-Makerspace"},
+            {text: "Events"},
+            {text: "Öffnungszeiten", href: "https://t.me/+MW8nzEwFLuFiOGE0", highlighted: true},
+          ]}/>
         </div>
       </Container>
     </footer>
