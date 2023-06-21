@@ -25,7 +25,7 @@ export function Links({links}: Props) {
     const listLinks = links.map(
         (e, idx) => <>
             <li key={idx} className="my-2.5">
-                {<CustomLink link={e}/>}
+                <CustomLink link={e}/>
             </li>
         </>
     );
