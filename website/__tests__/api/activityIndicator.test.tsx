@@ -42,9 +42,15 @@ describe('ActivityIndicatorAPI', () => {
   })
   it('should update to the open state', async () => {
     await checkPostRequest(true)
+    const response = await request(baseURL).get(apiEndpoint)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.open).toBeTruthy()
   })
   it('should update to the close state', async () => {
     await checkPostRequest(false)
+    const response = await request(baseURL).get(apiEndpoint)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.open).not.toBeTruthy()
   })
   it('should throw an error on unauthenticated post request', async () => {
     const response = await request(baseURL)

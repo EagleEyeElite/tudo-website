@@ -1,14 +1,14 @@
 import { CMS_NAME, CMS_URL } from '../lib/constants'
-import Banner from "../public/assets/cafeBanner3.jpg";
+import PicBanner from "../public/assets/cafeBanner3.jpg";
 import React from "react";
 import Container from "./container";
 import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
 
-export default function Intro() {
+export default function Banner() {
   const Component = () => {
     const background: BannerLayer = {
-      image: Banner.src,
+      image: PicBanner.src,
       translateY: [0, 20],
       opacity: [0.4, 0.3],
       scale: [1.05, 1, "easeIn"],

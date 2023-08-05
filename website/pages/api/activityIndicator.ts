@@ -1,6 +1,6 @@
 import {NextApiResponse, NextApiRequest} from 'next'
 
-type ActivityIndicatorState = {
+export type ActivityIndicatorState = {
   open: null
 } | {
   open: boolean
@@ -34,7 +34,6 @@ function handlePostReq(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    let activityIndicator: ActivityIndicatorState;
     let open = JSON.parse(req.body['open'])
     if (open === null) {
       activityIndicator = {open: null}
