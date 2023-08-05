@@ -1,8 +1,9 @@
 import Container from './container'
 import cn from 'classnames'
-import { EXAMPLE_PATH } from '../lib/constants'
+import {EXAMPLE_PATH} from '../lib/constants'
+import Link from "next/link";
 
-export default function Alert({ preview }) {
+export default function Alert({preview}) {
   return (
     <div
       className={cn('border-b', {
@@ -15,12 +16,12 @@ export default function Alert({ preview }) {
           {preview ? (
             <>
               This is a page preview.{' '}
-              <a
+              <Link
                 href="/api/exit-preview"
                 className="underline hover:text-cyan duration-200 transition-colors"
               >
                 Click here
-              </a>{' '}
+              </Link>{' '}
               to exit preview mode.
             </>
           ) : (

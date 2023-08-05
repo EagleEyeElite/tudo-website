@@ -1,4 +1,4 @@
-import { NextApiResponse, NextApiRequest } from 'next'
+import {NextApiResponse, NextApiRequest} from 'next'
 
 type ActivityIndicatorState = {
   open: null
@@ -8,9 +8,7 @@ type ActivityIndicatorState = {
 }
 
 // stores current state of cafe activity
-let activityIndicator: ActivityIndicatorState = {
-  open: null,
-}
+let activityIndicator: ActivityIndicatorState = {open: null}
 
 function isAuthenticated(req: NextApiRequest) {
   const userAuth = process.env.ACTIVITY_INDICATOR_USER;
@@ -31,19 +29,25 @@ function isAuthenticated(req: NextApiRequest) {
 
 function handlePostReq(req: NextApiRequest, res: NextApiResponse) {
   if (!isAuthenticated(req)) {
-    res.status(401).json({ error: 'Unauthenticated' })
+    res.status(401).json({error: 'Unauthenticated'})
     return
   }
 
   try {
-    activityIndicator = {
-      open: JSON.parse( req.body['open']),
-      timestamp: new Date(),
+    let activityIndicator: ActivityIndicatorState;
+    let open = JSON.parse(req.body['open'])
+    if (open === null) {
+      activityIndicator = {open: null}
+    } else {
+      activityIndicator = {
+        open: JSON.parse(open),
+        timestamp: new Date(),
+      }
     }
     res.status(200).json(activityIndicator)
     return;
   } catch {
-    res.status(400).json({error: "Could not parse boolean key 'open' in body" })
+    res.status(400).json({error: "Could not parse boolean key 'open' in body"})
     return
   }
 }
@@ -61,7 +65,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req
+  const {method} = req
 
   switch (method) {
     case 'GET':
