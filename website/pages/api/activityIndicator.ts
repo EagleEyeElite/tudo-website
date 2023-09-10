@@ -1,4 +1,6 @@
-import {NextApiResponse, NextApiRequest} from 'next'
+import {NextApiRequest, NextApiResponse} from 'next'
+import {kv} from "@vercel/kv";
+
 
 export type ActivityIndicatorState = {
   open: null
@@ -7,8 +9,35 @@ export type ActivityIndicatorState = {
   timestamp: Date
 }
 
-// stores current state of cafe activity
-let activityIndicator: ActivityIndicatorState = {open: null}
+/**
+ * Builds a ActivityIndicatorState to be stored in KV DB
+ * @param open sets the state of the activity indicator
+ */
+function buildState(open: boolean): ActivityIndicatorState {
+  if (open === null) {
+    return {open: null} as ActivityIndicatorState
+  }
+  return {open: open, timestamp: new Date()} as ActivityIndicatorState;
+}
+
+/**
+ * Queries the KV DB for the current state of the activity indicator
+ */
+export async function getActivityIndicator() {
+  let state = await kv.get('activityIndicator') as ActivityIndicatorState | null;
+  if (state === null) {
+    state = buildState(null);
+  }
+  return state;
+}
+
+/**
+ * Sets the state of the activity indicator in the KV DB
+ * @param state
+ */
+export async function setActivityIndicator(state: ActivityIndicatorState) {
+  await kv.set('activityIndicator', state);
+}
 
 function isAuthenticated(req: NextApiRequest) {
   const userAuth = process.env.ACTIVITY_INDICATOR_USER;
@@ -27,27 +56,22 @@ function isAuthenticated(req: NextApiRequest) {
   return user === userAuth && pwd === pwdAuth
 }
 
-function handlePostReq(req: NextApiRequest, res: NextApiResponse) {
+async function handlePostReq(req: NextApiRequest, res: NextApiResponse) {
   if (!isAuthenticated(req)) {
     res.status(401).json({error: 'Unauthenticated'})
     return
   }
-
   try {
-    let open = JSON.parse(req.body['open'])
-    if (open === null) {
-      activityIndicator = {open: null}
-    } else {
-      activityIndicator = {
-        open: JSON.parse(open),
-        timestamp: new Date(),
-      }
+    const open = JSON.parse(req.body['open']) as boolean
+    let state = buildState(open);
+    await setActivityIndicator(state)
+    res.status(200).json(state)
+  } catch (e){
+    if (e instanceof SyntaxError) {
+      res.status(400).json({error: "Could not parse boolean key 'open' in body"})
+      return;
     }
-    res.status(200).json(activityIndicator)
-    return;
-  } catch {
-    res.status(400).json({error: "Could not parse boolean key 'open' in body"})
-    return
+    throw e;
   }
 }
 
@@ -60,23 +84,27 @@ function handlePostReq(req: NextApiRequest, res: NextApiResponse) {
  *     requires basic authentication
  *     requires a JSON body with a boolean key 'open'
  */
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const {method} = req
-
-  switch (method) {
-    case 'GET':
-      res.status(200).json(activityIndicator)
-      return
-    case 'POST':
-      handlePostReq(req, res)
-      return
-    default:
-      res.setHeader('Allow', ['GET', 'POST'])
-      res.status(405).json({error: `Method ${method} not allowed`})
-      return
+  try {
+    const {method} = req
+    switch (method) {
+      case 'GET':
+        const state = await getActivityIndicator()
+        res.status(200).json(state)
+        return
+      case 'POST':
+        await handlePostReq(req, res)
+        return
+      default:
+        res.setHeader('Allow', ['GET', 'POST'])
+        res.status(405).json({error: `Method ${method} not allowed`})
+        return
+    }
+  } catch (e) {
+    console.log(e, e.stack)
+    res.status(500).json({error: e})
   }
-
 }

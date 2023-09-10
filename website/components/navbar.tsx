@@ -1,15 +1,16 @@
 import Container from "./container";
 import Image from "next/image";
 import TuDoLogo from "../public/assets/tudo-logo.svg";
-import {Links} from "./links";
-import React, {Suspense} from "react";
+import React from "react";
 import Link from "next/link";
 import {ActivityIndicatorState} from "../pages/api/activityIndicator";
-import {GetServerSideProps} from "next";
 import OpenClosedIndicator from "./openClosedIndicator";
 
+interface Props {
+  activityIndicator: ActivityIndicatorState
+}
 
-export function Navbar() {
+export function Navbar({activityIndicator}: Props) {
   return <nav
     className="sticky top-0 z-10 bg-white backdrop-filter backdrop-blur-md backdrop-saturate-150 bg-opacity-70 border-b border-black border-opacity-10 overflow-hidden">
     <Container>
@@ -21,7 +22,7 @@ export function Navbar() {
             Makerspace
           </h2>
         </Link>
-        <OpenClosedIndicator/>
+        <OpenClosedIndicator activityIndicator={activityIndicator} />
       </div>
     </Container>
   </nav>;

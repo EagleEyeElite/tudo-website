@@ -1,43 +1,8 @@
 import {ActivityIndicatorState} from "../pages/api/activityIndicator";
 import React from "react";
-import useSWR, {Fetcher} from "swr";
+import {CustomLink} from "./links";
 
-
-const fetcher: Fetcher<ActivityIndicatorState, string> = async (api) => {
-  const res = await fetch(api)
-  return res.json()
-}
-
-function openButtonWithoutHoverEffect() {
-  return <a
-    className={`
-      relative
-      isolate
-      overflow-hidden
-      
-      mx-3 py-3 px-12 lg:px-8 
-      font-bold
-      text-white hover:text-black
-      ring-1 ring-inset ring-black
-      shadow-lg shadow-green-500/50 hover:shadow-transparent
-      duration-200 transition-all
-      
-      before:absolute before:inset-0 before:-z-10
-      before:bg-gradient-to-br before:from-green-400 before:via-green-500 before:to-green-600
-      before:hover:opacity-0 before:transition-all before:duration-200
-      
-      after:absolute after:inset-0
-      after:bg-gradient-to-r after:from-transparent after:via-rose-100/30 after:to-transparent
-      after:hover:opacity-0 after:-translate-x-full after:animate-[shimmer_4s_infinite]
-    `}
-    href={"google.com"}
-  >
-    Geöffnet
-  </a>
-
-}
-
-function OpenButtonWithHoverEffect() {
+function OpenButton() {
   return <a
     className={`
       group
@@ -80,20 +45,16 @@ function OpenButtonWithHoverEffect() {
   </a>
 }
 
-export default function OpenClosedIndicator() {
-  const {data, error} = useSWR("/api/activityIndicator", fetcher)
-  if (error) return <div>Failed to load</div>
-  if (!data) return <a
-    className={`mx-3 font-bold bg-black hover:bg-transparent hover:text-black border border-black text-white py-3 px-12 lg:px-8 duration-200 transition-colors `}>
-    Öffnungszeiten
-  </a>
+interface Props {
+  activityIndicator: ActivityIndicatorState
+}
 
-  if (data.open) {
-    return OpenButtonWithHoverEffect()
-  } else {
-    return <a
-        className={`mx-3 font-bold bg-black hover:bg-transparent hover:text-black border border-black text-white py-3 px-12 lg:px-8 duration-200 transition-colors`}>
-        Geschlossen
-      </a>
+export default function OpenClosedIndicator({activityIndicator}: Props) {
+  if(activityIndicator === undefined || activityIndicator.open === null) {
+    return CustomLink({link: {text: "Öffnungszeiten", highlighted: true}});
   }
+  if (activityIndicator.open) {
+    return OpenButton()
+  }
+  return CustomLink({link: {text: "Geschlossen", highlighted: true}});
 }

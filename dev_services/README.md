@@ -2,14 +2,15 @@
 
 Use this for local development.
 
-Start WordPress:
+Start Services:
 ```
 docker compose up
 ```
 
-## Configuration
+## Configuration Wordpress
 
 ### Step 1. Setup Wordpress
+- go to http://localhost/
 - choose your language, and setup your admin user.
 
 ### Step 2. Prepare your WordPress site

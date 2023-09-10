@@ -9,14 +9,16 @@ import { getAllPostsForHome } from '../lib/api'
 import { CMS_NAME } from '../lib/constants'
 import React from "react";
 import {ParallaxProvider} from "react-scroll-parallax";
+import {getActivityIndicator} from "./api/activityIndicator";
 
-export default function Index({ allPosts: { edges }, preview }) {
+
+export default function Index({ allPosts: { edges }, preview, activityState }) {
   const heroPost = edges[0]?.node
   const morePosts = edges.slice(1)
 
   return (
     <ParallaxProvider>
-      <Layout preview={preview}>
+      <Layout activityIndicator={activityState} preview={preview}>
         <Head>
           <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
         </Head>
@@ -36,15 +38,14 @@ export default function Index({ allPosts: { edges }, preview }) {
         </Container>
       </Layout>
     </ParallaxProvider>
-
   )
 }
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const allPosts = await getAllPostsForHome(preview)
-
+  const activityState = await getActivityIndicator();
   return {
-    props: { allPosts, preview },
+    props: { allPosts, preview, activityState: JSON.parse(JSON.stringify(activityState)) },
     revalidate: 10,
   }
 }
