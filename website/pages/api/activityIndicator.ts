@@ -13,7 +13,7 @@ export type ActivityIndicatorState = {
  * Builds a ActivityIndicatorState to be stored in KV DB
  * @param open sets the state of the activity indicator
  */
-function buildState(open: boolean): ActivityIndicatorState {
+function buildState(open: boolean | null): ActivityIndicatorState {
   if (open === null) {
     return {open: null} as ActivityIndicatorState
   }

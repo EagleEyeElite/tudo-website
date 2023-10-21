@@ -66,7 +66,7 @@ export default function RootLayout({children,}: {
 
         </div>
         <div className="mt-8">
-          <article className="prose lg:prose-xl">
+          <article className="prose">
             {children}
           </article>
         </div>

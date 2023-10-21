@@ -27,6 +27,7 @@
     "typescript": "^4.7.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/supertest": "^2.0.12",
     "@types/testing-library__jest-dom": "^5.14.9",
     "autoprefixer": "10.4.7",
