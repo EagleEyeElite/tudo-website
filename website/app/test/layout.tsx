@@ -28,14 +28,14 @@ export default function RootLayout({children,}: {
 
           <div className="grow relative shadow-2xl rounded-lg overflow-clip">
             <Image
-              src={Party.src}
+              src={Club.src}
               fill={true}
               style={{objectFit:"cover"}}
               className="blur-xl brightness-150 contrast-[0.9] saturate-150 scale-150"
               alt=""
             />
             <Image
-              src={Party.src}
+              src={Club.src}
               fill={true}
               style={{objectFit:"contain"}}
               alt=""
