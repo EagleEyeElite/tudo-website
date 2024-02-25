@@ -6,6 +6,7 @@ import CafeBanner1 from "../../public/assets/cafeBanner.jpg";
 import CafeBanner2 from "../../public/assets/cafeBanner2.jpg";
 import CafeBanner3 from "../../public/assets/cafeBanner3.jpg";
 import Image from 'next/image'
+import HeroImage from "../../components/hero-image";
 
 
 export default function RootLayout({children,}: {
@@ -14,7 +15,7 @@ export default function RootLayout({children,}: {
   return (<>
     <div className="flex justify-center">
       <div>
-        <div className="min-h-[80vh] min-w-[50rem] flex-col flex">
+        <div className="min-h-[80vh] flex-col flex">
           <h2
             //data-tina-field={tinaField(props, "title")}
             className={`w-full relative	my-8 text-6xl font-extrabold tracking-normal text-center title-font`}
@@ -26,21 +27,7 @@ export default function RootLayout({children,}: {
             </span>
           </h2>
 
-          <div className="grow relative shadow-2xl rounded-lg overflow-clip">
-            <Image
-              src={Club.src}
-              fill={true}
-              style={{objectFit:"cover"}}
-              className="blur-xl brightness-150 contrast-[0.9] saturate-150 scale-150"
-              alt=""
-            />
-            <Image
-              src={Club.src}
-              fill={true}
-              style={{objectFit:"contain"}}
-              alt=""
-            />
-          </div>
+          <HeroImage src={Club.src}/>
           {/*
 
 

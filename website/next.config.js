@@ -26,6 +26,7 @@ module.exports = withMDX({
       '1.gravatar.com',
       '2.gravatar.com',
       'secure.gravatar.com',
+      'wordpress-tudo.conrad-klaus.de',
     ],
   },
   pageExtensions: ['ts', 'tsx', 'mdx'],
