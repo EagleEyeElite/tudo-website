@@ -215,6 +215,10 @@ Alternatively, you can deploy using our template by clicking on the Deploy butto
 
 ## Generate favicon
 
-npm run generate-favicon
-https://realfavicongenerator.net/
-optional for cide: real-favicon check-for-update --fail-on-update faviconData.json
+Generate an favicon ```npm run generate-favicon``` .
+
+Select build for production and dev ```"masterPicture": "../artwork/favicon_production.svg",``` in faviconDescription.json and delete excess files.
+
+See [realfavicongenerator](https://realfavicongenerator.net/) for more info.
+
+optional for CICD: real-favicon check-for-update --fail-on-update faviconData.json
