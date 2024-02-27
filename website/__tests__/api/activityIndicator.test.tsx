@@ -12,7 +12,7 @@ function datesEqualRoughly(date1: Date, date2: Date): boolean {
   return timeDifferenceInMillis <= 1000
 }
 
-function postRequest(setOpen: boolean) {
+function postRequest(setOpen: boolean | null) {
   return request(baseURL)
     .post(apiEndpoint)
     .send({open: setOpen})
