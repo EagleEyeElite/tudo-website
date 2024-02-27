@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { CMS_NAME, HOME_OG_IMAGE_URL } from '../lib/constants'
 
 export default function Meta() {
     // Determine the folder path based on the NODE_ENV
@@ -37,9 +36,9 @@ export default function Meta() {
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
           <meta
             name="description"
-            content={`A statically generated blog example using Next.js and ${CMS_NAME}.`}
+            content="Das TuDo Makerspace an der Technischen Universität Berlin kombiniert eine gemütliche Café-Atmosphäre mit einer innovativen Makerspace-Ausstattung, einschließlich Holzwerkstatt und Lötbereich, ideal für kreative Projekte und Zusammenkünfte."
           />
-          <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+          <meta property="og:image" content={`${process.env.NEXT_PUBLIC_URL}/og`} />
       </Head>
     );
 }

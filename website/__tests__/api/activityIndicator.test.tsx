@@ -1,6 +1,6 @@
 import request from "supertest";
 
-const baseURL = "http://localhost:3000"
+const baseURL = process.env.NEXT_PUBLIC_URL
 const apiEndpoint = "/api/activityIndicator"
 
 const userAuth = process.env.ACTIVITY_INDICATOR_USER

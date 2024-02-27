@@ -1,7 +1,5 @@
-import { CMS_NAME, CMS_URL } from '../lib/constants'
 import PicBanner from "../public/assets/cafeBanner3.jpg";
 import React from "react";
-import Container from "./container";
 import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
 
