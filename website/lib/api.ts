@@ -59,6 +59,60 @@ export async function getAllPostsWithSlug() {
   return data?.posts
 }
 
+export async function getAllPagesAsSlug(): Promise<string[]> {
+  const data = await fetchAPI(`
+    {
+      pages(first: 10000) {
+        edges {
+          node {
+            slug
+          }
+        }
+      }
+    }
+  `)
+
+  return data?.pages.edges.map(({ node }) => `/pages/${node.slug}`) || [];
+}
+
+
+export interface PageProps {
+  id: string;
+  title: string;
+  content: string;
+  featuredImageUrl: string | null;
+}
+
+export async function getPage(uri: string) {
+  const response = await fetchAPI(`
+query PostBySlug($uri: ID!) {
+  page(idType: URI, id: $uri) {
+    id
+    title
+    content
+    featuredImage {
+      node {
+        sourceUrl
+      }
+    }
+  }
+}
+`,{
+  variables: { uri },
+})
+
+  const pageData = response.page;
+  const pageProps: PageProps = {
+    id: pageData.id,
+    title: pageData.title,
+    content: pageData.content,
+    featuredImageUrl: pageData.featuredImage?.node?.sourceUrl || null, // Using the extracted URL or null
+  };
+
+  return pageProps as PageProps;
+}
+
+
 export async function getAllPostsForHome(preview) {
   const data = await fetchAPI(
     `

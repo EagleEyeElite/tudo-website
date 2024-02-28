@@ -22,8 +22,8 @@ export default function Footer() {
         <div className="py-28 flex flex-col lg:flex-row justify-between">
           <Logo/>
           <Links links = {[
-            {text: "Impressum", href: "https://tu-do.net/impressum"},
-            {text: "Wegbeschreibung", href: "https://tu-do.net/wie-man-uns-findet"},
+            {text: "Impressum", href: "/pages/impressum"},
+            {text: "Wegbeschreibung", href: "/pages/wegbeschreibung"},
             {text: "Projekte", href: "https://github.com/TU-DO-Makerspace"},
             {text: "Events"},
             {text: "Öffnungszeiten", href: "https://t.me/+MW8nzEwFLuFiOGE0", highlighted: true},

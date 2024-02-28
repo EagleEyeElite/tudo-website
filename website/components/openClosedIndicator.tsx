@@ -20,7 +20,7 @@ function OpenButton() {
       after:duration-200 after:transition-all
   
     `}
-    href={"google.com"}
+    href={"https://t.me/+MW8nzEwFLuFiOGE0"}
   >
     <span
       className="
