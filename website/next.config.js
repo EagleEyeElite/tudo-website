@@ -15,15 +15,36 @@ if (!process.env.NEXT_PUBLIC_URL) {
 const dotenvExpand = require("dotenv-expand");
 dotenvExpand.expand({ parsed: { ...process.env } });
 
+require('dotenv-safe').config({
+  allowEmptyValues: true,
+  example: '.env.local.example',
+});
+
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   images: {
-    domains: [
-      process.env.WORDPRESS_API_URL.match(/(?<!www\.)[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+|localhost/)[0], // Valid WP Image domain.
-      '0.gravatar.com',
-      '1.gravatar.com',
-      '2.gravatar.com',
-      'secure.gravatar.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: process.env.WORDPRESS_API_URL.match(/(?<!www\.)[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+|localhost/)[0],
+      },
+      {
+        protocol: 'https',
+        hostname: '0.gravatar.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '1.gravatar.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '2.gravatar.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'secure.gravatar.com',
+      },
     ],
   },
 }

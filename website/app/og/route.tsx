@@ -1,4 +1,4 @@
-import { ImageResponse } from 'next/server';
+import { ImageResponse } from 'next/og';
 
 /**
  * This is the OG route. It is used to generate the Open Graph image for the website.
