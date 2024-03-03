@@ -70,8 +70,10 @@ export default function Page(
                 )
               }
             </Head>
-            <PostTitle>{page.title}</PostTitle>
-            <PostBody content={page.content}/>
+            <div className="max-w-2xl mx-auto">
+              <PostTitle>{page.title}</PostTitle>
+              <PostBody content={page.content}/>
+            </div>
           </article>
         )}
       </Container>

@@ -18,7 +18,7 @@ export function Navbar({activityIndicator}: Props) {
         <Link href="/" className="flex items-center">
           <Image src={TuDoLogo} alt="TuDo" className={"h-10 w-fit"}/>
           <h2
-            className="text-3xl font-bold tracking-tighter text-left ml-2">
+            className="text-3xl font-bold tracking-tighter text-left ml-2 hidden sm:inline">
             Makerspace
           </h2>
         </Link>

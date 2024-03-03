@@ -3,15 +3,17 @@ import Image from 'next/image';
 import TuDoLogo from '../public/assets/tudo-logo.svg'
 import React from "react";
 import {Links} from "./links";
+import {GITHUB_PATH, TELEGRAM_PATH} from "../lib/constants";
+import Link from "next/link";
 
 function Logo() {
-  return <div className="flex flex-col xl:flex-row items-center">
+  return <Link href="/" className="flex flex-col xl:flex-row items-center">
     <Image src={TuDoLogo} alt="TuDo" className={"w-[200px]"}/>
     <h3
       className="text-4xl lg:text-5xl font-bold tracking-tighter leading-tight text-center xl:text-left mb-0 mt-3 xl:my-5 xl:mx-0 ml-0 xl:ml-5 xl:pr-4 xl:w-1/2">
       Makerspace
     </h3>
-  </div>
+  </Link>
 }
 
 
@@ -24,9 +26,9 @@ export default function Footer() {
           <Links links = {[
             {text: "Impressum", href: "/pages/impressum"},
             {text: "Wegbeschreibung", href: "/pages/wegbeschreibung"},
-            {text: "Projekte", href: "https://github.com/TU-DO-Makerspace"},
+            {text: "Projekte", href: GITHUB_PATH},
             {text: "Events"},
-            {text: "Öffnungszeiten", href: "https://t.me/+MW8nzEwFLuFiOGE0", highlighted: true},
+            {text: "Öffnungszeiten", href: TELEGRAM_PATH, highlighted: true},
           ]}/>
         </div>
       </Container>

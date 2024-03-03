@@ -26,7 +26,7 @@ export default function Post({ post, posts, preview, activityState }) {
   return (
     <Layout activityIndicator={activityState} preview={preview}>
       <Container>
-        <Header />
+        <Header categories={post?.categories} />
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
