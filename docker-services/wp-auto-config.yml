@@ -5,7 +5,6 @@ services:
   wp-auto-config:
     image: wpcli
     build: ./wpcli/
-    container_name: ${COMPOSE_PROJECT_NAME}_wp_autoconfig
     entrypoint: sh -c "/wait && make -f /scripts/Makefile"
     volumes:
       - wordpress:/var/www/html
