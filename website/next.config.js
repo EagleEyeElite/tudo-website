@@ -21,30 +21,35 @@ require('dotenv-safe').config({
 });
 
 
+// next.config.js
+const defaultProtocol = process.env.WORDPRESS_API_URL.includes('localhost') ? 'http' : 'https';
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: defaultProtocol,
         hostname: process.env.WORDPRESS_API_URL.match(/(?<!www\.)[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+|localhost/)[0],
       },
       {
-        protocol: 'https',
+        protocol: defaultProtocol,
         hostname: '0.gravatar.com',
       },
       {
-        protocol: 'https',
+        protocol: defaultProtocol,
         hostname: '1.gravatar.com',
       },
       {
-        protocol: 'https',
+        protocol: defaultProtocol,
         hostname: '2.gravatar.com',
       },
       {
-        protocol: 'https',
+        protocol: defaultProtocol,
         hostname: 'secure.gravatar.com',
       },
     ],
   },
 }
+
+module.exports = nextConfig;

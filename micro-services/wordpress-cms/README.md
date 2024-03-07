@@ -1,67 +1,60 @@
+# Quick Start Guide for WordPress Docker Deployment
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+This guide provides a quick setup for deploying WordPress locally and in production using Docker Compose, including useful automation via Makefile directives.
 
-# Deploy Wordpress on Localhost and in Production using Docker Compose
+## Prerequisites
 
-Related blog post:
+Ensure you have `Docker`, `Docker Compose` and `make` installed on your system.
 
-  - [WordPress Local Development Using Docker
-    Compose](https://www.datanovia.com/en/lessons/wordpress-local-development-using-docker-compose/):
-    Deploy Wordpress on localhost using docker
-  - [Docker WordPress Production
-    Deployment](https://www.datanovia.com/en/lessons/docker-wordpress-production-deployment/):
-    Step-by-step guide to deploy WordPress online using docker-compose
-  - [Using Docker WordPress Cli to Manage WordPress
-    Websites](https://www.datanovia.com/en/lessons/using-docker-wordpress-cli-to-manage-wordpress-websites/):
-    Commande line interface for managing a WordPress website
+## Getting Started
 
-The installation tool kit, provided here, include:
+1. Create a `.env` file from the example and set your environment variables:
 
-  - Nginx web server
-  - MariaDB/MySQL used for Wordpress database
-  - phpMyAdmin interface to connect to your MySQL database
-  - WP-Cli: Wordpress Command Line Interface
-  - Makefile directives for automatization.
+    ```bash
+    cp .env.example .env
+    ```
 
-You can automatically deploy a local docker wordpress site in 5 minutes
-using the following commands:
+## Deployment
 
-``` bash
-# Download a wordpress docker-compose example
-git clone https://github.com/kassambara/wordpress-docker-compose
-cd wordpress-docker-compose
-# Build and start installation
-docker-compose up -d --build
-```
+- **Automatic Installation**: For a hassle-free setup, use the `make` command. You may have to wait a bit.
 
-Visit your site at <http://localhost> and your database via phpMyAdmin
-at <http://localhost:8080>.
+    ```bash
+    make autoinstall
+    ```
 
-Default identification for your wordpress website admin:
+- **Manual Setup**: If you prefer using Docker Compose commands directly:
 
-  - `Username: wordpress` and
-  - `Password: wordpress`
+    ```bash
+    docker-compose up -d --build
+    docker-compose -f docker-compose.yml -f wp-auto-config.yml run --rm wp-auto-config
+    ```
 
-Default identification for the phpMyAdmin interface:
+Visit your WordPress site at `http://localhost` and manage your database via phpMyAdmin at `http://localhost:8080`.
 
-  - `Username: root` and
-  - `Password: password`
+## Default Credentials
 
-**Useful set of commands to know**:
+- Defined in `.env.example`
 
-``` bash
-# Stop and remove containers
-docker-compose down
-# Build, and start the wordpress website
-docker-compose up -d --build
-# Reset everything
-docker-compose down
-rm -rf certs/* certs-data/* logs/nginx/* mysql/* wordpress/*
-```
+## Additional Commands
+
+- **Stop and Remove Containers**:
+
+    ```bash
+    docker-compose down
+    ```
+
+- **Clean Installation** (removes all data and starts fresh):
+
+    ```bash
+    make clean
+    ```
+  
+- **Interact with wp instance via wpcli**:
+    ```bash
+    docker-compose run --rm wpcli wp user update admin --display_name="newDisplayName"
+    ```
 
 ## References
 
-  - [WordPress: with Nginx web server in
-    Docker](https://github.com/mjstealey/wordpress-nginx-docker)
-  - [Quickstart: Compose and
-    WordPress](https://docs.docker.com/compose/wordpress/)
+- Based on the [work](https://github.com/kassambara/wordpress-docker-compose/) from kassambara.
+- Related [blog post](https://www.datanovia.com/en/lessons/wordpress-docker-setup-files-example-for-local-development/).

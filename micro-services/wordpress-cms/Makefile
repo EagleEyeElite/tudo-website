@@ -1,4 +1,13 @@
-start:
+# Check if .env exists, if not, copy from .env.example
+check-env:
+	@if [ ! -f .env ]; then \
+		echo "No .env found. Creating from .env.example..."; \
+		cp .env.example .env; \
+	else \
+		echo ".env exists, proceeding..."; \
+	fi
+
+start: check-env
 	docker-compose up -d --build
 
 healthcheck:
@@ -9,7 +18,7 @@ down:
 
 install: start healthcheck
 
-configure:
+configure: check-env
 	docker-compose -f docker-compose.yml -f wp-auto-config.yml run --rm wp-auto-config
 
 autoinstall: start
@@ -17,7 +26,7 @@ autoinstall: start
 
 clean: down
 	@echo "💥 Removing related folders/files..."
-	@rm -rf  mysql/* wordpress/*
+	docker-compose down --volumes
+	@echo "🗑️  Docker volumes removed."
 
 reset: clean
-

@@ -11,7 +11,7 @@ fi
 
 # if our command is a valid wp-cli subcommand (say plugin), let's invoke it through wp-cli instead
 # (this allows for "docker run wordpress:cli help", etc)
-# documenation of the subcommand is shown
+# documentation of the subcommand is shown
 if wp --path=/dev/null help "$1" > /dev/null 2>&1; then
 	set -- wp "$@"
 fi
@@ -22,5 +22,4 @@ if [ "$1" == "install" ] || [ "$1" == "configure" ]; then
 else
   exec "$@"
 fi
-
 

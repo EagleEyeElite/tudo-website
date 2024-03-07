@@ -8,7 +8,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_wp_autoconfig
     entrypoint: sh -c "/wait && make -f /scripts/Makefile"
     volumes:
-      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
+      - wordpress:/var/www/html
+      - ./wpcli/uploads:/uploads
     working_dir: /var/www/html
     depends_on:
       - wordpress
@@ -30,7 +31,11 @@ services:
       - WORDPRESS_WEBSITE_TITLE=${WORDPRESS_WEBSITE_TITLE}
       - WORDPRESS_WEBSITE_URL=${WORDPRESS_WEBSITE_URL:-"http://localhost"}
       - WORDPRESS_WEBSITE_URL_WITHOUT_HTTP=${WORDPRESS_WEBSITE_URL:-localhost}
-      - WORDPRESS_WEBSITE_POST_URL_STRUCTURE=${WORDPRESS_WEBSITE_POST_URL_STRUCTURE:-"/blog/%postname%/"}
       - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER:-wordpress}
       - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD:-wordpress}
       - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL:-"test@example.com"}
+      - WORDPRESS_NICKNAME=${WORDPRESS_NICKNAME:-"Development"}
+      - WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY=${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY:-"your--strong-secret"}
+
+volumes:
+  wordpress:

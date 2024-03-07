@@ -5,8 +5,7 @@ services:
     image: wordpress:${WORDPRESS_VERSION:-latest}
     container_name: ${COMPOSE_PROJECT_NAME:-wordpress}
     volumes:
-      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
-      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
+      - wordpress:/var/www/html
     environment:
       - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME:-wordpress}
       - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX:-wp_}
@@ -18,13 +17,13 @@ services:
       - phpmyadmin
     restart: always
     ports:
-        - 80:80
+        - ${WORDPRESS_PORT}:80
 
   mysql:
     image: mariadb:${MARIADB_VERSION:-latest}
     container_name: ${COMPOSE_PROJECT_NAME}_mysql
     volumes:
-      - ./mysql:/var/lib/mysql
+      - wordpress-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD:-password}
       - MYSQL_USER=${DATABASE_USER:-root}
@@ -50,8 +49,17 @@ services:
     image: wpcli
     container_name: ${COMPOSE_PROJECT_NAME}_wpcli
     volumes:
-      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
+      - wordpress:/var/www/html
     working_dir: /var/www/html
+    depends_on:
+      - wordpress
+      - mysql
+    environment:
+      # Wordpress configuration -----------------------------
+      - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME:-wordpress}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-mysql}
+      - WORDPRESS_DB_USER=${DATABASE_USER:-root}
+      - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD:-password}
 
 # Check availability of essential services
   healthcheck:
@@ -59,6 +67,8 @@ services:
     build: ./wpcli/
     container_name: ${COMPOSE_PROJECT_NAME}_healthcheck
     command: sh -c "/wait"
+    volumes:
+      - healthcheck_tmp:/var/www/html
     environment:
       - WAIT_HOSTS=mysql:3306, wordpress:80
       - WAIT_BEFORE_HOSTS=${WAIT_BEFORE_HOSTS:-30}
@@ -67,4 +77,7 @@ services:
       - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
       - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
 
-
+volumes:
+  wordpress:
+  wordpress-db:
+  healthcheck_tmp: {}
