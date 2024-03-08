@@ -76,21 +76,23 @@ services:
   activity-indicator-kv-interface:
     image: hiett/serverless-redis-http:0.0.8
     environment:
-      - SRH_MODE=env
-      - SRH_TOKEN=${KV_INTERFACE_TOKEN}
-      - SRH_CONNECTION_STRING='redis://activity-indicator-db:6379'
+      SRH_MODE: env
+      SRH_TOKEN: $KV_REST_API_TOKEN
+      SRH_CONNECTION_STRING: 'redis://:${ACTIVITY_INDICATOR_REDIS_PASSWORD}@activity-indicator-db:6379'
     ports:
       - "${ACTIVITY_INDICATOR_KV_PORT}:80"
     depends_on:
       - activity-indicator-db
     restart: always
 
+
   activity-indicator-db:
     image: redis:7.2.0
     volumes:
       - activity-indicator-db:/data
-    expose:
-      - '6379'
+    ports:
+      - "${ACTIVITY_INDICATOR_REDIS_PORT}:6379"
+    command: redis-server --requirepass ${ACTIVITY_INDICATOR_REDIS_PASSWORD}  # user name is "default"
     restart: always
 
 volumes:

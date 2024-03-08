@@ -19,7 +19,7 @@ export default function Layout(
       <Meta/>
       <div className="min-h-screen">
         <Navbar activityIndicator={activityIndicator}/>
-        {/*<Alert preview={preview} />*/}
+        <Alert preview={preview} />
         <main>{children}</main>
       </div>
       <Footer/>

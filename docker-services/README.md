@@ -37,6 +37,13 @@ Visit your WordPress site at `http://localhost` and manage your database via php
 
 ## Additional Commands
 
+
+- **Start Containers**:
+
+    ```bash
+    make up
+    ```
+
 - **Stop and Remove Containers**:
 
     ```bash

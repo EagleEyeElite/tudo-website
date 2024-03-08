@@ -10,6 +10,9 @@ check-env:
 start: check-env
 	docker-compose up -d --build
 
+up:
+	docker-compose up -d
+
 healthcheck:
 	docker-compose run --rm healthcheck
 
