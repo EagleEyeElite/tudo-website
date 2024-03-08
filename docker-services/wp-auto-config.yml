@@ -9,6 +9,7 @@ services:
     volumes:
       - wordpress:/var/www/html
       - ./wpcli/uploads:/uploads
+      - ./wpcli/php-scripts:/php-scripts
     working_dir: /var/www/html
     depends_on:
       - wordpress
@@ -22,18 +23,16 @@ services:
       - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
       - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
       # Wordpress configuration -----------------------------
-      - WORDPRESS_LOCALE=${WORDPRESS_LOCALE:-en_US}
+      - ENVIRONMENT=${ENVIRONMENT:-dev}
       - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME:-wordpress}
       - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-mysql}
       - WORDPRESS_DB_USER=${DATABASE_USER:-root}
       - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD:-password}
-      - WORDPRESS_WEBSITE_TITLE=${WORDPRESS_WEBSITE_TITLE}
       - WORDPRESS_WEBSITE_URL=${WORDPRESS_WEBSITE_URL:-"http://localhost"}
       - WORDPRESS_WEBSITE_URL_WITHOUT_HTTP=${WORDPRESS_WEBSITE_URL:-localhost}
       - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER:-wordpress}
       - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD:-wordpress}
       - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL:-"test@example.com"}
-      - WORDPRESS_NICKNAME=${WORDPRESS_NICKNAME:-"Development"}
       - WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY=${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY:-"your--strong-secret"}
 
 volumes:
