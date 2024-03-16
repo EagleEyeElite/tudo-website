@@ -64,7 +64,6 @@ create_categories:
 
 posts:
 	@echo "📝 Creating 'Hello World1' post with a feature image..."
-	# TODO: other features cannot be found ://, may bc those files are too big?
 
 	FEATURE_IMAGE_ID_1=$$(wp eval-file /php-scripts/get-attachment-id.php "feature-image.jpg"); \
 	POST_ID_1=$$(wp post create \
