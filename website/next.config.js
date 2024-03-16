@@ -5,6 +5,7 @@ const envFilePath = process.env.NODE_ENV === 'test' ? '.env.example' : '.env';
 require('dotenv-safe').config({
   path: path.join(__dirname, './../docker-services/', envFilePath),
   example: path.join(__dirname, './../docker-services/.env.example'),
+  allowEmptyValues: true,
 });
 
 // Automatically expand any dotenv variables
