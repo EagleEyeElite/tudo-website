@@ -47,7 +47,7 @@ Visit your WordPress site at `http://localhost` and manage your database via php
 - **Stop and Remove Containers**:
 
     ```bash
-    docker-compose down
+    docker compose down
     ```
 
 - **Clean Installation** (removes all data and starts fresh):
@@ -58,7 +58,7 @@ Visit your WordPress site at `http://localhost` and manage your database via php
   
 - **Interact with wp instance via wpcli**:
     ```bash
-    docker-compose run --rm wpcli wp user update admin --display_name="newDisplayName"
+    docker-compose -f docker-compose.yml -f wp-cli.yml run --rm wpcli wp user update admin --display_name="newDisplayName"
     ```
 
 ## References

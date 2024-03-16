@@ -13,16 +13,8 @@ start: check-env
 up:
 	docker-compose up -d
 
-healthcheck:
-	docker-compose run --rm healthcheck
-
 down:
 	docker-compose down
-
-install: start healthcheck
-
-configure: check-env
-	docker-compose -f docker-compose.yml -f wp-auto-config.yml run --rm wp-auto-config
 
 autoinstall: start
 	docker-compose -f docker-compose.yml -f wp-auto-config.yml run --rm wp-auto-config
