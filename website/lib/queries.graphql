@@ -1,0 +1,10 @@
+query GetALLPostsWithSlug2 {
+    posts(first: 10000) {
+        edges {
+            node {
+                slug
+            }
+        }
+    }
+}
+

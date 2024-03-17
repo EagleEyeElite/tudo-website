@@ -1,4 +1,9 @@
+import {GraphQLClient} from "graphql-request";
+import {getSdk} from "./generated/graphql";
+
 const API_URL = process.env.WORDPRESS_API_URL || ""
+const client = new GraphQLClient(API_URL);
+const sdk = getSdk(client);
 
 async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
   const headers = { 'Content-Type': 'application/json' }
@@ -45,18 +50,8 @@ export async function getPreviewPost(id, idType = 'DATABASE_ID') {
 }
 
 export async function getAllPostsWithSlug() {
-  const data = await fetchAPI(`
-    {
-      posts(first: 10000) {
-        edges {
-          node {
-            slug
-          }
-        }
-      }
-    }
-  `)
-  return data?.posts
+  const data = await sdk.GetALLPostsWithSlug2();
+  return data?.posts;
 }
 
 export async function getAllPagesAsSlug(): Promise<string[]> {
