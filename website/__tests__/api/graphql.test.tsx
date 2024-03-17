@@ -1,15 +1,31 @@
 import {GraphQLClient} from "graphql-request";
-import {getSdk} from "../../lib/generated/graphql";
+import {getInitializedSdk} from "../../lib/api";
 
-const API_URL = process.env.WORDPRESS_API_URL || ""
-const client = new GraphQLClient(API_URL);
-const sdk = getSdk(client);
+const sdk = getInitializedSdk();
+
 
 describe('GraphQlQuery', () => {
   it('should do something', async () => {
-    const data = await sdk.GetALLPostsWithSlug2();
+    const data = await sdk.GetALLPostsWithSlug();
     expect(data).toBeDefined();
     expect(data?.posts).toBeDefined();
     return data?.posts;
   })
+  it('should query unpublished posts', async () => {
+    const data = await sdk.UnpublishedPosts();
+    expect(data).toBeDefined();
+    expect(data?.posts).toBeDefined();
+    return data?.posts;
+  })
+  it('should return a refreshToken when provided with valid credentials', async () => {
+    const {WORDPRESS_ADMIN_USER, WORDPRESS_ADMIN_PASSWORD } = process.env;
+    const data = await sdk.GetGraphQLToken({
+      username: WORDPRESS_ADMIN_USER as string,
+      password: WORDPRESS_ADMIN_PASSWORD as string
+    });
+    const token = data.login?.refreshToken;
+
+    // Assert that the refreshToken is returned
+    expect(token).toBeDefined();
+  });
 })

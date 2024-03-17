@@ -23,8 +23,10 @@ configure:
 	wp plugin install wp-graphql --activate
 	wp plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.0.zip --activate
 	wp plugin install simple-local-avatars --activate
-	@echo "🔐 JWT Auth secret key appended."
-	echo "define( 'GRAPHQL_JWT_AUTH_SECRET_KEY', '${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY}' );" >> ./wp-config.php
+	# The GRAPHQL_JWT_AUTH_SECRET_KEY must not be at the end of the file. It has to be before the ABSPATH definition.
+	@awk '/NONCE_SALT/{print;print "define( '\''GRAPHQL_JWT_AUTH_SECRET_KEY'\'', '\''${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY}'\'' );";next}1' ./wp-config.php > ./wp-config-temp.php
+	@mv ./wp-config-temp.php ./wp-config.php
+	@echo "🔐 JWT Auth secret key appended successfully."
 ifeq ($(ENVIRONMENT),dev)
 	@echo "🛠 WPGraphQL debug mode enabled."
 	wp config set GRAPHQL_DEBUG true --raw
@@ -85,7 +87,7 @@ posts:
 		--porcelain); \
 	wp post meta set $$POST_ID_2 _thumbnail_id $$FEATURE_IMAGE_ID_2
 	# Creating an Unpublished Post for preview testing
-	wp post create --post_type=post --post_title='Unpublished Post' --post_content='This is the content of an unpublished post.' --post_status=draft --post_author=1 --porcelain
+	wp post create --post_type=post --post_title='Unpublished Post' --post_content='This is the content of an unpublished post.' --post_status=private --post_author=1 --porcelain
 
 	@echo "📄 Creating 'Impressum' page..."
 	wp post create \

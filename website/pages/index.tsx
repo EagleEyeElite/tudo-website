@@ -41,7 +41,7 @@ export default function Index({ allPosts: { edges }, preview, activityState }) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const allPosts = await getAllPostsForHome(preview)
+  const allPosts = await getAllPostsForHome()
   const activityState = await getActivityIndicator();
   return {
     props: { allPosts, preview, activityState: JSON.parse(JSON.stringify(activityState)) },

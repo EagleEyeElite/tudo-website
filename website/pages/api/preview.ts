@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getPreviewPost } from '../../lib/api';
+import {getPreviewPost, getUnpublishedPosts} from '../../lib/api';
+import {PostIdType} from "../../lib/generated/graphql";
 
 export default async function preview(
   req: NextApiRequest,
@@ -19,7 +20,7 @@ export default async function preview(
   }
 
   // Fetch WordPress post by `id` or `slug`
-  const post = await getPreviewPost(id || slug, id ? 'DATABASE_ID' : 'SLUG');
+  const post = await getPreviewPost(id || slug, id ? PostIdType.DatabaseId : PostIdType.Slug);
 
   // If the post doesn't exist, prevent preview mode from being enabled
   if (!post) {

@@ -34,16 +34,11 @@ async function login() {
   const data = await response.json();
   if (!response.ok || data.errors) {
     console.warn('Warning: Failed to fetch GRAPHQL refresh token. Preview mode for unpublished WordPress posts will not work.');
-    return
+    return null;
   }
-
-  process.env.WORDPRESS_AUTH_REFRESH_TOKEN = data.data.login.refreshToken;
+  return data.data.login.refreshToken;
 }
 
-if(process.env.NODE_ENV !== 'test') {
-  // Attempt login
-  login().then();
-}
 // Next.js configuration
 const nextConfig = createNextConfig();
 
@@ -66,4 +61,18 @@ function createNextConfig() {
   };
 }
 
-module.exports = nextConfig;
+
+module.exports = async () => {
+  let refreshToken;
+  if(process.env.NODE_ENV !== 'test') {
+    // Attempt login
+    refreshToken = await login();
+  }
+
+  return {
+    ...nextConfig,
+    env: {
+      WORDPRESS_AUTH_REFRESH_TOKEN: refreshToken,
+    },
+  };
+}

@@ -3,7 +3,7 @@ import type {
   GetStaticProps,
   GetStaticPaths,
 } from 'next'
-import {getAllPagesAsSlug, getPage, PageProps} from "../../lib/api";
+import {getAllPagesAsSlug, getPageBySlug, PageProps} from "../../lib/api";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Layout from "../../components/layout";
@@ -23,7 +23,14 @@ export const getStaticPaths = (async () => {
 
 
 export const getStaticProps = (async ({params}) => {
-  const res = await getPage(params?.slug as string); //"impressum"
+  const res = await getPageBySlug(params?.slug as string);
+
+  if (!res) {
+    return {
+      notFound: true,
+    }
+  }
+
   const activityState = structuredClone(await getActivityIndicator());
 
   return {

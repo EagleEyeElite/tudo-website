@@ -1,73 +1,39 @@
 import {GraphQLClient} from "graphql-request";
-import {getSdk} from "./generated/graphql";
+import {getSdk, PostIdType} from "./generated/graphql";
 
-const API_URL = process.env.WORDPRESS_API_URL || ""
-const client = new GraphQLClient(API_URL);
-const sdk = getSdk(client);
-
-async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
-  const headers = { 'Content-Type': 'application/json' }
+export function getInitializedSdk() {
+  const API_URL = process.env.WORDPRESS_API_URL || "";
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
   if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-    headers[
-      'Authorization'
-    ] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`
+    headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
   }
 
-  // WPGraphQL Plugin must be enabled
-  const res = await fetch(API_URL, {
-    headers,
-    method: 'POST',
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-  })
+  const client = new GraphQLClient(API_URL, { headers });
+  return getSdk(client);
+}
+const sdk = getInitializedSdk();
 
-  const json = await res.json()
-  if (json.errors) {
-    console.error(json.errors)
-    throw new Error('Failed to fetch API')
-  }
-  return json.data
+export async function getPreviewPost(id, idType: PostIdType = PostIdType.DatabaseId) {
+  const response = await sdk.PreviewPost({
+      id,
+      idType,
+  });
+
+  return response.post;
 }
 
-export async function getPreviewPost(id, idType = 'DATABASE_ID') {
-  const data = await fetchAPI(
-    `
-    query PreviewPost($id: ID!, $idType: PostIdType!) {
-      post(id: $id, idType: $idType) {
-        databaseId
-        slug
-        status
-      }
-    }`,
-    {
-      variables: { id, idType },
-    }
-  )
-  return data.post
-}
 
 export async function getAllPostsWithSlug() {
-  const data = await sdk.GetALLPostsWithSlug2();
+  const data = await sdk.GetALLPostsWithSlug();
   return data?.posts;
 }
 
 export async function getAllPagesAsSlug(): Promise<string[]> {
-  const data = await fetchAPI(`
-    {
-      pages(first: 10000) {
-        edges {
-          node {
-            slug
-          }
-        }
-      }
-    }
-  `)
-
-  return data?.pages.edges.map(({ node }) => `/pages/${node.slug}`) || [];
+  const data = await sdk.GetAllPagesAsSlug();
+  return data?.pages?.edges.map(({ node }) => `/pages/${node.slug}`) || [];
 }
 
 
@@ -78,184 +44,80 @@ export interface PageProps {
   featuredImageUrl: string | null;
 }
 
-export async function getPage(uri: string) {
-  const response = await fetchAPI(`
-query PostBySlug($uri: ID!) {
-  page(idType: URI, id: $uri) {
-    id
-    title
-    content
-    featuredImage {
-      node {
-        sourceUrl
-      }
-    }
-  }
-}
-`,{
-  variables: { uri },
-})
+export async function getPageBySlug(slug: string) {
+  const response = await sdk.PostByUri({
+    uri: slug,
+  });
 
   const pageData = response.page;
-  const pageProps: PageProps = {
+
+  // the slug doesnt always found, in this case default to null
+  if (pageData === null || pageData === undefined) {
+    return null;
+  }
+
+  return {
     id: pageData.id,
     title: pageData.title,
     content: pageData.content,
-    featuredImageUrl: pageData.featuredImage?.node?.sourceUrl || null, // Using the extracted URL or null
-  };
-
-  return pageProps as PageProps;
+    featuredImageUrl: pageData.featuredImage?.node?.sourceUrl || null,
+  } as PageProps;
 }
 
 
-export async function getAllPostsForHome(preview) {
-  const data = await fetchAPI(
-    `
-    query AllPosts {
-      posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-          node {
-            title
-            excerpt
-            slug
-            date
-            featuredImage {
-              node {
-                sourceUrl
-              }
-            }
-            author {
-              node {
-                name
-                firstName
-                lastName
-                avatar {
-                  url
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `,
-    {
-      variables: {
-        onlyEnabled: !preview,
-        preview,
-      },
-    }
-  )
-
+export async function getAllPostsForHome() {
+  const data = await sdk.AllPosts();
   return data?.posts
 }
 
 export async function getPostAndMorePosts(slug, preview, previewData) {
-  const postPreview = preview && previewData?.post
-  // The slug may be the id of an unpublished post
-  const isId = Number.isInteger(Number(slug))
-  const isSamePost = isId
-    ? Number(slug) === postPreview.id
-    : slug === postPreview.slug
-  const isDraft = isSamePost && postPreview?.status === 'draft'
-  const isRevision = isSamePost && postPreview?.status === 'publish'
-  const data = await fetchAPI(
-    `
-    fragment AuthorFields on User {
-      name
-      firstName
-      lastName
-      avatar {
-        url
-      }
-    }
-    fragment PostFields on Post {
-      title
-      excerpt
-      slug
-      date
-      featuredImage {
-        node {
-          sourceUrl
-        }
-      }
-      author {
-        node {
-          ...AuthorFields
-        }
-      }
-      categories {
-        edges {
-          node {
-            name
-          }
-        }
-      }
-      tags {
-        edges {
-          node {
-            name
-          }
-        }
-      }
-    }
-    query PostBySlug($id: ID!, $idType: PostIdType!) {
-      post(id: $id, idType: $idType) {
-        ...PostFields
-        content
-        ${
-          // Only some of the fields of a revision are considered as there are some inconsistencies
-          isRevision
-            ? `
-        revisions(first: 1, where: { orderby: { field: MODIFIED, order: DESC } }) {
-          edges {
-            node {
-              title
-              excerpt
-              content
-              author {
-                node {
-                  ...AuthorFields
-                }
-              }
-            }
-          }
-        }
-        `
-            : ''
-        }
-      }
-      posts(first: 3, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-          node {
-            ...PostFields
-          }
-        }
-      }
-    }
-  `,
-    {
-      variables: {
-        id: isDraft ? postPreview.id : slug,
-        idType: isDraft ? 'DATABASE_ID' : 'SLUG',
-      },
-    }
-  )
+  const postPreview = preview && previewData?.post;
+  const isId = Number.isInteger(Number(slug));
+  const isSamePost = isId ? Number(slug) === postPreview.id : slug === postPreview.slug;
+  const isDraft = isSamePost && postPreview?.status === 'draft';
+  const isRevision = isSamePost && postPreview?.status === 'publish';
 
-  // Draft posts may not have an slug
-  if (isDraft) data.post.slug = postPreview.id
-  // Apply a revision (changes in a published post)
-  if (isRevision && data.post.revisions) {
-    const revision = data.post.revisions.edges[0]?.node
-
-    if (revision) Object.assign(data.post, revision)
-    delete data.post.revisions
+  let data;
+  if (isDraft) {
+    data = await sdk.DraftPostBySlug({
+      id: postPreview.id,
+    });
+    if (isDraft) data.post.slug = postPreview.id; // Draft posts may not have a slug
+  } else {
+    data = await sdk.PublishedPostAndMorePosts({
+      slug, // Passing the slug directly as the variable.
+    });
+    if (isRevision && data.post.revisions) {
+      const revision = data.post.revisions.edges[0]?.node;
+      if (revision) Object.assign(data.post, revision);
+    }
+    data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug);
+    if (data.posts.edges.length > 3) data.posts.edges.pop(); // Ensure only 3 posts besides the main one
   }
 
-  // Filter out the main post
-  data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug)
-  // If there are still 3 posts, remove the last one
-  if (data.posts.edges.length > 2) data.posts.edges.pop()
+  return data;
+}
 
-  return data
+
+// Define a function to fetch unpublished posts
+export async function getUnpublishedPosts(): Promise<any[]> {
+
+  try {
+    // Call the appropriate SDK function to execute the query
+    const response = await sdk.UnpublishedPosts();
+
+    // Extract the posts from the response
+    const unpublishedPosts = response?.posts?.edges || [];
+
+    // Extract relevant data from each post
+    return unpublishedPosts.map(({node}) => ({
+      id: node?.id || null,
+      title: node?.title || null,
+      slug: node?.slug || null,
+      status: node?.status || null,
+    })); // Return the formatted posts
+  } catch (error) {
+    console.error('Error fetching unpublished posts:', error);
+    return []; // Return an empty array in case of error
+  }
 }
