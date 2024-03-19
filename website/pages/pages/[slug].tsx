@@ -3,7 +3,7 @@ import type {
   GetStaticProps,
   GetStaticPaths,
 } from 'next'
-import {getAllPagesAsSlug, getPageBySlug, PageProps} from "../../lib/api";
+import {getAllPagesAsSlug, getPageByTitle, PageProps} from "../../lib/api";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Layout from "../../components/layout";
@@ -23,7 +23,7 @@ export const getStaticPaths = (async () => {
 
 
 export const getStaticProps = (async ({params}) => {
-  const res = await getPageBySlug(params?.slug as string);
+  const res = await getPageByTitle(params?.slug as string);
 
   if (!res) {
     return {

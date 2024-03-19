@@ -28,8 +28,16 @@ query GetAllPagesAsSlug {
     }
 }
 
-query PostByUri($uri: ID!) {
-    page(idType: URI, id: $uri) {
+query PageIdByTitle($title: String) {
+    pages(where: {name: $title}) {
+        nodes {
+            id
+        }
+    }
+}
+
+query PageById($id: ID!) {
+    page(idType: ID, id: $id) {
         id
         title
         content
@@ -40,6 +48,7 @@ query PostByUri($uri: ID!) {
         }
     }
 }
+
 
 query AllPosts {
     posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
@@ -167,5 +176,18 @@ mutation GetGraphQLToken($username: String!, $password: String!) {
         password: $password,
     }) {
         refreshToken
+    }
+}
+
+query ChildPagesByParentId($parentId: ID!) {
+    pages(where: {parent: $parentId}) {
+        edges {
+            node {
+                id
+                title
+                slug
+                content
+            }
+        }
     }
 }

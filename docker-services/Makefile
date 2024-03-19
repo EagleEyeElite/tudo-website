@@ -17,6 +17,7 @@ down:
 	docker-compose down
 
 autoinstall: start
+	docker-compose -f docker-compose.yml -f wp-auto-config.yml build --no-cache
 	docker-compose -f docker-compose.yml -f wp-auto-config.yml run --rm wp-auto-config
 
 clean: down

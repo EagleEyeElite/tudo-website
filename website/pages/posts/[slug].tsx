@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps = async ({
       preview,
       post: data.post,
       posts: data.posts,
-      activityState: JSON.parse(JSON.stringify(activityState)),
+      activityState: structuredClone(activityState),
     },
     revalidate: 10,
   }

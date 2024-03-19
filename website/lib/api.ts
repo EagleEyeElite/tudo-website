@@ -44,23 +44,19 @@ export interface PageProps {
   featuredImageUrl: string | null;
 }
 
-export async function getPageBySlug(slug: string) {
-  const response = await sdk.PostByUri({
-    uri: slug,
-  });
+export async function getPageByTitle(title: string) {
+  const res = await sdk.PageIdByTitle({title});
 
-  const pageData = response.page;
-
-  // the slug doesnt always found, in this case default to null
-  if (pageData === null || pageData === undefined) {
+  const id = res.pages?.nodes[0]?.id;
+  if (id === undefined) {
     return null;
   }
-
+  const page = (await sdk.PageById({id})).page!;
   return {
-    id: pageData.id,
-    title: pageData.title,
-    content: pageData.content,
-    featuredImageUrl: pageData.featuredImage?.node?.sourceUrl || null,
+    id: page.id,
+    title: page.title,
+    content: page.content,
+    featuredImageUrl: page.featuredImage?.node?.sourceUrl || null,
   } as PageProps;
 }
 
@@ -98,9 +94,7 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   return data;
 }
 
-
-// Define a function to fetch unpublished posts
-export async function getUnpublishedPosts(): Promise<any[]> {
+export async function getUnpublishedPosts() {
 
   try {
     // Call the appropriate SDK function to execute the query
@@ -120,4 +114,17 @@ export async function getUnpublishedPosts(): Promise<any[]> {
     console.error('Error fetching unpublished posts:', error);
     return []; // Return an empty array in case of error
   }
+}
+
+export async function childPagesByParentId(parentId: string) {
+  const response = await sdk.ChildPagesByParentId({ parentId });
+  const childPages: PageProps[] = response.pages!.edges.map(({ node }) => ({
+    id: node.id,
+    title: node.title!,
+    slug: node.slug,
+    content: node.content!,
+    featuredImageUrl: null,
+  }));
+
+  return childPages
 }

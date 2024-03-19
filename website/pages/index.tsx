@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const allPosts = await getAllPostsForHome()
   const activityState = await getActivityIndicator();
   return {
-    props: { allPosts, preview, activityState: JSON.parse(JSON.stringify(activityState)) },
+    props: { allPosts, preview, activityState: structuredClone(activityState) },
     revalidate: 10,
   }
 }

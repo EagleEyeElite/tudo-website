@@ -1,4 +1,4 @@
-install: banner configure upload_images set_avatar set_favicon create_categories posts end_banner
+install: banner configure upload_images set_avatar set_favicon create_categories pages posts end_banner
 
 banner:
 	@echo "*************************************************************"
@@ -62,6 +62,39 @@ create_categories:
 	@echo "📚 Creating default categories..."
 	@GENERAL_CATEGORY_ID=$$(wp term create category 'General' --porcelain); \
 	wp option update default_category $$GENERAL_CATEGORY_ID; \
+
+
+pages:
+	@echo "📃 Creating 'Overview' page..." && \
+	OVERVIEW_PAGE_ID=$$(wp post create \
+		--post_type=page \
+		--post_title='Overview' \
+		--post_content='The overview is made for "how to find us", room pages like "cafe", "wood workshop" and services like 3d-printing or screen printing.' \
+		--post_status=publish \
+		--post_author=1 \
+		--porcelain) && \
+	echo "📃 Creating child pages for 'Overview'..." && \
+	wp post create \
+		--post_type=page \
+		--post_title='Overview1' \
+		--post_content='This is the Overview1 page content.' \
+		--post_status=publish \
+		--post_author=1 \
+		--post_parent=$$OVERVIEW_PAGE_ID && \
+	wp post create \
+		--post_type=page \
+		--post_title='Overview2' \
+		--post_content='This is the Overview2 page content.' \
+		--post_status=publish \
+		--post_author=1 \
+		--post_parent=$$OVERVIEW_PAGE_ID && \
+	wp post create \
+		--post_type=page \
+		--post_title='Overview3' \
+		--post_content='This is the Overview3 page content.' \
+		--post_status=publish \
+		--post_author=1 \
+		--post_parent=$$OVERVIEW_PAGE_ID
 
 
 posts:

@@ -9566,12 +9566,19 @@ export type GetAllPagesAsSlugQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllPagesAsSlugQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', slug?: string | null } }> } | null };
 
-export type PostByUriQueryVariables = Exact<{
-  uri: Scalars['ID']['input'];
+export type PageIdByTitleQueryVariables = Exact<{
+  title?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type PostByUriQuery = { __typename?: 'RootQuery', page?: { __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
+export type PageIdByTitleQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string }> } | null };
+
+export type PageByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type PageByIdQuery = { __typename?: 'RootQuery', page?: { __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
 
 export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9608,6 +9615,13 @@ export type GetGraphQlTokenMutationVariables = Exact<{
 
 
 export type GetGraphQlTokenMutation = { __typename?: 'RootMutation', login?: { __typename?: 'LoginPayload', refreshToken?: string | null } | null };
+
+export type ChildPagesByParentIdQueryVariables = Exact<{
+  parentId: Scalars['ID']['input'];
+}>;
+
+
+export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', id: string, title?: string | null, slug?: string | null, content?: string | null } }> } | null };
 
 export const AuthorFieldsFragmentDoc = gql`
     fragment AuthorFields on User {
@@ -9682,9 +9696,18 @@ export const GetAllPagesAsSlugDocument = gql`
   }
 }
     `;
-export const PostByUriDocument = gql`
-    query PostByUri($uri: ID!) {
-  page(idType: URI, id: $uri) {
+export const PageIdByTitleDocument = gql`
+    query PageIdByTitle($title: String) {
+  pages(where: {name: $title}) {
+    nodes {
+      id
+    }
+  }
+}
+    `;
+export const PageByIdDocument = gql`
+    query PageById($id: ID!) {
+  page(idType: ID, id: $id) {
     id
     title
     content
@@ -9786,6 +9809,20 @@ export const GetGraphQlTokenDocument = gql`
   }
 }
     `;
+export const ChildPagesByParentIdDocument = gql`
+    query ChildPagesByParentId($parentId: ID!) {
+  pages(where: {parent: $parentId}) {
+    edges {
+      node {
+        id
+        title
+        slug
+        content
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -9803,8 +9840,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetAllPagesAsSlug(variables?: GetAllPagesAsSlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllPagesAsSlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllPagesAsSlugQuery>(GetAllPagesAsSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllPagesAsSlug', 'query', variables);
     },
-    PostByUri(variables: PostByUriQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PostByUriQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PostByUriQuery>(PostByUriDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PostByUri', 'query', variables);
+    PageIdByTitle(variables?: PageIdByTitleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageIdByTitleQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PageIdByTitleQuery>(PageIdByTitleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageIdByTitle', 'query', variables);
+    },
+    PageById(variables: PageByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PageByIdQuery>(PageByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageById', 'query', variables);
     },
     AllPosts(variables?: AllPostsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AllPostsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllPostsQuery>(AllPostsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllPosts', 'query', variables);
@@ -9820,6 +9860,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetGraphQLToken(variables: GetGraphQlTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetGraphQlTokenMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetGraphQlTokenMutation>(GetGraphQlTokenDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetGraphQLToken', 'mutation', variables);
+    },
+    ChildPagesByParentId(variables: ChildPagesByParentIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ChildPagesByParentIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ChildPagesByParentIdQuery>(ChildPagesByParentIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ChildPagesByParentId', 'query', variables);
     }
   };
 }
