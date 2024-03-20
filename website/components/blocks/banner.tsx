@@ -1,4 +1,4 @@
-import PicBanner from "../public/assets/cafeBanner.jpg";
+import PicBanner from "../../public/assets/cafeBanner.jpg";
 import React from "react";
 import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";

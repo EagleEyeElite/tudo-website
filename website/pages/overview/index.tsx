@@ -1,11 +1,11 @@
 import {GetStaticProps, type InferGetStaticPropsType} from 'next';
 import React from 'react';
-import Layout from '../../components/layout';
+import Layout from '../../components/layout/layout';
 import {childPagesByParentId, getPageByTitle, PageProps} from "../../lib/api";
 import Head from "next/head";
 import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
-import PostTitle from "../../components/post-title";
-import PostBody from "../../components/post-body";
+import PostTitle from "../../components/blocks/post-title";
+import PostBody from "../../components/blocks/post-body";
 import Link from "next/link";
 import Image from "next/image";
 

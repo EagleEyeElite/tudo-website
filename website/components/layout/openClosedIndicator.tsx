@@ -1,7 +1,7 @@
-import {ActivityIndicatorState} from "../pages/api/activityIndicator";
+import {ActivityIndicatorState} from "../../pages/api/activityIndicator";
 import React from "react";
-import {CustomLink} from "./links";
-import {TELEGRAM_PATH} from "../lib/constants";
+import {CustomLink} from "../ui/links";
+import {TELEGRAM_PATH} from "../../lib/constants";
 
 function OpenButton() {
   return <a

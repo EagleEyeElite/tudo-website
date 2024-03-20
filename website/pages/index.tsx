@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
-import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Banner from '../components/banner'
-import Layout from '../components/layout'
+import Container from '../components/ui/container'
+import MoreStories from '../components/blocks/more-stories'
+import HeroPost from '../components/blocks/hero-post'
+import Banner from '../components/blocks/banner'
+import Layout from '../components/layout/layout'
 import { getAllPostsForHome } from '../lib/api'
 import React from "react";
 import {ParallaxProvider} from "react-scroll-parallax";

@@ -1,4 +1,4 @@
-import Container from './container';
+import Container from '../ui/container';
 import cn from 'classnames';
 import Link from "next/link";
 

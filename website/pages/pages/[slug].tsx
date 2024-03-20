@@ -6,11 +6,11 @@ import type {
 import {getAllPagesAsSlug, getPageByTitle, PageProps} from "../../lib/api";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
-import Layout from "../../components/layout";
-import Container from "../../components/container";
-import PostTitle from "../../components/post-title";
+import Layout from "../../components/layout/layout";
+import Container from "../../components/ui/container";
+import PostTitle from "../../components/blocks/post-title";
 import Head from "next/head";
-import PostBody from "../../components/post-body";
+import PostBody from "../../components/blocks/post-body";
 import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
 
 export const getStaticPaths = (async () => {

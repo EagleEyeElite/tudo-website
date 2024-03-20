@@ -1,9 +1,9 @@
-import Container from './container'
+import Container from '../ui/container'
 import Image from 'next/image';
-import TuDoLogo from '../public/assets/tudo-logo.svg'
+import TuDoLogo from '../../public/assets/tudo-logo.svg'
 import React from "react";
-import {Links} from "./links";
-import {GITHUB_PATH, TELEGRAM_PATH} from "../lib/constants";
+import {Links} from "../ui/links";
+import {GITHUB_PATH, TELEGRAM_PATH} from "../../lib/constants";
 import Link from "next/link";
 
 function Logo() {
