@@ -9621,7 +9621,7 @@ export type ChildPagesByParentIdQueryVariables = Exact<{
 }>;
 
 
-export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', id: string, title?: string | null, slug?: string | null, content?: string | null } }> } | null };
+export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', id: string, title?: string | null, slug?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } }> } | null };
 
 export const AuthorFieldsFragmentDoc = gql`
     fragment AuthorFields on User {
@@ -9811,13 +9811,18 @@ export const GetGraphQlTokenDocument = gql`
     `;
 export const ChildPagesByParentIdDocument = gql`
     query ChildPagesByParentId($parentId: ID!) {
-  pages(where: {parent: $parentId}) {
+  pages(where: {parent: $parentId, orderby: {field: MENU_ORDER, order: ASC}}) {
     edges {
       node {
         id
         title
         slug
         content
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
       }
     }
   }

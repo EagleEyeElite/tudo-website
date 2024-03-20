@@ -123,7 +123,7 @@ export async function childPagesByParentId(parentId: string) {
     title: node.title!,
     slug: node.slug,
     content: node.content!,
-    featuredImageUrl: null,
+    featuredImageUrl: node.featuredImage?.node?.sourceUrl || null,
   }));
 
   return childPages

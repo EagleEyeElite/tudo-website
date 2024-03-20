@@ -65,36 +65,46 @@ create_categories:
 
 
 pages:
-	@echo "📃 Creating 'Overview' page..." && \
+	@echo "📃 Creating 'Overview' page..."
 	OVERVIEW_PAGE_ID=$$(wp post create \
 		--post_type=page \
 		--post_title='Overview' \
-		--post_content='The overview is made for "how to find us", room pages like "cafe", "wood workshop" and services like 3d-printing or screen printing.' \
+		--post_content='The overview is made for "how to find us", room pages like "cafe", "wood workshop" and self-help facilities like 3d-printing or screen printing.' \
 		--post_status=publish \
 		--post_author=1 \
 		--porcelain) && \
 	echo "📃 Creating child pages for 'Overview'..." && \
-	wp post create \
+	PAGE_ID_1=$$(wp post create \
 		--post_type=page \
 		--post_title='Overview1' \
 		--post_content='This is the Overview1 page content.' \
 		--post_status=publish \
 		--post_author=1 \
-		--post_parent=$$OVERVIEW_PAGE_ID && \
+		--menu_order=0 \
+		--post_parent=$$OVERVIEW_PAGE_ID \
+		--porcelain) && \
+	FEATURE_IMAGE_ID_1=$$(wp eval-file /php-scripts/get-attachment-id.php "feature-image.jpg") && \
+	wp post meta set $$PAGE_ID_1 _thumbnail_id $$FEATURE_IMAGE_ID_1 && \
 	wp post create \
 		--post_type=page \
 		--post_title='Overview2' \
 		--post_content='This is the Overview2 page content.' \
 		--post_status=publish \
 		--post_author=1 \
-		--post_parent=$$OVERVIEW_PAGE_ID && \
-	wp post create \
+		--menu_order=1 \
+		--post_parent=$$OVERVIEW_PAGE_ID \
+		--porcelain && \
+	PAGE_ID_3=$$(wp post create \
 		--post_type=page \
 		--post_title='Overview3' \
 		--post_content='This is the Overview3 page content.' \
 		--post_status=publish \
 		--post_author=1 \
-		--post_parent=$$OVERVIEW_PAGE_ID
+		--menu_order=2 \
+		--post_parent=$$OVERVIEW_PAGE_ID \
+		--porcelain) && \
+	FEATURE_IMAGE_ID_3=$$(wp eval-file /php-scripts/get-attachment-id.php "hello-world2.jpg") && \
+  	wp post meta set $$PAGE_ID_3 _thumbnail_id $$FEATURE_IMAGE_ID_3
 
 
 posts:

@@ -180,13 +180,18 @@ mutation GetGraphQLToken($username: String!, $password: String!) {
 }
 
 query ChildPagesByParentId($parentId: ID!) {
-    pages(where: {parent: $parentId}) {
+    pages(where: {parent: $parentId, orderby: {field: MENU_ORDER, order: ASC}}) {
         edges {
             node {
                 id
                 title
                 slug
                 content
+                featuredImage {
+                    node {
+                        sourceUrl
+                    }
+                }
             }
         }
     }
