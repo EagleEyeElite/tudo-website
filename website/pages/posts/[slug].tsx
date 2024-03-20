@@ -1,92 +1,65 @@
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import ErrorPage from 'next/error'
-import Head from 'next/head'
-import { GetStaticPaths, GetStaticProps } from 'next'
-import Container from '../../components/ui/container'
-import PostBody from '../../components/blocks/post-body'
+import {GetStaticPaths, GetStaticProps, InferGetStaticPropsType} from 'next'
 import MoreStories from '../../components/blocks/more-stories'
-import Header from '../../components/blocks/header'
-import PostHeader from '../../components/blocks/post-header'
-import SectionSeparator from '../../components/blocks/section-separator'
 import Layout from '../../components/layout/layout'
-import PostTitle from '../../components/blocks/post-title'
-import Tags from '../../components/blocks/tags'
-import {getAllPostsWithSlug, getPostAndMorePosts} from '../../lib/api'
-import {getActivityIndicator} from "../api/activityIndicator";
+import {getAllPostsWithSlug, getPostAndMorePosts, MorePostPropsApi, PostPropsApi} from '../../lib/api'
+import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
+import ContentDefault from "../../components/page-templates/content-default";
+import Loading from "../../components/page-templates/loading";
+import {convertPost, convertMorePosts} from "../../lib/convertApiInterfaces";
 
-export default function Post({ post, posts, preview, activityState }) {
+export default function Post(
+  {post, morePosts, preview, activityState}: InferGetStaticPropsType<typeof getStaticProps>
+) {
   const router = useRouter()
-  const morePosts = posts?.edges
-
   if (!router.isFallback && !post?.slug) {
-    return <ErrorPage statusCode={404} />
+    return <ErrorPage statusCode={404}/>
   }
-
+  if (router.isFallback) {
+    return Loading(activityState);
+  }
+  const postConverted = convertPost(post)
+  const morePostsConverted = convertMorePosts(morePosts)
 
   return (
     <Layout activityIndicator={activityState} preview={preview}>
-      <Container>
-        <Header categories={post?.categories} />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
-              <Head>
-                <title>
-                  {`${post.title} | TuDo Makerspace`}
-                </title>
-                <meta
-                  property="og:image"
-                  content={post.featuredImage?.node.sourceUrl}
-                />
-              </Head>
-              <PostHeader
-                title={post.title}
-                coverImage={post.featuredImage}
-                date={post.date}
-                author={post.author}
-                categories={post.categories}
-              />
-              <PostBody content={post.content} />
-              <footer>
-                {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
-              </footer>
-            </article>
-
-            <SectionSeparator />
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-          </>
-        )}
-      </Container>
+      <ContentDefault
+        content={postConverted}
+        additionalContent={morePostsConverted.length > 0 ? <MoreStories posts={morePostsConverted}/> : undefined}
+      />
     </Layout>
   )
 }
 
-export const getStaticProps: GetStaticProps = async ({
+export const getStaticProps = (async ({
   params,
   preview = false,
   previewData,
 }) => {
-  const data = await getPostAndMorePosts(params?.slug, preview, previewData)
+  const {post, morePosts} = await getPostAndMorePosts(params?.slug, preview, previewData)
   const activityState = await getActivityIndicator();
 
   return {
     props: {
       preview,
-      post: data.post,
-      posts: data.posts,
-      activityState: structuredClone(activityState),
+      post,
+      morePosts,
+      activityState,
     },
     revalidate: 10,
   }
-}
+}) satisfies GetStaticProps<{
+  preview: boolean,
+  post: PostPropsApi,
+  morePosts: MorePostPropsApi[],
+  activityState: ActivityIndicatorState
+}>
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const allPosts = await getAllPostsWithSlug()
-
   return {
-    paths: allPosts?.edges.map(({ node }) => `/posts/${node.slug}`) || [],
+    paths: allPosts.map((slug) => `/posts/${slug}`),
     fallback: true,
   }
 }

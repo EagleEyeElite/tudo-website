@@ -1,6 +1,7 @@
 import {GraphQLClient} from "graphql-request";
 import {getSdk, PostIdType} from "./generated/graphql";
 
+
 export function getInitializedSdk() {
   const API_URL = process.env.WORDPRESS_API_URL || "";
   const headers = {
@@ -16,19 +17,30 @@ export function getInitializedSdk() {
 }
 const sdk = getInitializedSdk();
 
-export async function getPreviewPost(id, idType: PostIdType = PostIdType.DatabaseId) {
+interface PreviewPostProps {
+  databaseId: number
+  slug: string | null
+  status: string | null
+}
+
+export async function getPreviewPost(id, idType: PostIdType = PostIdType.DatabaseId): Promise<PreviewPostProps> {
   const response = await sdk.PreviewPost({
       id,
       idType,
   });
 
-  return response.post;
+  return {
+    databaseId: response.post?.databaseId!,
+    slug: response.post?.slug || null,
+    status: response.post?.status || null,
+  }
 }
-
 
 export async function getAllPostsWithSlug() {
   const data = await sdk.GetALLPostsWithSlug();
-  return data?.posts;
+  return (data.posts?.edges
+    .map(({node}) => node.slug || null)
+    .filter((slug): slug is string => slug !== null) || []) ;
 }
 
 export async function getAllPagesAsSlug(): Promise<string[]> {
@@ -36,15 +48,13 @@ export async function getAllPagesAsSlug(): Promise<string[]> {
   return data?.pages?.edges.map(({ node }) => `/pages/${node.slug}`) || [];
 }
 
-
-export interface PageProps {
-  id: string;
-  title: string;
-  content: string;
+export interface PagePropsApi {
+  id: string | null;
+  title: string | null;
+  content: string | null;
   featuredImageUrl: string | null;
 }
-
-export async function getPageByTitle(title: string) {
+export async function getPageByTitle(title: string): Promise<PagePropsApi | null>{
   const res = await sdk.PageIdByTitle({title});
 
   const id = res.pages?.nodes[0]?.id;
@@ -54,19 +64,59 @@ export async function getPageByTitle(title: string) {
   const page = (await sdk.PageById({id})).page!;
   return {
     id: page.id,
-    title: page.title,
-    content: page.content,
+    title: page.title!,
+    content: page.content!,
     featuredImageUrl: page.featuredImage?.node?.sourceUrl || null,
-  } as PageProps;
+
+  };
 }
 
+export interface AuthorPropsApi {
+  firstName: string | null;
+  lastName: string | null;
+  name: string | null;
+  avatarUrl: string | null;
+}
+export interface MorePostPropsApi {
+  title: string | null;
+  excerpt: string | null;
+  slug: string | null;
+  date: string | null;
+  featuredImageUrl: string | null;
+  author: AuthorPropsApi | null;
+}
 
-export async function getAllPostsForHome() {
+export async function getAllPostsForHome(): Promise<MorePostPropsApi[]> {
   const data = await sdk.AllPosts();
-  return data?.posts
+
+  return data?.posts?.edges.map(({node}) => ({
+      title: node.title || null,
+      excerpt: node.excerpt || null,
+      slug: node.slug || null,
+      date: node.date || null,
+      featuredImageUrl: node.featuredImage?.node?.sourceUrl || null,
+      author: {
+        firstName: node.author?.node?.firstName || null,
+        lastName: node.author?.node?.lastName || null,
+        name: node.author?.node?.name || null,
+        avatarUrl: node.author?.node?.avatar?.url || null,
+      },
+    }
+  )) || []
 }
 
-export async function getPostAndMorePosts(slug, preview, previewData) {
+export interface PostPropsApi extends MorePostPropsApi {
+  categories: string[] | null;
+  content: string;
+  tags: string[] | null;
+}
+
+export interface getPostAndMorePostsApi {
+  post: PostPropsApi;
+  morePosts: MorePostPropsApi[];
+}
+
+export async function getPostAndMorePosts(slug, preview, previewData): Promise<getPostAndMorePostsApi> {
   const postPreview = preview && previewData?.post;
   const isId = Number.isInteger(Number(slug));
   const isSamePost = isId ? Number(slug) === postPreview.id : slug === postPreview.slug;
@@ -78,11 +128,9 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
     data = await sdk.DraftPostBySlug({
       id: postPreview.id,
     });
-    if (isDraft) data.post.slug = postPreview.id; // Draft posts may not have a slug
+    if (isDraft) data.post.slug = postPreview.id;
   } else {
-    data = await sdk.PublishedPostAndMorePosts({
-      slug, // Passing the slug directly as the variable.
-    });
+    data = await sdk.PublishedPostAndMorePosts({slug});
     if (isRevision && data.post.revisions) {
       const revision = data.post.revisions.edges[0]?.node;
       if (revision) Object.assign(data.post, revision);
@@ -91,34 +139,60 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
     if (data.posts.edges.length > 3) data.posts.edges.pop(); // Ensure only 3 posts besides the main one
   }
 
-  return data;
+  return {
+    post: {
+      title: data.post.title,
+      excerpt: data.post.excerpt,
+      slug: data.post.slug,
+      date: data.post.date,
+      author: {
+        firstName: data.post.author?.node?.firstName,
+        lastName: data.post.author?.node?.lastName,
+        name: data.post.author?.node?.name,
+        avatarUrl: data.post.author?.node?.avatar?.url,
+      },
+      featuredImageUrl: data.post.featuredImage?.node?.sourceUrl || null,
+      categories: data.post.categories?.edges.map(({ node }) => node.name) || null,
+      content: data.post.content,
+      tags: data.post.tags?.edges.map(({ node }) => node.name) || null
+    },
+    morePosts: data.posts.edges.map(({node}) => {
+      return {
+        title: node.title || null,
+          excerpt: node.excerpt || null,
+        slug: node.slug || null,
+        date: node.date || null,
+        author: {
+          firstName: node.author?.node?.firstName,
+          lastName: node.author?.node?.lastName,
+          name: node.author?.node?.name,
+          avatarUrl: node.author?.node?.avatar?.url,
+        },
+        featuredImageUrl: node.featuredImage?.node?.sourceUrl || null,
+      }
+    }) || [],
+  }
 }
 
 export async function getUnpublishedPosts() {
-
   try {
-    // Call the appropriate SDK function to execute the query
     const response = await sdk.UnpublishedPosts();
-
-    // Extract the posts from the response
     const unpublishedPosts = response?.posts?.edges || [];
-
-    // Extract relevant data from each post
     return unpublishedPosts.map(({node}) => ({
       id: node?.id || null,
       title: node?.title || null,
       slug: node?.slug || null,
       status: node?.status || null,
-    })); // Return the formatted posts
+    }));
   } catch (error) {
     console.error('Error fetching unpublished posts:', error);
-    return []; // Return an empty array in case of error
+    return [];
   }
 }
 
 export async function childPagesByParentId(parentId: string) {
   const response = await sdk.ChildPagesByParentId({ parentId });
-  const childPages: PageProps[] = response.pages!.edges.map(({ node }) => ({
+  const childPages: PagePropsApi[] = response.pages!.edges.map(({ node }) => ({
     id: node.id,
     title: node.title!,
     slug: node.slug,

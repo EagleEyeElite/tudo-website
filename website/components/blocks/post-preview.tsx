@@ -1,7 +1,17 @@
-import Avatar from './avatar'
+import Avatar, {AuthorProps} from './avatar'
 import Date from './date'
-import CoverImage from './cover-image'
+import CoverImage, {CoverImageProps} from './cover-image'
 import Link from 'next/link'
+
+
+interface PostPreviewProps {
+  title: string;
+  coverImage: CoverImageProps; // Assuming CoverImageProps is defined elsewhere
+  date: string;
+  excerpt: string;
+  author: AuthorProps; // Assuming AuthorProps is defined elsewhere
+  slug: string;
+}
 
 export default function PostPreview({
   title,
@@ -10,12 +20,12 @@ export default function PostPreview({
   excerpt,
   author,
   slug,
-}) {
+}: PostPreviewProps) {
   return (
     <div>
       <div className="mb-5">
         {coverImage && (
-          <CoverImage title={title} coverImage={coverImage} slug={slug} />
+          <CoverImage coverImage={coverImage} />
         )}
       </div>
       <h3 className="text-3xl mb-3 leading-snug">

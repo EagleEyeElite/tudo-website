@@ -1,14 +1,14 @@
 import Link from 'next/link'
 
 interface Props {
-  categories: any;
+  category?: string;
 }
 
-export default function Header({categories}: Props) {
+export default function Header({category}: Props) {
   return (
     <h2 className="text-2xl md:text-4xl font-bold tracking-tight md:tracking-tighter leading-tight mb-20 mt-8">
       <Link href="/" className="hover:underline">
-        {categories?.edges[0]?.node.name ?? "General"}
+        {category ?? "General"}
       </Link>
       .
     </h2>

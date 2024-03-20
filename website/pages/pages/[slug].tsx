@@ -3,36 +3,41 @@ import type {
   GetStaticProps,
   GetStaticPaths,
 } from 'next'
-import {getAllPagesAsSlug, getPageByTitle, PageProps} from "../../lib/api";
+import {getAllPagesAsSlug, getPageByTitle, PagePropsApi} from "../../lib/api";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Layout from "../../components/layout/layout";
-import Container from "../../components/ui/container";
-import PostTitle from "../../components/blocks/post-title";
-import Head from "next/head";
-import PostBody from "../../components/blocks/post-body";
 import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
+import ContentDefault, {ContentDefaultProps} from "../../components/page-templates/content-default";
+import Loading from "../../components/page-templates/loading";
+import {CoverImageProps} from "../../components/blocks/cover-image";
+import {convertPage, convertPost} from "../../lib/convertApiInterfaces";
 
-export const getStaticPaths = (async () => {
-  const allPostSlugs = await getAllPagesAsSlug();
-  return {
-    paths: allPostSlugs,
-    fallback: true,
-  };
-}) satisfies GetStaticPaths
+export default function Page({
+  page,
+  activityState
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const router = useRouter()
+  if (!router.isFallback && !page?.id) {
+    return <ErrorPage statusCode={404}/>
+  }
+  if (router.isFallback) {
+    return Loading(activityState);
+  }
 
+  return (
+    <Layout activityIndicator={activityState} preview={false}>
+      <ContentDefault content={convertPage(page)}/>
+    </Layout>
+  )
+}
 
 export const getStaticProps = (async ({params}) => {
   const res = await getPageByTitle(params?.slug as string);
-
   if (!res) {
-    return {
-      notFound: true,
-    }
+    return { notFound: true, revalidate: 10 }
   }
-
-  const activityState = structuredClone(await getActivityIndicator());
-
+  const activityState = await getActivityIndicator();
   return {
     props: {
       page: res,
@@ -41,49 +46,14 @@ export const getStaticProps = (async ({params}) => {
     revalidate: 10,
   }
 }) satisfies GetStaticProps<{
-  page: PageProps
+  page: PagePropsApi
   activityState: ActivityIndicatorState
 }>
 
-
-export default function Page(
-  {
-    page,
-    activityState
-  }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter()
-
-  if (!router.isFallback && !page?.id) {
-    return <ErrorPage statusCode={404}/>
-  }
-
-  return (
-    <Layout activityIndicator={activityState} preview={false}>
-      <Container>
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <article>
-            <Head>
-              <title>
-                {`${page.title} | TuDo Makerspace`}
-              </title>
-              {
-                page.featuredImageUrl && (
-                  <meta
-                    property="og:image"
-                    content={page.featuredImageUrl}
-                  />
-                )
-              }
-            </Head>
-            <div className="max-w-2xl mx-auto">
-              <PostTitle>{page.title}</PostTitle>
-              <PostBody content={page.content}/>
-            </div>
-          </article>
-        )}
-      </Container>
-    </Layout>
-  )
-}
+export const getStaticPaths = (async () => {
+  const allPostSlugs = await getAllPagesAsSlug();
+  return {
+    paths: allPostSlugs,
+    fallback: true,
+  };
+}) satisfies GetStaticPaths

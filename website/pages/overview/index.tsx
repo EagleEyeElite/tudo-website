@@ -1,7 +1,7 @@
 import {GetStaticProps, type InferGetStaticPropsType} from 'next';
 import React from 'react';
 import Layout from '../../components/layout/layout';
-import {childPagesByParentId, getPageByTitle, PageProps} from "../../lib/api";
+import {childPagesByParentId, getPageByTitle, PagePropsApi} from "../../lib/api";
 import Head from "next/head";
 import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
 import PostTitle from "../../components/blocks/post-title";
@@ -32,13 +32,13 @@ export default function OverviewPage({page, childPages, activityState}: InferGet
                     className="group"
                   >
                     <h3 className="text-3xl mb-3 leading-snug self-start group-hover:underline"
-                        dangerouslySetInnerHTML={{__html: page.title}}
+                        dangerouslySetInnerHTML={{__html: page.title!}}
                     />
                     {page.featuredImageUrl && (
                       <div
                         className="relative h-[150px] shadow rounded-lg overflow-hidden mb-2 group-hover:scale-105 duration-200">
                         <Image
-                          alt={page.title}
+                          alt={page.title!}
                           src={page.featuredImageUrl}
                           fill={true}
                           className="object-cover"
@@ -77,7 +77,7 @@ export const getStaticProps = (async () => {
     }
   }
 
-  const childPages = await childPagesByParentId(res.id)
+  const childPages = await childPagesByParentId(res.id!)
 
   return {
     props: {
@@ -88,7 +88,7 @@ export const getStaticProps = (async () => {
     revalidate: 60, // In seconds, for ISR
   };
 }) satisfies GetStaticProps<{
-  page: PageProps
-  childPages: PageProps[]
+  page: PagePropsApi
+  childPages: PagePropsApi[]
   activityState: ActivityIndicatorState
 }>

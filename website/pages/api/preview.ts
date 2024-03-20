@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {getPreviewPost, getUnpublishedPosts} from '../../lib/api';
+import {getPreviewPost} from '../../lib/api';
 import {PostIdType} from "../../lib/generated/graphql";
 
 export default async function preview(
