@@ -43,9 +43,9 @@ export async function getAllPostsWithSlug() {
     .filter((slug): slug is string => slug !== null) || []) ;
 }
 
-export async function getAllPagesAsSlug(): Promise<string[]> {
-  const data = await sdk.GetAllPagesAsSlug();
-  return data?.pages?.edges.map(({ node }) => `/pages/${node.slug}`) || [];
+export async function getAllParentPagesAsSlug(): Promise<string[]> {
+  const data = await sdk.GetAllParentPagesAsSlug();
+  return data.pages?.nodes.map(({ slug }) => slug!) || [];
 }
 
 export interface PagePropsApi {
@@ -201,4 +201,15 @@ export async function childPagesByParentId(parentId: string) {
   }));
 
   return childPages
+}
+
+export async function fetchMediaItemsWithBackgroundSet() {
+  const response = await sdk.FetchMediaItemsWithBackgroundSet();
+  const mediaItems = response.mediaItems?.nodes;
+
+  const backgroundTrueItemIds = mediaItems!
+    .filter(item => item.background!.background === true)
+    .map(item => item.mediaItemUrl);
+
+  return backgroundTrueItemIds[0]!;
 }

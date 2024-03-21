@@ -17,6 +17,24 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+/** A Field Group managed by ACF */
+export type AcfFieldGroup = {
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Fields associated with an ACF Field Group */
+export type AcfFieldGroupFields = {
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
 /** Avatars are profile images for users. WordPress by default uses the Gravatar service to host and fetch avatars from. */
 export type Avatar = {
   __typename?: 'Avatar';
@@ -55,6 +73,29 @@ export enum AvatarRatingEnum {
   /** Indicates an X level avatar rating level. */
   X = 'X'
 }
+
+/** The &quot;Background&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
+export type Background = AcfFieldGroup & AcfFieldGroupFields & Background_Fields & {
+  __typename?: 'Background';
+  /** Field of the &quot;true_false&quot; Field Type added to the schema as part of the &quot;Background&quot; Field Group */
+  background?: Maybe<Scalars['Boolean']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Interface representing fields of the ACF &quot;Background&quot; Field Group */
+export type Background_Fields = {
+  /** Field of the &quot;true_false&quot; Field Type added to the schema as part of the &quot;Background&quot; Field Group */
+  background?: Maybe<Scalars['Boolean']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
 
 /** The category type */
 export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
@@ -2524,7 +2565,7 @@ export type MediaDetailsSizesArgs = {
 };
 
 /** The mediaItem type */
-export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & Node & NodeWithAuthor & NodeWithComments & NodeWithTemplate & NodeWithTitle & UniformResourceIdentifiable & {
+export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & Node & NodeWithAuthor & NodeWithComments & NodeWithTemplate & NodeWithTitle & UniformResourceIdentifiable & WithAcfBackground & {
   __typename?: 'MediaItem';
   /** Alternative text to display when resource is not displayed */
   altText?: Maybe<Scalars['String']['output']>;
@@ -2536,6 +2577,8 @@ export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNo
   authorDatabaseId?: Maybe<Scalars['Int']['output']>;
   /** The globally unique identifier of the author of the node */
   authorId?: Maybe<Scalars['ID']['output']>;
+  /** Fields of the Background ACF Field Group */
+  background?: Maybe<Background>;
   /** The caption for the resource */
   caption?: Maybe<Scalars['String']['output']>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -4762,6 +4805,8 @@ export type PostPostFormatsNodeInput = {
 
 /** The status of the object. */
 export enum PostStatusEnum {
+  /** Objects with the acf-disabled status */
+  AcfDisabled = 'ACF_DISABLED',
   /** Objects with the auto-draft status */
   AutoDraft = 'AUTO_DRAFT',
   /** Objects with the draft status */
@@ -9537,6 +9582,12 @@ export type WpPageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
+/** Provides access to fields of the &quot;Background&quot; ACF Field Group via the &quot;background&quot; field */
+export type WithAcfBackground = {
+  /** Fields of the Background ACF Field Group */
+  background?: Maybe<Background>;
+};
+
 /** The writing setting type */
 export type WritingSettings = {
   __typename?: 'WritingSettings';
@@ -9561,10 +9612,10 @@ export type GetAllPostsWithSlugQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetAllPostsWithSlugQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', slug?: string | null } }> } | null };
 
-export type GetAllPagesAsSlugQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllParentPagesAsSlugQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPagesAsSlugQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', slug?: string | null } }> } | null };
+export type GetAllParentPagesAsSlugQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', slug?: string | null }> } | null };
 
 export type PageIdByTitleQueryVariables = Exact<{
   title?: InputMaybe<Scalars['String']['input']>;
@@ -9622,6 +9673,11 @@ export type ChildPagesByParentIdQueryVariables = Exact<{
 
 
 export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', id: string, title?: string | null, slug?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } }> } | null };
+
+export type FetchMediaItemsWithBackgroundSetQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FetchMediaItemsWithBackgroundSetQuery = { __typename?: 'RootQuery', mediaItems?: { __typename?: 'RootQueryToMediaItemConnection', nodes: Array<{ __typename?: 'MediaItem', mediaItemUrl?: string | null, background?: { __typename?: 'Background', background?: boolean | null } | null }> } | null };
 
 export const AuthorFieldsFragmentDoc = gql`
     fragment AuthorFields on User {
@@ -9685,13 +9741,11 @@ export const GetAllPostsWithSlugDocument = gql`
   }
 }
     `;
-export const GetAllPagesAsSlugDocument = gql`
-    query GetAllPagesAsSlug {
-  pages(first: 10000) {
-    edges {
-      node {
-        slug
-      }
+export const GetAllParentPagesAsSlugDocument = gql`
+    query GetAllParentPagesAsSlug {
+  pages(first: 10000, where: {parentIn: ""}) {
+    nodes {
+      slug
     }
   }
 }
@@ -9828,6 +9882,18 @@ export const ChildPagesByParentIdDocument = gql`
   }
 }
     `;
+export const FetchMediaItemsWithBackgroundSetDocument = gql`
+    query FetchMediaItemsWithBackgroundSet {
+  mediaItems {
+    nodes {
+      background {
+        background
+      }
+      mediaItemUrl
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -9842,8 +9908,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetALLPostsWithSlug(variables?: GetAllPostsWithSlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllPostsWithSlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllPostsWithSlugQuery>(GetAllPostsWithSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetALLPostsWithSlug', 'query', variables);
     },
-    GetAllPagesAsSlug(variables?: GetAllPagesAsSlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllPagesAsSlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllPagesAsSlugQuery>(GetAllPagesAsSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllPagesAsSlug', 'query', variables);
+    GetAllParentPagesAsSlug(variables?: GetAllParentPagesAsSlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllParentPagesAsSlugQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllParentPagesAsSlugQuery>(GetAllParentPagesAsSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllParentPagesAsSlug', 'query', variables);
     },
     PageIdByTitle(variables?: PageIdByTitleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageIdByTitleQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PageIdByTitleQuery>(PageIdByTitleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageIdByTitle', 'query', variables);
@@ -9868,6 +9934,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     ChildPagesByParentId(variables: ChildPagesByParentIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ChildPagesByParentIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ChildPagesByParentIdQuery>(ChildPagesByParentIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ChildPagesByParentId', 'query', variables);
+    },
+    FetchMediaItemsWithBackgroundSet(variables?: FetchMediaItemsWithBackgroundSetQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<FetchMediaItemsWithBackgroundSetQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FetchMediaItemsWithBackgroundSetQuery>(FetchMediaItemsWithBackgroundSetDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'FetchMediaItemsWithBackgroundSet', 'query', variables);
     }
   };
 }

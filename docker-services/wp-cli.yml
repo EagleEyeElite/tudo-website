@@ -12,6 +12,7 @@ services:
       - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD:-password}
     volumes:
       - wordpress:/var/www/html
+      - ./wpcli/php-scripts:/php-scripts/
     working_dir: /var/www/html
     depends_on:
       - wordpress

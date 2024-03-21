@@ -8,7 +8,7 @@ import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Layout from "../../components/layout/layout";
 import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
-import ContentDefault, { ContentDefaultProps } from "../../components/page-templates/content-default";
+import ContentDefault from "../../components/page-templates/content-default";
 import Loading from "../../components/page-templates/loading";
 import {convertPage} from "../../lib/convertApiInterfaces";
 

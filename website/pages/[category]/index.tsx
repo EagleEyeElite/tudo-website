@@ -1,16 +1,27 @@
-import {GetStaticProps, type InferGetStaticPropsType} from 'next';
+import {type GetStaticPaths, GetStaticProps, type InferGetStaticPropsType} from 'next';
 import React from 'react';
 import Layout from '../../components/layout/layout';
-import {childPagesByParentId, getPageByTitle, PagePropsApi} from "../../lib/api";
+import {childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle, PagePropsApi} from "../../lib/api";
 import Head from "next/head";
 import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
 import PostTitle from "../../components/blocks/post-title";
 import PostBody from "../../components/blocks/post-body";
 import Link from "next/link";
 import Image from "next/image";
+import {useRouter} from "next/router";
+import ErrorPage from "next/error";
+import Loading from "../../components/page-templates/loading";
 
 
-export default function OverviewPage({page, childPages, activityState}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function OverviewPage({path, page, childPages, activityState}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const router = useRouter()
+  if (!router.isFallback && !page?.id) {
+    return <ErrorPage statusCode={404}/>
+  }
+  if (router.isFallback) {
+    return Loading(activityState);
+  }
+
   return (
     <Layout activityIndicator={activityState} preview={false}>
       <Head>
@@ -28,7 +39,7 @@ export default function OverviewPage({page, childPages, activityState}: InferGet
               >
                 <div className="flex flex-col">
                   <Link
-                    href={`/overview/${page.title}`}
+                    href={`/${path}/${page.title}`}
                     className="group"
                   >
                     <h3 className="text-3xl mb-3 leading-snug self-start group-hover:underline"
@@ -59,36 +70,42 @@ export default function OverviewPage({page, childPages, activityState}: InferGet
         ) : (
           <p className="text-center">No child pages found.</p>
         )}
-
-
       </div>
     </Layout>
-  );
-};
+  )
+}
 
 
-export const getStaticProps = (async () => {
+export const getStaticProps = (async ({params}) => {
   const activityState = await getActivityIndicator();
-  const res = await getPageByTitle("overview");
-
+  const path = params?.category as string
+  const res = await getPageByTitle(path);
   if (!res) {
-    return {
-      notFound: true,
-    }
+    return { notFound: true, revalidate: 10 }
   }
-
-  const childPages = await childPagesByParentId(res.id!)
+  const childPages = await childPagesByParentId(res.id!);
 
   return {
     props: {
+      path,
       page: res,
       childPages,
-      activityState: structuredClone(activityState),
+      activityState: activityState,
     },
-    revalidate: 60, // In seconds, for ISR
+    revalidate: 10,
   };
 }) satisfies GetStaticProps<{
+  path: string
   page: PagePropsApi
   childPages: PagePropsApi[]
   activityState: ActivityIndicatorState
 }>
+
+export const getStaticPaths = (async () => {
+  const allParentPagesSlugs = await getAllParentPagesAsSlug()
+  const paths = allParentPagesSlugs.map((slug) => `/${slug}`)
+  return {
+    paths,
+    fallback: true,
+  };
+}) satisfies GetStaticPaths

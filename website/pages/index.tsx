@@ -5,7 +5,7 @@ import MoreStories from '../components/blocks/more-stories'
 import HeroPost from '../components/blocks/hero-post'
 import Banner from '../components/blocks/banner'
 import Layout from '../components/layout/layout'
-import {getAllPostsForHome, MorePostPropsApi} from '../lib/api'
+import {fetchMediaItemsWithBackgroundSet, getAllPostsForHome, MorePostPropsApi} from '../lib/api'
 import React from "react";
 import {ParallaxProvider} from "react-scroll-parallax";
 import {ActivityIndicatorState, getActivityIndicator} from "./api/activityIndicator";
@@ -13,7 +13,7 @@ import {convertAuthor, convertCoverImage, convertMorePosts} from "../lib/convert
 
 
 export default function Index(
-  { heroPost, morePosts, preview, activityState }: InferGetStaticPropsType<typeof getStaticProps>
+  { heroPost, morePosts, backgroundImageUrl, preview, activityState }: InferGetStaticPropsType<typeof getStaticProps>
 ) {
   const coverHeroPost = convertCoverImage(heroPost.title!, heroPost.featuredImageUrl, heroPost.slug)
   const authorHeroPost = convertAuthor(heroPost.author!)
@@ -25,7 +25,7 @@ export default function Index(
         <Head>
           <title>{`TuDo Makerspace`}</title>
         </Head>
-        <Banner/>
+        <Banner backgroundImageUrl={backgroundImageUrl} />
         <Container>
           {heroPost && (
             <HeroPost
@@ -48,11 +48,13 @@ export const getStaticProps = (async ({ preview = false }) => {
   const allPosts = await getAllPostsForHome()
   const heroPost = allPosts[0]
   const morePosts = allPosts.slice(1)
+  const backgroundImageUrl = await fetchMediaItemsWithBackgroundSet();
   const activityState = await getActivityIndicator();
   return {
     props: {
       heroPost,
       morePosts,
+      backgroundImageUrl,
       preview,
       activityState
     },
@@ -61,6 +63,7 @@ export const getStaticProps = (async ({ preview = false }) => {
 }) satisfies GetStaticProps<{
   heroPost: MorePostPropsApi,
   morePosts: MorePostPropsApi[],
+  backgroundImageUrl: string,
   preview: boolean,
   activityState: ActivityIndicatorState,
 }>

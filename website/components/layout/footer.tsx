@@ -24,10 +24,10 @@ export default function Footer() {
         <div className="py-28 flex flex-col lg:flex-row justify-between">
           <Logo/>
           <Links links = {[
-            {text: "Impressum", href: "/pages/impressum"},
-            {text: "Wegbeschreibung", href: "/pages/wegbeschreibung"},
-            {text: "Projekte", href: GITHUB_PATH},
-            {text: "Events"},
+            {text: "Impressum", href: "/legal/imprint"},
+            {text: "Datenschutz", href: "/legal/privacy-policy"},
+            {text: "Wegbeschreibung", href: "/about-us/how-to-find-us"},
+            {text: "Über uns", href: "/about-us"},
             {text: "Öffnungszeiten", href: TELEGRAM_PATH, highlighted: true},
           ]}/>
         </div>

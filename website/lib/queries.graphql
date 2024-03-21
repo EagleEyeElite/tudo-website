@@ -17,13 +17,10 @@ query GetALLPostsWithSlug {
     }
 }
 
-# Fetch all page slugs
-query GetAllPagesAsSlug {
-    pages(first: 10000) {
-        edges {
-            node {
-                slug
-            }
+query GetAllParentPagesAsSlug {
+    pages(first: 10000, where: {parentIn: ""}) {
+        nodes {
+            slug
         }
     }
 }
@@ -193,6 +190,17 @@ query ChildPagesByParentId($parentId: ID!) {
                     }
                 }
             }
+        }
+    }
+}
+
+query FetchMediaItemsWithBackgroundSet {
+    mediaItems {
+        nodes {
+            background {
+                background
+            }
+            mediaItemUrl
         }
     }
 }

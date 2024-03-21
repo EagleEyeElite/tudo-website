@@ -3,10 +3,10 @@ import React from "react";
 import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
 
-export default function Banner() {
+export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string}) {
   const Component = () => {
     const background: BannerLayer = {
-      image: PicBanner.src,
+      image: backgroundImageUrl,
       translateY: [0, 20],
       opacity: [0.4, 0.3],
       scale: [1.05, 1, "easeIn"],
