@@ -43,6 +43,15 @@ query PageById($id: ID!) {
                 sourceUrl
             }
         }
+        parent {
+            node {
+                __typename
+                slug
+                ... on Page {
+                    title
+                }
+            }
+        }
     }
 }
 

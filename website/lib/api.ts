@@ -48,11 +48,18 @@ export async function getAllParentPagesAsSlug(): Promise<string[]> {
   return data.pages?.nodes.map(({ slug }) => slug!) || [];
 }
 
+interface ParentPagePropsApi {
+  title: string | null;
+  slug: string | null;
+}
+
 export interface PagePropsApi {
   id: string | null;
   title: string | null;
   content: string | null;
   featuredImageUrl: string | null;
+  slug: string | null;
+  parent: ParentPagePropsApi | null;
 }
 export async function getPageByTitle(title: string): Promise<PagePropsApi | null>{
   const res = await sdk.PageIdByTitle({title});
@@ -61,13 +68,22 @@ export async function getPageByTitle(title: string): Promise<PagePropsApi | null
   if (id === undefined) {
     return null;
   }
-  const page = (await sdk.PageById({id})).page!;
+  const page = (await sdk.PageById({ id })).page!;
+
+
+  let parent: ParentPagePropsApi | null = null;
+  if (page.parent && page.parent.node.__typename === 'Page') {
+    const {title, slug} = page.parent?.node;
+    parent = {title: title || null, slug: slug || null};
+  }
+
   return {
     id: page.id,
     title: page.title!,
     content: page.content!,
     featuredImageUrl: page.featuredImage?.node?.sourceUrl || null,
-
+    parent: parent,
+    slug: null,
   };
 }
 
@@ -195,9 +211,10 @@ export async function childPagesByParentId(parentId: string) {
   const childPages: PagePropsApi[] = response.pages!.edges.map(({ node }) => ({
     id: node.id,
     title: node.title!,
-    slug: node.slug,
+    slug: node.slug ||null,
     content: node.content!,
     featuredImageUrl: node.featuredImage?.node?.sourceUrl || null,
+    parent: null,
   }));
 
   return childPages

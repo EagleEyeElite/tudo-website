@@ -3,7 +3,7 @@ import PostTitle from "../blocks/post-title";
 import ContainerWide, {ContainerTight} from "../ui/container";
 import PostBody from "../blocks/post-body";
 import SectionSeparator from "../blocks/section-separator";
-import Header from "../blocks/header";
+import HeaderLink, {HeaderLinkProps} from "../blocks/headerLink";
 import PostHeader from "../blocks/post-header";
 import Tags from "../blocks/tags";
 import {JSX} from "react";
@@ -11,6 +11,7 @@ import CoverImage, {CoverImageProps} from "../blocks/cover-image";
 import {AuthorProps} from "../blocks/avatar";
 
 export interface ContentDefaultProps {
+  headerLink?: HeaderLinkProps,
   categories?: string[],
   title: string;
   author?: AuthorProps,
@@ -28,7 +29,7 @@ export default function ContentDefault({content, additionalContent}: {
   const renderWide = featuredImageUrl != undefined;
 
   const Containers = renderWide ? ContainerWide : ContainerTight;
-  const Category = content?.categories ? <Header category={content?.categories[0]}/> : undefined;
+  const Category = content.headerLink ? <HeaderLink {...content.headerLink}/> : undefined;
   const metaOgImage = featuredImageUrl ? <meta property="og:image" content={featuredImageUrl}/> : null;
   let extra : JSX.Element | null = null
   if (additionalContent != null) {

@@ -9629,7 +9629,7 @@ export type PageByIdQueryVariables = Exact<{
 }>;
 
 
-export type PageByIdQuery = { __typename?: 'RootQuery', page?: { __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
+export type PageByIdQuery = { __typename?: 'RootQuery', page?: { __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, parent?: { __typename?: 'HierarchicalContentNodeToParentContentNodeConnectionEdge', node: { __typename: 'MediaItem', slug?: string | null } | { __typename: 'Page', title?: string | null, slug?: string | null } | { __typename: 'Post', slug?: string | null } } | null } | null };
 
 export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9768,6 +9768,15 @@ export const PageByIdDocument = gql`
     featuredImage {
       node {
         sourceUrl
+      }
+    }
+    parent {
+      node {
+        __typename
+        slug
+        ... on Page {
+          title
+        }
       }
     }
   }

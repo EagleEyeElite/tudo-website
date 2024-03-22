@@ -11,6 +11,7 @@ import Image from "next/image";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Loading from "../../components/page-templates/loading";
+import HeaderLink from "../../components/blocks/headerLink";
 
 
 export default function OverviewPage({path, page, childPages, activityState}: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -22,12 +23,18 @@ export default function OverviewPage({path, page, childPages, activityState}: In
     return Loading(activityState);
   }
 
+  const headerLink = {
+    title: "Home",
+    href: `/`,
+  };
+
   return (
     <Layout activityIndicator={activityState} preview={false}>
       <Head>
-        <title>Overview | TuDo Makerspace</title>
+        <title>{page.title} | TuDo Makerspace</title>
       </Head>
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-32">
+        <HeaderLink {...headerLink}/>
         <PostTitle>{page.title}</PostTitle>
         <PostBody content={page.content}/>
         {childPages.length > 0 ? (
@@ -39,7 +46,7 @@ export default function OverviewPage({path, page, childPages, activityState}: In
               >
                 <div className="flex flex-col">
                   <Link
-                    href={`/${path}/${page.title}`}
+                    href={`/${path}/${page.slug}`}
                     className="group"
                   >
                     <h3 className="text-3xl mb-3 leading-snug self-start group-hover:underline"
