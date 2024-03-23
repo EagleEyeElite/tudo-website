@@ -3,8 +3,14 @@ import Image from 'next/image';
 import TuDoLogo from '../../public/assets/tudo-logo.svg'
 import React from "react";
 import {Links} from "../ui/links";
-import {GITHUB_PATH, TELEGRAM_PATH} from "../../lib/constants";
 import Link from "next/link";
+import {
+  ABOUT_US_PATH,
+  HOW_TO_FIND_US_PATH,
+  IMPRINT_PATH,
+  OPENING_HOURS_PATH,
+  PRIVACY_POLICY_PATH
+} from "../../lib/constants";
 
 function Logo() {
   return <Link href="/" className="flex flex-col xl:flex-row items-center">
@@ -24,11 +30,11 @@ export default function Footer() {
         <div className="py-28 flex flex-col lg:flex-row justify-between">
           <Logo/>
           <Links links = {[
-            {text: "Impressum", href: "/legal/imprint"},
-            {text: "Datenschutz", href: "/legal/privacy-policy"},
-            {text: "Wegbeschreibung", href: "/about-us/how-to-find-us"},
-            {text: "Über uns", href: "/about-us"},
-            {text: "Öffnungszeiten", href: TELEGRAM_PATH, highlighted: true},
+            { text: "Impressum", href: IMPRINT_PATH },
+            { text: "Datenschutz", href: PRIVACY_POLICY_PATH },
+            { text: "Wegbeschreibung", href: HOW_TO_FIND_US_PATH },
+            { text: "Über uns", href: ABOUT_US_PATH },
+            { text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true },
           ]}/>
         </div>
       </Container>

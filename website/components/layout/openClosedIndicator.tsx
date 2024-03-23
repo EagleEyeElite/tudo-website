@@ -1,7 +1,7 @@
 import {ActivityIndicatorState} from "../../pages/api/activityIndicator";
 import React from "react";
 import {CustomLink} from "../ui/links";
-import {TELEGRAM_PATH} from "../../lib/constants";
+import {OPENING_HOURS_PATH} from "../../lib/constants";
 
 function OpenButton() {
   return <a
@@ -54,10 +54,10 @@ interface Props {
 
 export default function OpenClosedIndicator({activityIndicator}: Props) {
   if(activityIndicator === undefined || activityIndicator.open === null) {
-    return CustomLink({link: {text: "Öffnungszeiten", href: TELEGRAM_PATH, highlighted: true}});
+    return CustomLink({link: {text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}});
   }
   if (activityIndicator.open) {
     return OpenButton()
   }
-  return CustomLink({link: {text: "Geschlossen", href: TELEGRAM_PATH, highlighted: true}});
+  return CustomLink({link: {text: "Geschlossen", href: OPENING_HOURS_PATH, highlighted: true}});
 }

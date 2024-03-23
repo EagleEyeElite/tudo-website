@@ -3,7 +3,7 @@ import type {
   GetStaticProps,
   GetStaticPaths,
 } from 'next'
-import {childPagesByParentId, getPageByTitle, PagePropsApi} from "../../lib/api";
+import {childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle, PagePropsApi} from "../../lib/api";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Layout from "../../components/layout/layout";
@@ -57,15 +57,20 @@ export const getStaticProps = (async ({params}) => {
 }>
 
 export const getStaticPaths = (async () => {
-  const res = await getPageByTitle("overview");
-  if (!res) {
-    return {
-      paths: [],
-      fallback: false,
-    };
+  const res = await getAllParentPagesAsSlug();
+  const paths: string[] = []
+  for (const category of res) {
+    const pageProps = await getPageByTitle(category);
+    if (!pageProps) {
+      return {
+        paths: [],
+        fallback: false,
+      };
+    }
+    const childPages = await childPagesByParentId(pageProps.id!)
+    paths.push(...childPages.map((slug) => `/${category}/${slug.slug}`));
   }
-  const childPages = await childPagesByParentId(res.id!)
-  const paths = childPages.map((page) => `/overview/${page.title}`);
+
   return {
     paths: paths,
     fallback: true,

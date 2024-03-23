@@ -22,10 +22,15 @@ export default function Post(
   const postConverted = convertPost(post)
   const morePostsConverted = convertMorePosts(morePosts)
 
+  const props = {
+    title: "Events",
+    href: `/events`,
+  }
+
   return (
     <Layout activityIndicator={activityState} preview={preview}>
       <ContentDefault
-        content={postConverted}
+        content={{...postConverted, headerLink: props}}
         additionalContent={morePostsConverted.length > 0 ? <MoreStories posts={morePostsConverted}/> : undefined}
       />
     </Layout>
@@ -59,7 +64,7 @@ export const getStaticProps = (async ({
 export const getStaticPaths: GetStaticPaths = async () => {
   const allPosts = await getAllPostsWithSlug()
   return {
-    paths: allPosts.map((slug) => `/posts/${slug}`),
+    paths: allPosts.map((slug) => `/events/${slug}`),
     fallback: true,
   }
 }

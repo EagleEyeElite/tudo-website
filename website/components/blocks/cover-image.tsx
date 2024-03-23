@@ -26,7 +26,7 @@ export default function CoverImage({coverImage} : {coverImage: CoverImageProps})
   return (
     <div className="sm:mx-0">
       {coverImage.slug ? (
-        <Link href={`/posts/${coverImage.slug}`} aria-label={coverImage.title}>
+        <Link href={`/events/${coverImage.slug}`} aria-label={coverImage.title}>
           {image}
         </Link>
       ) : image}
