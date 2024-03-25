@@ -215,7 +215,7 @@ create-pages:
 	wp post create \
 		--post_type=page \
 		--post_title='Events' \
-		--post_content='<h2>Welcome to TuDo Events!</h2><p>At TuDo, we host a variety of events ranging from workshops, seminars, to social gatherings. These events are designed to enhance learning, networking, and provide a platform for sharing innovative ideas.</p><p>Stay tuned to our events page for the latest updates and how you can participate in our upcoming events.</p>' \
+		--post_content='<p>At TuDo, we host a variety of events ranging from workshops, seminars, to social gatherings. These events are designed to enhance learning, networking, and provide a platform for sharing innovative ideas.</p><p>Stay tuned to our events page for the latest updates and how you can participate in our upcoming events.</p>' \
 		--post_status=publish \
 		--post_author=1 \
 		--porcelain

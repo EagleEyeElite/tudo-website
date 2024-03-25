@@ -3,8 +3,8 @@ const path = require('path');
 // When running tests, don't use any production services, use the .env.example file for now
 const envFilePath = process.env.NODE_ENV === 'test' ? '.env.example' : '.env';
 require('dotenv-safe').config({
-  path: path.join(__dirname, './../backend-services/', envFilePath),
-  example: path.join(__dirname, './../backend-services/.env.example'),
+  path: path.join(__dirname, '..', envFilePath),
+  example: path.join(__dirname, '.env.local.example'),
   allowEmptyValues: true,
 });
 
@@ -44,14 +44,16 @@ const nextConfig = createNextConfig();
 
 function createNextConfig() {
   const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL;
-  const defaultProtocol = WORDPRESS_API_URL.includes('localhost') ? 'http' : 'https';
-  const hostnamePattern = /(?<!www\.)[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+|localhost/;
+  const defaultProtocol = WORDPRESS_API_URL.includes('localhost', "wordpress") ? 'http' : 'https';
+  const hostnamePattern = /(?<!www\.)[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+|localhost|wordpress/;
   const hostname = WORDPRESS_API_URL.match(hostnamePattern)[0];
 
   return {
     images: {
       remotePatterns: [
         { protocol: defaultProtocol, hostname },
+        { protocol: "http", hostname: "localhost" },
+        { protocol: "http", hostname: "wordpress" },
         { protocol: defaultProtocol, hostname: '0.gravatar.com' },
         { protocol: defaultProtocol, hostname: '1.gravatar.com' },
         { protocol: defaultProtocol, hostname: '2.gravatar.com' },

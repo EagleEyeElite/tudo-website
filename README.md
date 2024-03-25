@@ -1,67 +1,52 @@
 # TuDo Website
 
+Hey there, you wanna help out, or just checkout the project? Here is a quick guide to get you started.
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
-- Docker and Docker Compose
-- make
-- Node.js and npm
+- [Docker](https://docs.docker.com/get-docker/)
 
 ## Getting Started
 
-Follow these steps to set up the project environment.
-
-### 1. Start Docker Services
-
-To initialize and start the Docker services, including autoconfiguration:
-
-1. Navigate to the `docker-services` directory:
+Your first time? - Follow these steps to set up the project environment.
 
    ```bash
-   cd backend-services
-   ```
-- If its your first time running the project
-
-   ```bash
-   make autoinstall
-   ```
-- If you have already run the project before
-
-   ```bash
-   make up
+   cp .env.example .env
+   docker compose up -d --build
+   docker compose run --rm wp-auto-config
+   docker compose --profile frontend watch
    ```
 
-### 2. Start the Next.js Server
+The Wordpress CMS can be accessed via `http://localhost:8080/wp-admin`.
+The default credentials are username:`admin` and password:`pw`.
 
-For local development of the Next.js frontend:
-
-1. Navigate to the `website` folder:
-
-   ```bash
-   cd front-end
-   ```
-
-2. Install the necessary npm packages:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
+It takes a couple of minutes, to set up everything.
 Your Next.js application is now running and can be accessed at `http://localhost:3000`.
+
+If you have your wordpress server already setup, you can skip the `wp-auto-config` step.
+
+### Using Make [Optional]
+Instead of typing every command per hand, you can use following `make` commands:
+
+   ```bash
+   make quick-start
+   ```
+
+Some more `make` commands are available:
+- `make up-backend` - Start all backend services
+- `make down` - Stop all services
+- `make wp-auto-config` - Setup wordpress
+
+### WP CLI
+You can interact with the wordpress instance via wpcli. For example, to change the display name of the admin user:
+   ```bash
+  docker compose run --rm wpcli wp user update admin --display_name="newDisplayName"
+   ```
 
 ## Deployment
 
 The Next.js application is deployed on Vercel. For continuous deployment, ensure your Vercel project is correctly set up to track your repository.
-
-### Docker Production Setup
-
-For deploying the Dockerized environment in production, additional steps are required. They have not yet been implemented.
 
 ## Backups
 

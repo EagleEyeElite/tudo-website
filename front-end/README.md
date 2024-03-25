@@ -1,25 +1,5 @@
 # Setup Instructions
 
-## WordPress and Docker Services
-
-The WordPress server setup, including necessary configurations for GraphQL and JWT tokens, is automated through Docker. To start and manage the WordPress server, please refer to the `docker-services` README included in this project.
-
-For a hassle-free setup, simply navigate to the `docker-services` directory and run:
-
-```bash
-cd ../backend-services
-make autoinstall
-```
-
-This command handles the setup automatically. For more detailed instructions, please refer to the `docker-services` README.
-
-## Environment Variables
-
-To configure the environment variables:
-
-1. Copy the `/docker-services/.env.example` file to `/docker-services/.env`.
-2. Update it with your specific settings.
-
 ## Overriding Environment Variables for External Services
 
 If you need to connect to services hosted externally (not on your local server) during development, you can override specific settings using an `.env.local` file.

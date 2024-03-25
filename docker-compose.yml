@@ -1,0 +1,141 @@
+version: '3.6'
+
+services:
+  # WordPress cms
+  wordpress:
+    image: wordpress:${WORDPRESS_VERSION:-latest}
+    environment:
+      - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME:-wordpress}
+      - WORDPRESS_TABLE_PREFIX=wp_
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_USER=${DATABASE_USER:-root}
+      - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD:-password}
+    volumes:
+      - wordpress:/var/www/html
+    ports:
+      - "${WORDPRESS_PORT}:80"
+    depends_on:
+      - mysql
+      - phpmyadmin
+    restart: always
+
+  mysql:
+    image: mariadb:${MARIADB_VERSION:-latest}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD:-password}
+      - MYSQL_USER=${DATABASE_USER:-root}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD:-password}
+      - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME:-wordpress}
+    volumes:
+      - wordpress-db:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION:-latest}
+    environment:
+      - PMA_HOST=mysql
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-password}
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    depends_on:
+      - mysql
+    restart: always
+
+  # Activity indicator
+  activity-indicator-kv-interface:
+    image: hiett/serverless-redis-http:0.0.8
+    environment:
+      SRH_MODE: env
+      SRH_TOKEN: $KV_REST_API_TOKEN
+      SRH_CONNECTION_STRING: 'redis://:${ACTIVITY_INDICATOR_REDIS_PASSWORD}@activity-indicator-db:6379'
+    ports:
+      - "${ACTIVITY_INDICATOR_KV_PORT}:80"
+    depends_on:
+      - activity-indicator-db
+    restart: always
+
+  activity-indicator-db:
+    image: redis:7.2.0
+    volumes:
+      - activity-indicator-db:/data
+    ports:
+      - "${ACTIVITY_INDICATOR_REDIS_PORT}:6379"
+    command: redis-server --requirepass ${ACTIVITY_INDICATOR_REDIS_PASSWORD}  # user name is "default"
+    restart: always
+
+  # Wordpress auto configuration
+  # depends on wp-cli build
+  wp-auto-config:
+    image: wpcli
+    build: backend-services/wpcli
+    profiles: ["wp-auto-config"]
+    entrypoint: sh -c "/wait && make -f /scripts/Makefile"
+    volumes:
+      - wordpress:/var/www/html
+      - ./backend-services/wpcli/uploads:/uploads
+      - ./backend-services/wpcli/php-scripts:/php-scripts
+    working_dir: /var/www/html
+    depends_on:
+      - wordpress
+      - mysql
+    environment:
+      # Waiting for MySQL and wordpress -------------------
+      - WAIT_HOSTS=mysql:3306,wordpress:80
+      - WAIT_BEFORE_HOSTS=${WAIT_BEFORE_HOSTS:-30}
+      - WAIT_AFTER_HOSTS=${WAIT_AFTER_HOSTS:-15}
+      - WAIT_HOSTS_TIMEOUT=${WAIT_HOSTS_TIMEOUT:-300}
+      - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
+      - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
+      # Wordpress configuration -----------------------------
+      - ENVIRONMENT=${ENVIRONMENT:-dev}
+      - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME:-wordpress}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-mysql}
+      - WORDPRESS_DB_USER=${DATABASE_USER:-root}
+      - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD:-password}
+      - WORDPRESS_WEBSITE_URL=${WORDPRESS_WEBSITE_URL:-"http://localhost"}
+      - WORDPRESS_WEBSITE_URL_WITHOUT_HTTP=${WORDPRESS_WEBSITE_URL:-localhost}
+      - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER:-wordpress}
+      - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD:-wordpress}
+      - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL:-"test@example.com"}
+      - WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY=${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY:-"your--strong-secret"}
+
+    # Command line interface to wordpress
+  wpcli:
+    build: backend-services/wpcli
+    profiles: ["wpcli"]
+    image: wpcli
+    environment:
+      - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME:-wordpress}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-mysql}
+      - WORDPRESS_DB_USER=${DATABASE_USER:-root}
+      - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD:-password}
+    volumes:
+      - wordpress:/var/www/html
+      - ./backend-services/wpcli/php-scripts:/php-scripts/
+    working_dir: /var/www/html
+    depends_on:
+      - wordpress
+      - mysql
+
+  # NextJs frontend
+  frontend:
+    build: front-end
+    profiles: ["frontend"]
+    volumes:
+      - .env.example:/.env.example
+      - .env:/.env
+    develop:
+      watch:
+        - action: sync
+          path: ./front-end
+          target: /app
+        - action: rebuild
+          path: ./front-end/package.json
+    ports:
+      - "3000:3000"
+
+
+volumes:
+  wordpress:
+  wordpress-db:
+  activity-indicator-db:

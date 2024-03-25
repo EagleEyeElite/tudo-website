@@ -2,8 +2,8 @@ const dotenv = require('dotenv-safe');
 const dotenvExpand = require('dotenv-expand');
 
 const myEnv = dotenv.config({
-  path: '../backend-services/.env',
-  example: '../backend-services/.env.example',
+  path: '../.env',
+  example: '../.env.example',
   allowEmptyValues: true,
 });
 
