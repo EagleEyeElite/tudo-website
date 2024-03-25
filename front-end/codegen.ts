@@ -4,8 +4,8 @@ import * as dotenvExpand from 'dotenv-expand';
 
 // Initialize dotenv-safe to load and check environment variables
 const myEnv = dotenvSafe.config({
-  path: '../docker-services/.env', // Path to your .env file
-  sample: '../docker-services/.env.example', // Path to your .env.example file
+  path: '../backend-services/.env', // Path to your .env file
+  sample: '../backend-services/.env.example', // Path to your .env.example file
   allowEmptyValues: true,
 });
 

@@ -3,8 +3,8 @@ const path = require('path');
 // When running tests, don't use any production services, use the .env.example file for now
 const envFilePath = process.env.NODE_ENV === 'test' ? '.env.example' : '.env';
 require('dotenv-safe').config({
-  path: path.join(__dirname, './../docker-services/', envFilePath),
-  example: path.join(__dirname, './../docker-services/.env.example'),
+  path: path.join(__dirname, './../backend-services/', envFilePath),
+  example: path.join(__dirname, './../backend-services/.env.example'),
   allowEmptyValues: true,
 });
 

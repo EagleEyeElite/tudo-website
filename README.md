@@ -18,7 +18,7 @@ To initialize and start the Docker services, including autoconfiguration:
 1. Navigate to the `docker-services` directory:
 
    ```bash
-   cd docker-services
+   cd backend-services
    ```
 - If its your first time running the project
 
@@ -38,7 +38,7 @@ For local development of the Next.js frontend:
 1. Navigate to the `website` folder:
 
    ```bash
-   cd website
+   cd front-end
    ```
 
 2. Install the necessary npm packages:

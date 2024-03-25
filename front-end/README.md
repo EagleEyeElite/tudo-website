@@ -7,7 +7,7 @@ The WordPress server setup, including necessary configurations for GraphQL and J
 For a hassle-free setup, simply navigate to the `docker-services` directory and run:
 
 ```bash
-cd ../docker-services
+cd ../backend-services
 make autoinstall
 ```
 
