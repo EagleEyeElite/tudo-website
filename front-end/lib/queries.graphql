@@ -197,7 +197,7 @@ query ChildPagesByParentId($parentId: ID!) {
 }
 
 query FetchMediaItemsWithBackgroundSet {
-    mediaItems(where: {metaQuery: {metaArray: {key: "background", value: "1"}}}) {
+    mediaItems(where: {metaQuery: {metaArray: {key: "use-for-landing-page-hero-banner", value: "1"}}}) {
         nodes {
             mediaItemUrl
         }

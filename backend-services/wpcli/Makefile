@@ -66,8 +66,8 @@ upload_images:
 	done
 
 	@echo "📸 Setting background image for landing page..."
-	BACKGROUND_ID1=$$(wp eval-file /php-scripts/get-attachment-id.php "cafeBanner.jpg"); wp eval-file /php-scripts/set-background.php $$BACKGROUND_ID1 1
-	BACKGROUND_ID2=$$(wp eval-file /php-scripts/get-attachment-id.php "hello-world1.jpg"); wp eval-file /php-scripts/set-background.php $$BACKGROUND_ID2 1
+	BACKGROUND_ID1=$$(wp eval-file /php-scripts/get-attachment-id.php "cafeBanner.jpg"); wp eval-file /php-scripts/set-landing-page-banner-background.php $$BACKGROUND_ID1 1
+	BACKGROUND_ID2=$$(wp eval-file /php-scripts/get-attachment-id.php "hello-world1.jpg"); wp eval-file /php-scripts/set-landing-page-banner-background.php $$BACKGROUND_ID2 1
 
 
 set_avatar:

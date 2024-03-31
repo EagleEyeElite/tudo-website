@@ -1,12 +1,12 @@
 [
     {
         "key": "group_65fcc7f2523a3",
-        "title": "background",
+        "title": "Extended Image Applications",
         "fields": [
             {
                 "key": "field_65fcc7f2596ee",
-                "label": "background",
-                "name": "background",
+                "label": "Landing page banner background",
+                "name": "use-for-landing-page-hero-banner",
                 "aria-label": "",
                 "type": "true_false",
                 "instructions": "",
@@ -17,12 +17,12 @@
                     "class": "",
                     "id": ""
                 },
-                "message": "",
+                "message": "use for hero banner",
                 "default_value": 0,
                 "ui": 0,
                 "show_in_graphql": 1,
-                "graphql_description": "",
-                "graphql_field_name": "background",
+                "graphql_description": "Indicates whether the image is suitable for use as a landing page hero banner",
+                "graphql_field_name": "useForLandingPageHeroBanner",
                 "graphql_non_null": 0,
                 "ui_on_text": "",
                 "ui_off_text": ""
@@ -47,7 +47,7 @@
         "description": "",
         "show_in_rest": 0,
         "show_in_graphql": 1,
-        "graphql_field_name": "background",
+        "graphql_field_name": "LandingPage",
         "map_graphql_types_from_location_rules": 0,
         "graphql_types": ""
     }

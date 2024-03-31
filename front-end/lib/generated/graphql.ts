@@ -74,29 +74,6 @@ export enum AvatarRatingEnum {
   X = 'X'
 }
 
-/** The &quot;Background&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type Background = AcfFieldGroup & AcfFieldGroupFields & Background_Fields & {
-  __typename?: 'Background';
-  /** Field of the &quot;true_false&quot; Field Type added to the schema as part of the &quot;Background&quot; Field Group */
-  background?: Maybe<Scalars['Boolean']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;Background&quot; Field Group */
-export type Background_Fields = {
-  /** Field of the &quot;true_false&quot; Field Type added to the schema as part of the &quot;Background&quot; Field Group */
-  background?: Maybe<Scalars['Boolean']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
 /** The category type */
 export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
   __typename?: 'Category';
@@ -2749,6 +2726,29 @@ export type HierarchicalTermNodeEnqueuedStylesheetsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** The &quot;LandingPage&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
+export type LandingPage = AcfFieldGroup & AcfFieldGroupFields & LandingPage_Fields & {
+  __typename?: 'LandingPage';
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Indicates whether the image is suitable for use as a landing page hero banner */
+  useForLandingPageHeroBanner?: Maybe<Scalars['Boolean']['output']>;
+};
+
+/** Interface representing fields of the ACF &quot;LandingPage&quot; Field Group */
+export type LandingPage_Fields = {
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Indicates whether the image is suitable for use as a landing page hero banner */
+  useForLandingPageHeroBanner?: Maybe<Scalars['Boolean']['output']>;
+};
+
 /** Input for the login mutation. */
 export type LoginInput = {
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
@@ -2795,7 +2795,7 @@ export type MediaDetailsSizesArgs = {
 };
 
 /** The mediaItem type */
-export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & Node & NodeWithAuthor & NodeWithComments & NodeWithTemplate & NodeWithTitle & UniformResourceIdentifiable & WithAcfBackground & {
+export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & Node & NodeWithAuthor & NodeWithComments & NodeWithTemplate & NodeWithTitle & UniformResourceIdentifiable & WithAcfLandingPage & {
   __typename?: 'MediaItem';
   /** Alternative text to display when resource is not displayed */
   altText?: Maybe<Scalars['String']['output']>;
@@ -2807,8 +2807,6 @@ export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNo
   authorDatabaseId?: Maybe<Scalars['Int']['output']>;
   /** The globally unique identifier of the author of the node */
   authorId?: Maybe<Scalars['ID']['output']>;
-  /** Fields of the Background ACF Field Group */
-  background?: Maybe<Background>;
   /** The caption for the resource */
   caption?: Maybe<Scalars['String']['output']>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -2861,6 +2859,8 @@ export type MediaItem = ContentNode & DatabaseIdentifier & HierarchicalContentNo
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
+  /** Fields of the LandingPage ACF Field Group */
+  landingPage?: Maybe<LandingPage>;
   /** The user that most recently edited the node */
   lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
   /** The permalink of the post */
@@ -10502,10 +10502,10 @@ export type WpPageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
-/** Provides access to fields of the &quot;Background&quot; ACF Field Group via the &quot;background&quot; field */
-export type WithAcfBackground = {
-  /** Fields of the Background ACF Field Group */
-  background?: Maybe<Background>;
+/** Provides access to fields of the &quot;LandingPage&quot; ACF Field Group via the &quot;landingPage&quot; field */
+export type WithAcfLandingPage = {
+  /** Fields of the LandingPage ACF Field Group */
+  landingPage?: Maybe<LandingPage>;
 };
 
 /** The writing setting type */
@@ -10799,7 +10799,9 @@ export const ChildPagesByParentIdDocument = gql`
     `;
 export const FetchMediaItemsWithBackgroundSetDocument = gql`
     query FetchMediaItemsWithBackgroundSet {
-  mediaItems(where: {metaQuery: {metaArray: {key: "background", value: "1"}}}) {
+  mediaItems(
+    where: {metaQuery: {metaArray: {key: "use-for-landing-page-hero-banner", value: "1"}}}
+  ) {
     nodes {
       mediaItemUrl
     }
