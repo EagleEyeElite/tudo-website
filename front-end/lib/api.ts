@@ -1,5 +1,6 @@
 import {GraphQLClient} from "graphql-request";
 import {getSdk, PostIdType} from "./generated/graphql";
+import _ from "lodash";
 
 
 export function getInitializedSdk() {
@@ -62,14 +63,7 @@ export interface PagePropsApi {
   parent: ParentPagePropsApi | null;
 }
 export async function getPageByTitle(title: string): Promise<PagePropsApi | null>{
-  const res = await sdk.PageIdByTitle({title});
-
-  const id = res.pages?.nodes[0]?.id;
-  if (id === undefined) {
-    return null;
-  }
-  const page = (await sdk.PageById({ id })).page!;
-
+  const page = (await sdk.PageDetailsByTitle({ title })).pages!.nodes![0];
 
   let parent: ParentPagePropsApi | null = null;
   if (page.parent && page.parent.node.__typename === 'Page') {
@@ -224,9 +218,8 @@ export async function fetchMediaItemsWithBackgroundSet() {
   const response = await sdk.FetchMediaItemsWithBackgroundSet();
   const mediaItems = response.mediaItems?.nodes;
 
-  const backgroundTrueItemIds = mediaItems!
-    .filter(item => item.background!.background === true)
-    .map(item => item.mediaItemUrl);
+  const backgroundTrueItemIds = mediaItems
+    ?.map(item => item.mediaItemUrl!);
 
-  return backgroundTrueItemIds[0]!;
+  return _.sample(backgroundTrueItemIds);
 }

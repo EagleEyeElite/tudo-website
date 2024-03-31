@@ -6,9 +6,11 @@ import SectionSeparator from "../blocks/section-separator";
 import HeaderLink, {HeaderLinkProps} from "../blocks/headerLink";
 import PostHeader from "../blocks/post-header";
 import Tags from "../blocks/tags";
-import {JSX} from "react";
+import React, {JSX} from "react";
 import CoverImage, {CoverImageProps} from "../blocks/cover-image";
 import {AuthorProps} from "../blocks/avatar";
+import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
+import Parrot from "./parrot.jpg";
 
 export interface ContentDefaultProps {
   headerLink?: HeaderLinkProps,
@@ -54,7 +56,7 @@ export default function ContentDefault({content, additionalContent}: {
       postHeader = <>
         <PostTitle>{content.title}</PostTitle>
         <div className="mb-8 md:mb-16 sm:mx-0">
-          <CoverImage coverImage={content.coverImage} />
+          <AdaptiveMaxHeightImage src={content.coverImage.coverImageUrl}/>
         </div>
       </>
     }
@@ -62,7 +64,7 @@ export default function ContentDefault({content, additionalContent}: {
 
   let footer: JSX.Element | null = null;
   if ((content.tags?.length ?? 0) > 0) {
-    footer = <Tags tags={content.tags || []} />;
+    footer = <Tags tags={content.tags || []}/>;
   }
 
   return (<>

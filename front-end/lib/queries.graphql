@@ -25,36 +25,29 @@ query GetAllParentPagesAsSlug {
     }
 }
 
-query PageIdByTitle($title: String) {
+query PageDetailsByTitle($title: String!) {
     pages(where: {name: $title}) {
         nodes {
             id
-        }
-    }
-}
-
-query PageById($id: ID!) {
-    page(idType: ID, id: $id) {
-        id
-        title
-        content
-        featuredImage {
-            node {
-                sourceUrl
+            title
+            content
+            featuredImage {
+                node {
+                    sourceUrl
+                }
             }
-        }
-        parent {
-            node {
-                __typename
-                slug
-                ... on Page {
-                    title
+            parent {
+                node {
+                    __typename
+                    slug
+                    ... on Page {
+                        title
+                    }
                 }
             }
         }
     }
 }
-
 
 query AllPosts {
     posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
@@ -204,11 +197,8 @@ query ChildPagesByParentId($parentId: ID!) {
 }
 
 query FetchMediaItemsWithBackgroundSet {
-    mediaItems {
+    mediaItems(where: {metaQuery: {metaArray: {key: "background", value: "1"}}}) {
         nodes {
-            background {
-                background
-            }
             mediaItemUrl
         }
     }

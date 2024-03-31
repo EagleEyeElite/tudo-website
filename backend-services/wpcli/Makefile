@@ -32,6 +32,7 @@ configure:
 	@awk '/NONCE_SALT/{print;print "define( '\''GRAPHQL_JWT_AUTH_SECRET_KEY'\'', '\''${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY}'\'' );";next}1' ./wp-config.php > ./wp-config-temp.php
 	@mv ./wp-config-temp.php ./wp-config.php
 	@echo "🔐 JWT Auth secret key appended successfully."
+	wp plugin install https://github.com/wp-graphql/wp-graphql-meta-query/archive/refs/tags/v0.1.1.zip --activate
 ifeq ($(ENVIRONMENT),dev)
 	@echo "🛠 WPGraphQL debug mode enabled."
 	wp config set GRAPHQL_DEBUG true --raw
@@ -65,7 +66,8 @@ upload_images:
 	done
 
 	@echo "📸 Setting background image for landing page..."
-	BACKGROUND_ID=$$(wp eval-file /php-scripts/get-attachment-id.php "cafeBanner.jpg"); wp eval-file /php-scripts/set-background.php $$BACKGROUND_ID true
+	BACKGROUND_ID1=$$(wp eval-file /php-scripts/get-attachment-id.php "cafeBanner.jpg"); wp eval-file /php-scripts/set-background.php $$BACKGROUND_ID1 1
+	BACKGROUND_ID2=$$(wp eval-file /php-scripts/get-attachment-id.php "hello-world1.jpg"); wp eval-file /php-scripts/set-background.php $$BACKGROUND_ID2 1
 
 
 set_avatar:

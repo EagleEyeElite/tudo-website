@@ -419,6 +419,7 @@ export type CategoryToContentNodeConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<CategoryToContentNodeConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -446,6 +447,51 @@ export type CategoryToContentNodeConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type CategoryToContentNodeConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<CategoryToContentNodeConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<CategoryToContentNodeConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum CategoryToContentNodeConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type CategoryToContentNodeConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<CategoryToContentNodeConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum CategoryToContentNodeConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the Category type and the category type */
 export type CategoryToParentCategoryConnectionEdge = CategoryConnectionEdge & Edge & OneToOneConnection & {
@@ -515,6 +561,7 @@ export type CategoryToPostConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<CategoryToPostConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -554,6 +601,51 @@ export type CategoryToPostConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type CategoryToPostConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<CategoryToPostConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<CategoryToPostConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum CategoryToPostConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type CategoryToPostConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<CategoryToPostConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum CategoryToPostConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the Category type and the Taxonomy type */
 export type CategoryToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyConnectionEdge & {
@@ -1386,6 +1478,7 @@ export type ContentTypeToContentNodeConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<ContentTypeToContentNodeConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -1413,6 +1506,51 @@ export type ContentTypeToContentNodeConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type ContentTypeToContentNodeConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<ContentTypeToContentNodeConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<ContentTypeToContentNodeConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum ContentTypeToContentNodeConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type ContentTypeToContentNodeConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<ContentTypeToContentNodeConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum ContentTypeToContentNodeConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the ContentType type and the Taxonomy type */
 export type ContentTypeToTaxonomyConnection = Connection & TaxonomyConnection & {
@@ -2333,6 +2471,7 @@ export type HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -2360,6 +2499,51 @@ export type HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the HierarchicalContentNode type and the ContentNode type */
 export type HierarchicalContentNodeToContentNodeChildrenConnection = Connection & ContentNodeConnection & {
@@ -2406,6 +2590,7 @@ export type HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -2433,6 +2618,51 @@ export type HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the HierarchicalContentNode type and the ContentNode type */
 export type HierarchicalContentNodeToParentContentNodeConnectionEdge = ContentNodeConnectionEdge & Edge & OneToOneConnection & {
@@ -4045,6 +4275,7 @@ export type PageToRevisionConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<PageToRevisionConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -4072,6 +4303,51 @@ export type PageToRevisionConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type PageToRevisionConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<PageToRevisionConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<PageToRevisionConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum PageToRevisionConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type PageToRevisionConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<PageToRevisionConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum PageToRevisionConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** An plugin object */
 export type Plugin = Node & {
@@ -4587,6 +4863,7 @@ export type PostFormatToContentNodeConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<PostFormatToContentNodeConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -4614,6 +4891,51 @@ export type PostFormatToContentNodeConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type PostFormatToContentNodeConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<PostFormatToContentNodeConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<PostFormatToContentNodeConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum PostFormatToContentNodeConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type PostFormatToContentNodeConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<PostFormatToContentNodeConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum PostFormatToContentNodeConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the PostFormat type and the post type */
 export type PostFormatToPostConnection = Connection & PostConnection & {
@@ -4674,6 +4996,7 @@ export type PostFormatToPostConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<PostFormatToPostConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -4713,6 +5036,51 @@ export type PostFormatToPostConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type PostFormatToPostConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<PostFormatToPostConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<PostFormatToPostConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum PostFormatToPostConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type PostFormatToPostConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<PostFormatToPostConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum PostFormatToPostConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the PostFormat type and the Taxonomy type */
 export type PostFormatToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyConnectionEdge & {
@@ -5174,6 +5542,7 @@ export type PostToRevisionConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<PostToRevisionConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -5213,6 +5582,51 @@ export type PostToRevisionConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type PostToRevisionConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<PostToRevisionConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<PostToRevisionConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum PostToRevisionConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type PostToRevisionConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<PostToRevisionConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum PostToRevisionConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the Post type and the tag type */
 export type PostToTagConnection = Connection & TagConnection & {
@@ -6512,6 +6926,7 @@ export type RootQueryToContentNodeConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<RootQueryToContentNodeConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -6539,6 +6954,51 @@ export type RootQueryToContentNodeConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type RootQueryToContentNodeConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<RootQueryToContentNodeConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<RootQueryToContentNodeConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum RootQueryToContentNodeConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type RootQueryToContentNodeConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<RootQueryToContentNodeConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum RootQueryToContentNodeConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the RootQuery type and the ContentType type */
 export type RootQueryToContentTypeConnection = Connection & ContentTypeConnection & {
@@ -6690,6 +7150,7 @@ export type RootQueryToMediaItemConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<RootQueryToMediaItemConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -6717,6 +7178,51 @@ export type RootQueryToMediaItemConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type RootQueryToMediaItemConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<RootQueryToMediaItemConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<RootQueryToMediaItemConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum RootQueryToMediaItemConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type RootQueryToMediaItemConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<RootQueryToMediaItemConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum RootQueryToMediaItemConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the RootQuery type and the Menu type */
 export type RootQueryToMenuConnection = Connection & MenuConnection & {
@@ -6857,6 +7363,7 @@ export type RootQueryToPageConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<RootQueryToPageConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -6884,6 +7391,51 @@ export type RootQueryToPageConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type RootQueryToPageConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<RootQueryToPageConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<RootQueryToPageConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum RootQueryToPageConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type RootQueryToPageConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<RootQueryToPageConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum RootQueryToPageConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the RootQuery type and the Plugin type */
 export type RootQueryToPluginConnection = Connection & PluginConnection & {
@@ -6987,6 +7539,7 @@ export type RootQueryToPostConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<RootQueryToPostConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -7026,6 +7579,51 @@ export type RootQueryToPostConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type RootQueryToPostConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<RootQueryToPostConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<RootQueryToPostConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum RootQueryToPostConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type RootQueryToPostConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<RootQueryToPostConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum RootQueryToPostConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the RootQuery type and the postFormat type */
 export type RootQueryToPostFormatConnection = Connection & PostFormatConnection & {
@@ -7151,6 +7749,7 @@ export type RootQueryToRevisionsConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<RootQueryToRevisionsConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -7178,6 +7777,51 @@ export type RootQueryToRevisionsConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type RootQueryToRevisionsConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<RootQueryToRevisionsConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<RootQueryToRevisionsConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum RootQueryToRevisionsConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type RootQueryToRevisionsConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<RootQueryToRevisionsConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum RootQueryToRevisionsConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the RootQuery type and the tag type */
 export type RootQueryToTagConnection = Connection & TagConnection & {
@@ -7757,6 +8401,7 @@ export type TagToContentNodeConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<TagToContentNodeConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -7784,6 +8429,51 @@ export type TagToContentNodeConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type TagToContentNodeConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<TagToContentNodeConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<TagToContentNodeConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum TagToContentNodeConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type TagToContentNodeConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<TagToContentNodeConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum TagToContentNodeConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the Tag type and the post type */
 export type TagToPostConnection = Connection & PostConnection & {
@@ -7844,6 +8534,7 @@ export type TagToPostConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<TagToPostConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -7883,6 +8574,51 @@ export type TagToPostConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type TagToPostConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<TagToPostConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<TagToPostConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum TagToPostConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type TagToPostConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<TagToPostConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum TagToPostConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the Tag type and the Taxonomy type */
 export type TagToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyConnectionEdge & {
@@ -9216,6 +9952,7 @@ export type UserToMediaItemConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<UserToMediaItemConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -9243,6 +9980,51 @@ export type UserToMediaItemConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type UserToMediaItemConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<UserToMediaItemConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<UserToMediaItemConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum UserToMediaItemConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type UserToMediaItemConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<UserToMediaItemConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum UserToMediaItemConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the User type and the page type */
 export type UserToPageConnection = Connection & PageConnection & {
@@ -9295,6 +10077,7 @@ export type UserToPageConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<UserToPageConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -9322,6 +10105,51 @@ export type UserToPageConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type UserToPageConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<UserToPageConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<UserToPageConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum UserToPageConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type UserToPageConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<UserToPageConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum UserToPageConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the User type and the post type */
 export type UserToPostConnection = Connection & PostConnection & {
@@ -9382,6 +10210,7 @@ export type UserToPostConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<UserToPostConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -9421,6 +10250,51 @@ export type UserToPostConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type UserToPostConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<UserToPostConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<UserToPostConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum UserToPostConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type UserToPostConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<UserToPostConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum UserToPostConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the User type and the ContentNode type */
 export type UserToRevisionsConnection = Connection & ContentNodeConnection & {
@@ -9467,6 +10341,7 @@ export type UserToRevisionsConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  metaQuery?: InputMaybe<UserToRevisionsConnectionWhereArgsMetaQuery>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -9494,6 +10369,51 @@ export type UserToRevisionsConnectionWhereArgs = {
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type UserToRevisionsConnectionWhereArgsMetaArray = {
+  /** Custom field value */
+  compare?: InputMaybe<UserToRevisionsConnectionWhereArgsMetaCompareEnum>;
+  /** Custom field key */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Custom field value */
+  type?: InputMaybe<UserToRevisionsConnectionWhereArgsMetaTypeEnum>;
+  /** Custom field value */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum UserToRevisionsConnectionWhereArgsMetaCompareEnum {
+  Between = 'BETWEEN',
+  EqualTo = 'EQUAL_TO',
+  Exists = 'EXISTS',
+  GreaterThan = 'GREATER_THAN',
+  GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  In = 'IN',
+  LessThan = 'LESS_THAN',
+  LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
+  Like = 'LIKE',
+  NotBetween = 'NOT_BETWEEN',
+  NotEqualTo = 'NOT_EQUAL_TO',
+  NotExists = 'NOT_EXISTS',
+  NotIn = 'NOT_IN',
+  NotLike = 'NOT_LIKE'
+}
+
+export type UserToRevisionsConnectionWhereArgsMetaQuery = {
+  metaArray?: InputMaybe<Array<InputMaybe<UserToRevisionsConnectionWhereArgsMetaArray>>>;
+  relation?: InputMaybe<RelationEnum>;
+};
+
+export enum UserToRevisionsConnectionWhereArgsMetaTypeEnum {
+  Binary = 'BINARY',
+  Char = 'CHAR',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Decimal = 'DECIMAL',
+  Numeric = 'NUMERIC',
+  Signed = 'SIGNED',
+  Time = 'TIME',
+  Unsigned = 'UNSIGNED'
+}
 
 /** Connection between the User type and the UserRole type */
 export type UserToUserRoleConnection = Connection & UserRoleConnection & {
@@ -9617,19 +10537,12 @@ export type GetAllParentPagesAsSlugQueryVariables = Exact<{ [key: string]: never
 
 export type GetAllParentPagesAsSlugQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', slug?: string | null }> } | null };
 
-export type PageIdByTitleQueryVariables = Exact<{
-  title?: InputMaybe<Scalars['String']['input']>;
+export type PageDetailsByTitleQueryVariables = Exact<{
+  title: Scalars['String']['input'];
 }>;
 
 
-export type PageIdByTitleQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string }> } | null };
-
-export type PageByIdQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type PageByIdQuery = { __typename?: 'RootQuery', page?: { __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, parent?: { __typename?: 'HierarchicalContentNodeToParentContentNodeConnectionEdge', node: { __typename: 'MediaItem', slug?: string | null } | { __typename: 'Page', title?: string | null, slug?: string | null } | { __typename: 'Post', slug?: string | null } } | null } | null };
+export type PageDetailsByTitleQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, parent?: { __typename?: 'HierarchicalContentNodeToParentContentNodeConnectionEdge', node: { __typename: 'MediaItem', slug?: string | null } | { __typename: 'Page', title?: string | null, slug?: string | null } | { __typename: 'Post', slug?: string | null } } | null }> } | null };
 
 export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9677,7 +10590,7 @@ export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __
 export type FetchMediaItemsWithBackgroundSetQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchMediaItemsWithBackgroundSetQuery = { __typename?: 'RootQuery', mediaItems?: { __typename?: 'RootQueryToMediaItemConnection', nodes: Array<{ __typename?: 'MediaItem', mediaItemUrl?: string | null, background?: { __typename?: 'Background', background?: boolean | null } | null }> } | null };
+export type FetchMediaItemsWithBackgroundSetQuery = { __typename?: 'RootQuery', mediaItems?: { __typename?: 'RootQueryToMediaItemConnection', nodes: Array<{ __typename?: 'MediaItem', mediaItemUrl?: string | null }> } | null };
 
 export const AuthorFieldsFragmentDoc = gql`
     fragment AuthorFields on User {
@@ -9750,32 +10663,25 @@ export const GetAllParentPagesAsSlugDocument = gql`
   }
 }
     `;
-export const PageIdByTitleDocument = gql`
-    query PageIdByTitle($title: String) {
+export const PageDetailsByTitleDocument = gql`
+    query PageDetailsByTitle($title: String!) {
   pages(where: {name: $title}) {
     nodes {
       id
-    }
-  }
-}
-    `;
-export const PageByIdDocument = gql`
-    query PageById($id: ID!) {
-  page(idType: ID, id: $id) {
-    id
-    title
-    content
-    featuredImage {
-      node {
-        sourceUrl
+      title
+      content
+      featuredImage {
+        node {
+          sourceUrl
+        }
       }
-    }
-    parent {
-      node {
-        __typename
-        slug
-        ... on Page {
-          title
+      parent {
+        node {
+          __typename
+          slug
+          ... on Page {
+            title
+          }
         }
       }
     }
@@ -9893,11 +10799,8 @@ export const ChildPagesByParentIdDocument = gql`
     `;
 export const FetchMediaItemsWithBackgroundSetDocument = gql`
     query FetchMediaItemsWithBackgroundSet {
-  mediaItems {
+  mediaItems(where: {metaQuery: {metaArray: {key: "background", value: "1"}}}) {
     nodes {
-      background {
-        background
-      }
       mediaItemUrl
     }
   }
@@ -9920,11 +10823,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetAllParentPagesAsSlug(variables?: GetAllParentPagesAsSlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllParentPagesAsSlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllParentPagesAsSlugQuery>(GetAllParentPagesAsSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllParentPagesAsSlug', 'query', variables);
     },
-    PageIdByTitle(variables?: PageIdByTitleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageIdByTitleQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PageIdByTitleQuery>(PageIdByTitleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageIdByTitle', 'query', variables);
-    },
-    PageById(variables: PageByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PageByIdQuery>(PageByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageById', 'query', variables);
+    PageDetailsByTitle(variables: PageDetailsByTitleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageDetailsByTitleQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PageDetailsByTitleQuery>(PageDetailsByTitleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageDetailsByTitle', 'query', variables);
     },
     AllPosts(variables?: AllPostsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AllPostsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllPostsQuery>(AllPostsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllPosts', 'query', variables);
