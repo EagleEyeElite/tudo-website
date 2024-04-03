@@ -23,7 +23,7 @@ function OpenButton() {
     `}
     target= "_blank"
     rel="noopener noreferrer"
-    href={"https://t.me/+MW8nzEwFLuFiOGE0"}
+    href={OPENING_HOURS_PATH}
   >
     <span
       className="
@@ -53,11 +53,5 @@ interface Props {
 }
 
 export default function OpenClosedIndicator({activityIndicator}: Props) {
-  if(activityIndicator === undefined || activityIndicator.open === null) {
-    return CustomLink({link: {text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}});
-  }
-  if (activityIndicator.open) {
-    return OpenButton()
-  }
-  return CustomLink({link: {text: "Geschlossen", href: OPENING_HOURS_PATH, highlighted: true}});
+  return CustomLink({link: {text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}});
 }
