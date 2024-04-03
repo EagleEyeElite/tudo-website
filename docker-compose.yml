@@ -119,7 +119,7 @@ services:
 
   # NextJs frontend
   frontend:
-    build: front-end
+    build: frontend
     profiles: ["frontend"]
     volumes:
       - .env.example:/.env.example
@@ -127,10 +127,10 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./front-end
+          path: ./frontend
           target: /app
         - action: rebuild
-          path: ./front-end/package.json
+          path: ./frontend/package.json
     ports:
       - "3000:3000"
 
