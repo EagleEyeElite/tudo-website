@@ -1,8 +1,7 @@
 import Avatar, {AuthorProps} from './avatar'
 import Date from './date'
-import {CoverImageProps} from './cover-image'
+import CoverImage, {CoverImageProps} from './cover-image'
 import Link from 'next/link'
-import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
 
 interface HeroPostProps {
   title: string;
@@ -25,7 +24,7 @@ export default function HeroPost({
     <section>
       <div className="mb-8 md:mb-16">
         {coverImage && (
-          <AdaptiveMaxHeightImage src={coverImage.coverImageUrl} />
+          <CoverImage {...coverImage} maxH={true}/>
         )}
       </div>
       <div className="md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8 mb-20 md:mb-28">

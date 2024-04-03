@@ -3,8 +3,10 @@ import React from "react";
 
 interface AdaptiveMaxHeightImageProps {
   src: string;
+  alt?: string;
+
 }
-export default function AdaptiveMaxHeightImage({src}: AdaptiveMaxHeightImageProps) {
+export default function AdaptiveMaxHeightImage({src, alt}: AdaptiveMaxHeightImageProps) {
   return <div className="relative overflow-hidden">
     <Image
       src={src}
@@ -13,7 +15,7 @@ export default function AdaptiveMaxHeightImage({src}: AdaptiveMaxHeightImageProp
       alt=""
     />
     <Image
-      alt=""
+      alt={alt || ""}
       src={src}
       sizes="100vw"
       width={0}

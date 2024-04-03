@@ -1,32 +1,50 @@
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
+import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
+import React from "react";
 
 export interface CoverImageProps {
   title: string
   coverImageUrl: string
   slug?: string
+  maxH?: boolean
 }
 
-export default function CoverImage({coverImage} : {coverImage: CoverImageProps}) {
-  const image = (<>
-    {coverImage.coverImageUrl ? (
+export default function CoverImage(
+{
+  title,
+  coverImageUrl,
+  slug,
+  maxH = false
+} : CoverImageProps) {
+  if (!coverImageUrl){
+    return <></>
+  }
+
+  let image: React.ReactNode;
+  if (maxH) {
+    image = <AdaptiveMaxHeightImage
+      src={coverImageUrl}
+      alt={`Cover Image for ${title}`}
+    />
+  } else {
+    image = (
       <Image
         width={2000}
         height={1000}
-        alt={`Cover Image for ${coverImage.title}`}
-        src={coverImage.coverImageUrl}
+        alt={`Cover Image for ${title}`}
+        src={coverImageUrl}
         className={cn('shadow-small', {
-          'hover:shadow-medium transition-shadow duration-200': coverImage.slug,
+          'hover:shadow-medium transition-shadow duration-200': slug,
         })}
       />
-    ) : null}
-  </>
-  )
+    )
+  }
   return (
     <div className="sm:mx-0">
-      {coverImage.slug ? (
-        <Link href={`/events/${coverImage.slug}`} aria-label={coverImage.title}>
+      {slug ? (
+        <Link href={`/events/${slug}`} aria-label={title}>
           {image}
         </Link>
       ) : image}
