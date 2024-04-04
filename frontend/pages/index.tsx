@@ -58,7 +58,7 @@ export const getStaticProps = (async ({ preview = false }) => {
       preview,
       activityState
     },
-    revalidate: 10,
+    revalidate: 1,
   }
 }) satisfies GetStaticProps<{
   heroPost: MorePostPropsApi,
