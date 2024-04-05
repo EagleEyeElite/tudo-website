@@ -1,0 +1,129 @@
+import React, {useState, useEffect, useRef} from "react";
+import { FaAngleRight } from 'react-icons/fa';
+
+interface Link {
+  text: string;
+  href: string;
+}
+
+interface Group {
+  name: string;
+  links: Link[];
+}
+
+type CustomLinkProps = {
+  link: Group;
+  isOpen: boolean;
+  toggleDropdown: () => void;
+  itemKey: number;
+};
+
+const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdown, itemKey }) => {
+  return (
+    <li key={itemKey} className="relative inline-block font-bold">
+      <button
+        onClick={toggleDropdown}
+        className="
+          inline-flex items-center w-full px-7 py-2
+          text-sm md:text-lg
+          hover:bg-gray-100 hover:underline hover:text-blue-700
+          whitespace-nowrap"
+        type="button"
+      >
+        {link.name}
+        <FaAngleRight className={`ml-2 ${isOpen ? 'transform rotate-90' : ''} transition-transform duration-200`}/>
+      </button>
+      {isOpen && (
+        <ul className="
+          absolute z-10 w-44 mx-3 mt-2
+          origin-top-left
+          rounded-lg shadow-lg bg-white border
+          divide-y divide-gray-200"
+        >
+          {link.links.map((subLink, index) => (
+            <li key={index} className="px-4 py-2 text-xs md:text-sm text-gray-900 hover:bg-gray-100">
+              <a href={subLink.href}>
+                {subLink.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
+
+
+const HeroLinks = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+  const quickLinksRef = useRef<HTMLUListElement>(null);
+
+  const links = [
+    {
+      name: "About US",
+      links: [
+        {text: "Who are we", href: "/about-us/who-are-we"},
+        {text: "How to find us", href: "/about-us/how-to-find-us"},
+        {text: "Opening Hours", href: "/about-us/opening-hours"},
+        {text: "Contact Us", href: "/about-us/official-channels"},
+        {text: "Support Us", href: "/about-us/support-us"},
+      ]
+    },
+    {
+      name: "Rooms",
+      links: [
+        {text: "Café", href: "/about-us/cafe"},
+        {text: "Electronics Lab", href: "/about-us/electronics-lab"},
+        {text: "Wood Workshop", href: "/about-us/wood-workshop"},
+        {text: "Seminar Room", href: "/about-us/seminar-room"},
+      ]
+    },
+    {
+      name: "DIY Services",
+      links: [
+        {text: "3D Printing", href: "/about-us/3d-printing"},
+        {text: "Screen Printing", href: "/events/screen-printing-workshop"},
+      ]
+    },
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (quickLinksRef.current && !quickLinksRef.current.contains(event.target)) {
+        setOpenIndex(null); // Close all dropdowns
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []); // Dependencies array is empty, so this effect runs only once after initial render
+
+  const toggleDropdown = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  // https://flowbite.com/docs/components/button-group/#default-example
+  return (
+    <div className="w-full md:w-fit flex flex-col md:items-center">
+      <ul
+        ref={quickLinksRef}
+        className="flex flex-col md:flex-row rounded-md shadow-sm bg-white divide-y md:divide-y-0 md:divide-x divide-gray-200 border"
+        role="group"
+      >
+        {links.map((link, index) => (
+          <CustomLinkItem
+            key={index}
+            itemKey={index}
+            link={link}
+            isOpen={openIndex === index}
+            toggleDropdown={() => toggleDropdown(index)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default HeroLinks;

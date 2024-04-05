@@ -10519,6 +10519,30 @@ export type WritingSettings = {
   useSmilies?: Maybe<Scalars['Boolean']['output']>;
 };
 
+type AuthorDetailsFields_MediaItem_Fragment = { __typename?: 'MediaItem', author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null };
+
+type AuthorDetailsFields_Page_Fragment = { __typename?: 'Page', author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null };
+
+type AuthorDetailsFields_Post_Fragment = { __typename?: 'Post', author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null };
+
+export type AuthorDetailsFieldsFragment = AuthorDetailsFields_MediaItem_Fragment | AuthorDetailsFields_Page_Fragment | AuthorDetailsFields_Post_Fragment;
+
+type FeaturedImageFields_Page_Fragment = { __typename?: 'Page', featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null };
+
+type FeaturedImageFields_Post_Fragment = { __typename?: 'Post', featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null };
+
+export type FeaturedImageFieldsFragment = FeaturedImageFields_Page_Fragment | FeaturedImageFields_Post_Fragment;
+
+type ContentFields_MediaItem_Fragment = { __typename?: 'MediaItem', slug?: string | null, date?: string | null };
+
+type ContentFields_Page_Fragment = { __typename?: 'Page', title?: string | null, content?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null };
+
+type ContentFields_Post_Fragment = { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null };
+
+export type ContentFieldsFragment = ContentFields_MediaItem_Fragment | ContentFields_Page_Fragment | ContentFields_Post_Fragment;
+
+export type PostFieldsFragment = { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, categories?: { __typename?: 'PostToCategoryConnection', nodes: Array<{ __typename?: 'Category', name?: string | null }> } | null, tags?: { __typename?: 'PostToTagConnection', nodes: Array<{ __typename?: 'Tag', name?: string | null }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null };
+
 export type PreviewPostQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   idType: PostIdType;
@@ -10530,7 +10554,7 @@ export type PreviewPostQuery = { __typename?: 'RootQuery', post?: { __typename?:
 export type GetAllPostsWithSlugQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsWithSlugQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', slug?: string | null } }> } | null };
+export type GetAllPostsWithSlugQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', slug?: string | null }> } | null };
 
 export type GetAllParentPagesAsSlugQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10542,35 +10566,31 @@ export type PageDetailsByTitleQueryVariables = Exact<{
 }>;
 
 
-export type PageDetailsByTitleQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string, title?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, parent?: { __typename?: 'HierarchicalContentNodeToParentContentNodeConnectionEdge', node: { __typename: 'MediaItem', slug?: string | null } | { __typename: 'Page', title?: string | null, slug?: string | null } | { __typename: 'Post', slug?: string | null } } | null }> } | null };
+export type PageDetailsByTitleQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string, title?: string | null, content?: string | null, slug?: string | null, date?: string | null, parent?: { __typename?: 'HierarchicalContentNodeToParentContentNodeConnectionEdge', node: { __typename: 'MediaItem', slug?: string | null } | { __typename: 'Page', title?: string | null, slug?: string | null } | { __typename: 'Post', slug?: string | null } } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null }> } | null };
 
-export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllPostsAndWelcomePageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllPostsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } }> } | null };
-
-export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
-
-export type PostFieldsFragment = { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null };
+export type AllPostsAndWelcomePageQuery = { __typename?: 'RootQuery', welcomePage?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', children?: { __typename?: 'HierarchicalContentNodeToContentNodeChildrenConnection', nodes: Array<{ __typename: 'MediaItem', slug?: string | null, date?: string | null } | { __typename: 'Page', title?: string | null, content?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | { __typename: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null }> } | null }> } | null, latestPosts?: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null }> } | null };
 
 export type DraftPostBySlugQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DraftPostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', content?: string | null, title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } | null };
+export type DraftPostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', content?: string | null, title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, categories?: { __typename?: 'PostToCategoryConnection', nodes: Array<{ __typename?: 'Category', name?: string | null }> } | null, tags?: { __typename?: 'PostToTagConnection', nodes: Array<{ __typename?: 'Tag', name?: string | null }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } | null };
 
 export type PublishedPostAndMorePostsQueryVariables = Exact<{
   slug: Scalars['ID']['input'];
 }>;
 
 
-export type PublishedPostAndMorePostsQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', content?: string | null, title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, revisions?: { __typename?: 'PostToRevisionConnection', edges: Array<{ __typename?: 'PostToRevisionConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, content?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } | null, posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } }> } | null };
+export type PublishedPostAndMorePostsQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', content?: string | null, title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, revisions?: { __typename?: 'PostToRevisionConnection', nodes: Array<{ __typename?: 'Post', content?: string | null, title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null }> } | null, categories?: { __typename?: 'PostToCategoryConnection', nodes: Array<{ __typename?: 'Category', name?: string | null }> } | null, tags?: { __typename?: 'PostToTagConnection', nodes: Array<{ __typename?: 'Tag', name?: string | null }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } | null, posts?: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, categories?: { __typename?: 'PostToCategoryConnection', nodes: Array<{ __typename?: 'Category', name?: string | null }> } | null, tags?: { __typename?: 'PostToTagConnection', nodes: Array<{ __typename?: 'Tag', name?: string | null }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null }> } | null };
 
 export type UnpublishedPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UnpublishedPostsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', id: string, title?: string | null, slug?: string | null, status?: string | null } }> } | null };
+export type UnpublishedPostsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', id: string, title?: string | null, slug?: string | null, status?: string | null }> } | null };
 
 export type GetGraphQlTokenMutationVariables = Exact<{
   username: Scalars['String']['input'];
@@ -10585,55 +10605,69 @@ export type ChildPagesByParentIdQueryVariables = Exact<{
 }>;
 
 
-export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', edges: Array<{ __typename?: 'RootQueryToPageConnectionEdge', node: { __typename?: 'Page', id: string, title?: string | null, slug?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } }> } | null };
+export type ChildPagesByParentIdQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string, title?: string | null, content?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null }> } | null };
 
 export type FetchMediaItemsWithBackgroundSetQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FetchMediaItemsWithBackgroundSetQuery = { __typename?: 'RootQuery', mediaItems?: { __typename?: 'RootQueryToMediaItemConnection', nodes: Array<{ __typename?: 'MediaItem', mediaItemUrl?: string | null }> } | null };
 
-export const AuthorFieldsFragmentDoc = gql`
-    fragment AuthorFields on User {
-  name
-  firstName
-  lastName
-  avatar {
-    url
-  }
-}
-    `;
-export const PostFieldsFragmentDoc = gql`
-    fragment PostFields on Post {
-  title
-  excerpt
-  slug
-  date
+export const FeaturedImageFieldsFragmentDoc = gql`
+    fragment FeaturedImageFields on NodeWithFeaturedImage {
   featuredImage {
     node {
       sourceUrl
     }
   }
+}
+    `;
+export const AuthorDetailsFieldsFragmentDoc = gql`
+    fragment AuthorDetailsFields on NodeWithAuthor {
   author {
     node {
-      ...AuthorFields
-    }
-  }
-  categories {
-    edges {
-      node {
-        name
-      }
-    }
-  }
-  tags {
-    edges {
-      node {
-        name
+      name
+      firstName
+      lastName
+      avatar {
+        url
       }
     }
   }
 }
-    ${AuthorFieldsFragmentDoc}`;
+    `;
+export const ContentFieldsFragmentDoc = gql`
+    fragment ContentFields on ContentNode {
+  slug
+  date
+  ... on Page {
+    title
+    content
+    ...FeaturedImageFields
+  }
+  ... on Post {
+    title
+    excerpt
+    ...FeaturedImageFields
+    ...AuthorDetailsFields
+  }
+}
+    ${FeaturedImageFieldsFragmentDoc}
+${AuthorDetailsFieldsFragmentDoc}`;
+export const PostFieldsFragmentDoc = gql`
+    fragment PostFields on Post {
+  ...ContentFields
+  categories {
+    nodes {
+      name
+    }
+  }
+  tags {
+    nodes {
+      name
+    }
+  }
+}
+    ${ContentFieldsFragmentDoc}`;
 export const PreviewPostDocument = gql`
     query PreviewPost($id: ID!, $idType: PostIdType!) {
   post(id: $id, idType: $idType) {
@@ -10646,10 +10680,8 @@ export const PreviewPostDocument = gql`
 export const GetAllPostsWithSlugDocument = gql`
     query GetALLPostsWithSlug {
   posts(first: 10000) {
-    edges {
-      node {
-        slug
-      }
+    nodes {
+      slug
     }
   }
 }
@@ -10668,13 +10700,7 @@ export const PageDetailsByTitleDocument = gql`
   pages(where: {name: $title}) {
     nodes {
       id
-      title
-      content
-      featuredImage {
-        node {
-          sourceUrl
-        }
-      }
+      ...ContentFields
       parent {
         node {
           __typename
@@ -10687,36 +10713,26 @@ export const PageDetailsByTitleDocument = gql`
     }
   }
 }
-    `;
-export const AllPostsDocument = gql`
-    query AllPosts {
-  posts(first: 20, where: {orderby: {field: DATE, order: DESC}}) {
-    edges {
-      node {
-        title
-        excerpt
-        slug
-        date
-        featuredImage {
-          node {
-            sourceUrl
-          }
-        }
-        author {
-          node {
-            name
-            firstName
-            lastName
-            avatar {
-              url
-            }
-          }
+    ${ContentFieldsFragmentDoc}`;
+export const AllPostsAndWelcomePageDocument = gql`
+    query AllPostsAndWelcomePage {
+  welcomePage: pages(where: {name: "about-us"}, first: 1) {
+    nodes {
+      children(first: 1, where: {orderby: {field: MENU_ORDER, order: ASC}}) {
+        nodes {
+          __typename
+          ...ContentFields
         }
       }
     }
   }
+  latestPosts: posts(first: 20, where: {orderby: {field: DATE, order: DESC}}) {
+    nodes {
+      ...ContentFields
+    }
+  }
 }
-    `;
+    ${ContentFieldsFragmentDoc}`;
 export const DraftPostBySlugDocument = gql`
     query DraftPostBySlug($id: ID!) {
   post(id: $id, idType: DATABASE_ID) {
@@ -10731,40 +10747,28 @@ export const PublishedPostAndMorePostsDocument = gql`
     ...PostFields
     content
     revisions(first: 1, where: {orderby: {field: MODIFIED, order: DESC}}) {
-      edges {
-        node {
-          title
-          excerpt
-          content
-          author {
-            node {
-              ...AuthorFields
-            }
-          }
-        }
+      nodes {
+        ...ContentFields
+        content
       }
     }
   }
   posts(first: 4, where: {orderby: {field: DATE, order: DESC}}) {
-    edges {
-      node {
-        ...PostFields
-      }
+    nodes {
+      ...PostFields
     }
   }
 }
     ${PostFieldsFragmentDoc}
-${AuthorFieldsFragmentDoc}`;
+${ContentFieldsFragmentDoc}`;
 export const UnpublishedPostsDocument = gql`
     query UnpublishedPosts {
   posts(first: 100, where: {status: PRIVATE}) {
-    edges {
-      node {
-        id
-        title
-        slug
-        status
-      }
+    nodes {
+      id
+      title
+      slug
+      status
     }
   }
 }
@@ -10781,22 +10785,13 @@ export const GetGraphQlTokenDocument = gql`
 export const ChildPagesByParentIdDocument = gql`
     query ChildPagesByParentId($parentId: ID!) {
   pages(where: {parent: $parentId, orderby: {field: MENU_ORDER, order: ASC}}) {
-    edges {
-      node {
-        id
-        title
-        slug
-        content
-        featuredImage {
-          node {
-            sourceUrl
-          }
-        }
-      }
+    nodes {
+      id
+      ...ContentFields
     }
   }
 }
-    `;
+    ${ContentFieldsFragmentDoc}`;
 export const FetchMediaItemsWithBackgroundSetDocument = gql`
     query FetchMediaItemsWithBackgroundSet {
   mediaItems(
@@ -10828,8 +10823,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     PageDetailsByTitle(variables: PageDetailsByTitleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageDetailsByTitleQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PageDetailsByTitleQuery>(PageDetailsByTitleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PageDetailsByTitle', 'query', variables);
     },
-    AllPosts(variables?: AllPostsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AllPostsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<AllPostsQuery>(AllPostsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllPosts', 'query', variables);
+    AllPostsAndWelcomePage(variables?: AllPostsAndWelcomePageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AllPostsAndWelcomePageQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AllPostsAndWelcomePageQuery>(AllPostsAndWelcomePageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllPostsAndWelcomePage', 'query', variables);
     },
     DraftPostBySlug(variables: DraftPostBySlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<DraftPostBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<DraftPostBySlugQuery>(DraftPostBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DraftPostBySlug', 'query', variables);

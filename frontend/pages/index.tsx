@@ -10,12 +10,14 @@ import React from "react";
 import {ParallaxProvider} from "react-scroll-parallax";
 import {ActivityIndicatorState, getActivityIndicator} from "./api/activityIndicator";
 import {convertAuthor, convertCoverImage, convertMorePosts} from "../lib/convertApiInterfaces";
+import HeroLinks from '../components/ui/hero-links'
+
 
 
 export default function Index(
   { heroPost, morePosts, backgroundImageUrl, preview, activityState }: InferGetStaticPropsType<typeof getStaticProps>
 ) {
-  const coverHeroPost = convertCoverImage(heroPost.title!, heroPost.featuredImageUrl, heroPost.slug)
+  const coverHeroPost = convertCoverImage(heroPost.title!, heroPost.featuredImageUrl, heroPost.slug, "/about-us")
   const authorHeroPost = convertAuthor(heroPost.author!)
   const morePostsConverted = convertMorePosts(morePosts)
 
@@ -25,14 +27,12 @@ export default function Index(
         <Head>
           <title>{`TuDo Makerspace`}</title>
         </Head>
-        <Banner backgroundImageUrl={backgroundImageUrl} />
+        <Banner backgroundImageUrl={backgroundImageUrl}/>
         <Container>
           {heroPost && (
             <HeroPost
               title={heroPost.title!}
               coverImage={coverHeroPost}
-              date={heroPost.date!}
-              author={authorHeroPost}
               slug={heroPost.slug!}
               excerpt={heroPost.excerpt!}
             />
@@ -46,8 +46,8 @@ export default function Index(
 
 export const getStaticProps = (async ({ preview = false }) => {
   const allPosts = await getAllPostsForHome()
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
+  const heroPost = allPosts.welcomePage
+  const morePosts = allPosts.latestPost
   const backgroundImageUrl = await fetchMediaItemsWithBackgroundSet();
   const activityState = await getActivityIndicator();
   return {

@@ -39,8 +39,7 @@ export async function getPreviewPost(id, idType: PostIdType = PostIdType.Databas
 
 export async function getAllPostsWithSlug() {
   const data = await sdk.GetALLPostsWithSlug();
-  return (data.posts?.edges
-    .map(({node}) => node.slug || null)
+  return (data.posts?.nodes.map(node => node.slug || null)
     .filter((slug): slug is string => slug !== null) || []) ;
 }
 
@@ -96,10 +95,23 @@ export interface MorePostPropsApi {
   author: AuthorPropsApi | null;
 }
 
-export async function getAllPostsForHome(): Promise<MorePostPropsApi[]> {
-  const data = await sdk.AllPosts();
+export async function getAllPostsForHome(): Promise<{latestPost: MorePostPropsApi[], welcomePage: MorePostPropsApi}> {
+  const data = await sdk.AllPostsAndWelcomePage();
+  const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
+  if (!(dataWelcomePost && dataWelcomePost.__typename === 'Page')) {
+    throw new Error('Welcome page not found');
+  }
 
-  return data?.posts?.edges.map(({node}) => ({
+  const welcomePage = {
+    title: dataWelcomePost.title || null,
+    excerpt: dataWelcomePost.content || null,
+    slug: dataWelcomePost.slug || null,
+    date: dataWelcomePost.date || null,
+    featuredImageUrl: dataWelcomePost.featuredImage?.node?.sourceUrl || null,
+    author: null
+  }
+
+  const latestPost = data?.latestPosts?.nodes.map(node=> ({
       title: node.title || null,
       excerpt: node.excerpt || null,
       slug: node.slug || null,
@@ -113,6 +125,8 @@ export async function getAllPostsForHome(): Promise<MorePostPropsApi[]> {
       },
     }
   )) || []
+
+  return {latestPost, welcomePage}
 }
 
 export interface PostPropsApi extends MorePostPropsApi {
@@ -133,62 +147,78 @@ export async function getPostAndMorePosts(slug, preview, previewData): Promise<g
   const isDraft = isSamePost && postPreview?.status === 'draft';
   const isRevision = isSamePost && postPreview?.status === 'publish';
 
-  let data;
+
   if (isDraft) {
-    data = await sdk.DraftPostBySlug({
+    const postsAndMore = await sdk.DraftPostBySlug({
       id: postPreview.id,
     });
-    if (isDraft) data.post.slug = postPreview.id;
-  } else {
-    data = await sdk.PublishedPostAndMorePosts({slug});
-    if (isRevision && data.post.revisions) {
-      const revision = data.post.revisions.edges[0]?.node;
-      if (revision) Object.assign(data.post, revision);
+    return {
+      post: {
+        title: postsAndMore.post?.title || null,
+        excerpt: postsAndMore.post?.excerpt || null,
+        slug: postsAndMore.post?.slug || "preview",
+        date: postsAndMore.post?.date || null,
+        author: {
+          firstName: postsAndMore.post?.author?.node?.firstName || null,
+          lastName: postsAndMore.post?.author?.node?.lastName || null,
+          name: postsAndMore.post?.author?.node?.name || null,
+          avatarUrl: postsAndMore.post?.author?.node?.avatar?.url || null,
+        },
+        featuredImageUrl: postsAndMore.post?.featuredImage?.node?.sourceUrl || null,
+        categories: postsAndMore.post?.categories?.nodes.map(node => node.name!) || null,
+        content: postsAndMore.post?.content!,
+        tags: postsAndMore.post?.tags?.nodes?.map( node => node.name!) || null
+      },
+      morePosts: []
     }
-    data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug);
-    if (data.posts.edges.length > 3) data.posts.edges.pop(); // Ensure only 3 posts besides the main one
   }
+  const postsAndMore = await sdk.PublishedPostAndMorePosts({slug});
+  if (isRevision && postsAndMore.post?.revisions) {
+    const revision = postsAndMore.post.revisions.nodes[0];
+    if (revision) Object.assign(postsAndMore.post, revision);
+  }
+  const morePosts = postsAndMore.posts?.nodes
+    .filter(node => node.slug !== slug)
+    .slice(0, 3);
 
   return {
     post: {
-      title: data.post.title,
-      excerpt: data.post.excerpt,
-      slug: data.post.slug,
-      date: data.post.date,
+      title: postsAndMore.post?.title || null,
+      excerpt: postsAndMore.post?.excerpt || null,
+      slug: postsAndMore.post?.slug || null,
+      date: postsAndMore.post?.date || null,
       author: {
-        firstName: data.post.author?.node?.firstName,
-        lastName: data.post.author?.node?.lastName,
-        name: data.post.author?.node?.name,
-        avatarUrl: data.post.author?.node?.avatar?.url,
+        firstName: postsAndMore.post?.author?.node?.firstName || null,
+        lastName: postsAndMore.post?.author?.node?.lastName || null,
+        name: postsAndMore.post?.author?.node?.name || null,
+        avatarUrl: postsAndMore.post?.author?.node?.avatar?.url || null,
       },
-      featuredImageUrl: data.post.featuredImage?.node?.sourceUrl || null,
-      categories: data.post.categories?.edges.map(({ node }) => node.name) || null,
-      content: data.post.content,
-      tags: data.post.tags?.edges.map(({ node }) => node.name) || null
+      featuredImageUrl: postsAndMore.post?.featuredImage?.node?.sourceUrl || null,
+      categories: postsAndMore.post?.categories?.nodes.map(node => node.name!) || null,
+      content: postsAndMore.post?.content!,
+      tags: postsAndMore.post?.tags?.nodes?.map( node => node.name!) || null
     },
-    morePosts: data.posts.edges.map(({node}) => {
-      return {
-        title: node.title || null,
-          excerpt: node.excerpt || null,
-        slug: node.slug || null,
-        date: node.date || null,
-        author: {
-          firstName: node.author?.node?.firstName,
-          lastName: node.author?.node?.lastName,
-          name: node.author?.node?.name,
-          avatarUrl: node.author?.node?.avatar?.url,
-        },
-        featuredImageUrl: node.featuredImage?.node?.sourceUrl || null,
-      }
-    }) || [],
+    morePosts: morePosts?.map(node => ({
+      title: node.title || null,
+      excerpt: node.excerpt || null,
+      slug: node.slug || null,
+      date: node.date || null,
+      author: {
+        firstName: node.author?.node?.firstName || null,
+        lastName: node.author?.node?.lastName || null,
+        name: node.author?.node?.name || null,
+        avatarUrl: node.author?.node?.avatar?.url || null,
+      },
+      featuredImageUrl: node.featuredImage?.node?.sourceUrl || null,
+    })) ?? []
   }
 }
 
 export async function getUnpublishedPosts() {
   try {
     const response = await sdk.UnpublishedPosts();
-    const unpublishedPosts = response?.posts?.edges || [];
-    return unpublishedPosts.map(({node}) => ({
+    const unpublishedPosts = response?.posts?.nodes || [];
+    return unpublishedPosts.map(node => ({
       id: node?.id || null,
       title: node?.title || null,
       slug: node?.slug || null,
@@ -202,7 +232,7 @@ export async function getUnpublishedPosts() {
 
 export async function childPagesByParentId(parentId: string) {
   const response = await sdk.ChildPagesByParentId({ parentId });
-  const childPages: PagePropsApi[] = response.pages!.edges.map(({ node }) => ({
+  const childPages: PagePropsApi[] = response.pages!.nodes.map(node => ({
     id: node.id,
     title: node.title!,
     slug: node.slug ||null,

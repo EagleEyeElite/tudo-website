@@ -48,7 +48,7 @@ export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string
     return (
       <ParallaxBanner
         layers={[background, headline, gradientOverlay]}
-        className="h-[60vh] w-full mb-12 bg-gray-900"
+        className="h-[60vh] w-full bg-gray-900"
       />
     );
   };

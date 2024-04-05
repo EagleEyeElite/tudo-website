@@ -8,7 +8,8 @@ import {AllPostsForHomeProps} from "../components/blocks/more-stories";
 export function convertCoverImage(
   title: string,
   coverImageUrl: string | null,
-  slug: string | null
+  slug: string | null,
+  parentPath: string | null,
 ): CoverImageProps | undefined {
   if (coverImageUrl == undefined) {
     return undefined;
@@ -17,15 +18,16 @@ export function convertCoverImage(
     title,
     coverImageUrl,
     slug: slug || undefined,
+    href: `${parentPath!}/${slug!}`
   }
 }
 
-export function convertAuthor(author: AuthorPropsApi) : AuthorProps {
+export function convertAuthor(author?: AuthorPropsApi) : AuthorProps {
   return {
-    firstName: author.firstName || undefined,
-    lastName: author.lastName || undefined,
-    name: author.name || undefined,
-    avatarUrl: author.avatarUrl || undefined,
+    firstName: author?.firstName || undefined,
+    lastName: author?.lastName || undefined,
+    name: author?.name || undefined,
+    avatarUrl: author?.avatarUrl || undefined,
   }
 }
 
@@ -33,7 +35,7 @@ export function convertPost(post: PostPropsApi): ContentDefaultProps {
   return {
     title: post.title!,
     author: convertAuthor(post.author!),
-    coverImage: convertCoverImage(post.title!, post.featuredImageUrl, post?.slug),
+    coverImage: convertCoverImage(post.title!, post.featuredImageUrl, post?.slug, "/events"),
     date: post.date || undefined,
     content: post.content,
     categories: post.categories || undefined,
@@ -45,7 +47,7 @@ export function convertMorePosts(morePosts: MorePostPropsApi[]): AllPostsForHome
   return morePosts.map(post => ({
       title: post.title!,
       author: convertAuthor(post.author!),
-      coverImage: convertCoverImage(post.title!, post.featuredImageUrl, post.slug),
+      coverImage: convertCoverImage(post.title!, post.featuredImageUrl, post.slug, "/events"),
       date: post.date || undefined,
       excerpt: post.excerpt || undefined,
       slug: post.slug || undefined,
@@ -56,6 +58,6 @@ export function convertPage(page: PagePropsApi):  ContentDefaultProps{
   return {
     title: page.title!,
     content: page.content!,
-    coverImage: convertCoverImage(page.title!, page.featuredImageUrl!, null),
+    coverImage: convertCoverImage(page.title!, page.featuredImageUrl!, null, null),
   }
 }

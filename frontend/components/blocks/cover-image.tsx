@@ -8,6 +8,7 @@ export interface CoverImageProps {
   title: string
   coverImageUrl: string
   slug?: string
+  href: string
   maxH?: boolean
 }
 
@@ -16,6 +17,7 @@ export default function CoverImage(
   title,
   coverImageUrl,
   slug,
+  href,
   maxH = false
 } : CoverImageProps) {
   if (!coverImageUrl){
@@ -43,8 +45,8 @@ export default function CoverImage(
   }
   return (
     <div className="sm:mx-0">
-      {slug ? (
-        <Link href={`/events/${slug}`} aria-label={title}>
+      {href ? (
+        <Link href={href} aria-label={title}>
           {image}
         </Link>
       ) : image}

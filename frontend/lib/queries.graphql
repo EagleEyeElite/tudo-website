@@ -1,3 +1,58 @@
+fragment AuthorDetailsFields on NodeWithAuthor {
+    author {
+        node {
+            name
+            firstName
+            lastName
+            avatar {
+                url
+            }
+        }
+    }
+}
+
+fragment FeaturedImageFields on NodeWithFeaturedImage {
+    featuredImage {
+        node {
+            sourceUrl
+        }
+    }
+}
+
+
+fragment ContentFields on ContentNode {
+    slug
+    date
+
+    ... on Page {
+        title
+        content
+        ...FeaturedImageFields
+    }
+
+    ... on Post {
+        title
+        excerpt
+        ...FeaturedImageFields
+        ...AuthorDetailsFields
+    }
+}
+
+
+fragment PostFields on Post {
+    ...ContentFields
+    categories {
+        nodes {
+            name
+        }
+    }
+    tags {
+        nodes {
+            name
+        }
+    }
+}
+
 
 query PreviewPost($id: ID!, $idType: PostIdType!) {
     post(id: $id, idType: $idType) {
@@ -9,10 +64,8 @@ query PreviewPost($id: ID!, $idType: PostIdType!) {
 
 query GetALLPostsWithSlug {
     posts(first: 10000) {
-        edges {
-            node {
-                slug
-            }
+        nodes {
+            slug
         }
     }
 }
@@ -29,13 +82,7 @@ query PageDetailsByTitle($title: String!) {
     pages(where: {name: $title}) {
         nodes {
             id
-            title
-            content
-            featuredImage {
-                node {
-                    sourceUrl
-                }
-            }
+            ...ContentFields
             parent {
                 node {
                     __typename
@@ -49,70 +96,20 @@ query PageDetailsByTitle($title: String!) {
     }
 }
 
-query AllPosts {
-    posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-            node {
-                title
-                excerpt
-                slug
-                date
-                featuredImage {
-                    node {
-                        sourceUrl
-                    }
-                }
-                author {
-                    node {
-                        name
-                        firstName
-                        lastName
-                        avatar {
-                            url
-                        }
-                    }
+query AllPostsAndWelcomePage {
+    welcomePage: pages(where: { name: "about-us"}, first: 1) {
+        nodes{
+            children(first: 1, where: {orderby: {field: MENU_ORDER, order: ASC}}) {
+                nodes {
+                    __typename
+                    ... ContentFields
                 }
             }
         }
     }
-}
-
-fragment AuthorFields on User {
-    name
-    firstName
-    lastName
-    avatar {
-        url
-    }
-}
-
-fragment PostFields on Post {
-    title
-    excerpt
-    slug
-    date
-    featuredImage {
-        node {
-            sourceUrl
-        }
-    }
-    author {
-        node {
-            ...AuthorFields
-        }
-    }
-    categories {
-        edges {
-            node {
-                name
-            }
-        }
-    }
-    tags {
-        edges {
-            node {
-                name
-            }
+    latestPosts: posts(first: 20, where: {orderby: {field: DATE, order: DESC}}) {
+        nodes {
+            ...ContentFields
         }
     }
 }
@@ -131,25 +128,15 @@ query PublishedPostAndMorePosts($slug: ID!) {
         ...PostFields
         content
         revisions(first: 1, where: { orderby: { field: MODIFIED, order: DESC } }) {
-            edges {
-                node {
-                    title
-                    excerpt
-                    content
-                    author {
-                        node {
-                            ...AuthorFields
-                        }
-                    }
-                }
+            nodes {
+                ...ContentFields
+                content
             }
         }
     }
     posts(first: 4, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-            node {
-                ...PostFields
-            }
+        nodes {
+            ...PostFields
         }
     }
 }
@@ -157,13 +144,11 @@ query PublishedPostAndMorePosts($slug: ID!) {
 
 query UnpublishedPosts {
     posts(first: 100, where: { status: PRIVATE }) {
-        edges {
-            node {
-                id
-                title
-                slug
-                status
-            }
+        nodes {
+            id
+            title
+            slug
+            status
         }
     }
 }
@@ -180,18 +165,9 @@ mutation GetGraphQLToken($username: String!, $password: String!) {
 
 query ChildPagesByParentId($parentId: ID!) {
     pages(where: {parent: $parentId, orderby: {field: MENU_ORDER, order: ASC}}) {
-        edges {
-            node {
-                id
-                title
-                slug
-                content
-                featuredImage {
-                    node {
-                        sourceUrl
-                    }
-                }
-            }
+        nodes {
+            id
+            ...ContentFields
         }
     }
 }

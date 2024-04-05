@@ -150,21 +150,39 @@ create-pages:
 	    --post_parent=$(ABOUT_US_PAGE_ID) \
 	    --porcelain
 	@wp post create \
+            --post_type=page \
+            --post_title='Electronics Lab' \
+            --post_content="<p>Welcome to our state-of-the-art <strong>Electronics Lab</strong>. A hub for innovation and learning, equipped with the latest tools and technology.</p>" \
+            --post_status=publish \
+            --post_author=1 \
+            --menu_order=5 \
+            --post_parent=$(ABOUT_US_PAGE_ID) \
+            --porcelain
+	@wp post create \
+			--post_type=page \
+			--post_title='3D Printing' \
+			--post_content="<p>Our facility is equipped with <strong>3D printers</strong>, and you're only charged for the materials you use. After a quick introduction, you'll have the freedom to print your own designs and projects.</p>" \
+			--post_status=publish \
+			--post_author=1 \
+			--menu_order=6 \
+			--post_parent=$(ABOUT_US_PAGE_ID) \
+			--porcelain
+	@wp post create \
+			--post_type=page \
+			--post_title='Seminar Room' \
+			--post_content="<p>Our <strong>Seminar Room</strong> is designed to foster learning and collaboration, ideal for workshops, meetings, and classes.</p>" \
+			--post_status=publish \
+			--post_author=1 \
+			--menu_order=7 \
+			--post_parent=$(ABOUT_US_PAGE_ID) \
+			--porcelain
+	@wp post create \
 	    --post_type=page \
 	    --post_title='Wood Workshop' \
 	    --post_content="<p>Following a brief introduction, our <strong>wood workshop</strong> is your go-to place for bringing your own projects to life, offering the tools and space you need to create.</p>" \
 	    --post_status=publish \
 	    --post_author=1 \
-	    --menu_order=5 \
-	    --post_parent=$(ABOUT_US_PAGE_ID) \
-	    --porcelain
-	@wp post create \
-	    --post_type=page \
-	    --post_title='3D Printing' \
-	    --post_content="<p>Our facility is equipped with <strong>3D printers</strong>, and you're only charged for the materials you use. After a quick introduction, you'll have the freedom to print your own designs and projects.</p>" \
-	    --post_status=publish \
-	    --post_author=1 \
-	    --menu_order=6 \
+	    --menu_order=8 \
 	    --post_parent=$(ABOUT_US_PAGE_ID) \
 	    --porcelain
 	@wp post create \
@@ -173,7 +191,7 @@ create-pages:
 		--post_content="<p>Our community thrives on your generous donations. <em>While we operate not for profit</em>, your contributions help us acquire new tools and materials for everyone's benefit. <u>Every Mate purchased in the café can also be paid for via PayPal</u>, directly supporting our growth and sustainability.</p><blockquote>'The essence of community, its heart and soul, is the non-monetary exchange of value; things we do and share because we care for others, and for the good of the place.'</blockquote>" \
 		--post_status=publish \
 		--post_author=1 \
-		--menu_order=7 \
+		--menu_order=9 \
 		--post_parent=$(ABOUT_US_PAGE_ID) \
 		--porcelain
 

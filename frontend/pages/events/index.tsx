@@ -29,7 +29,7 @@ export const getStaticProps = (async ({params}) => {
   const res = await getAllPostsForHome();
   const eventsPage = await getPageByTitle("Events");
 
-  const resConverted = res.map(post => ({
+  const resConverted = res.latestPost.map(post => ({
     id: null,
     title: post.title,
     content: post.excerpt,
