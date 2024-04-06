@@ -10,6 +10,7 @@ export interface CoverImageProps {
   slug?: string
   href: string
   maxH?: boolean
+  priority?: boolean
 }
 
 export default function CoverImage(
@@ -18,7 +19,8 @@ export default function CoverImage(
   coverImageUrl,
   slug,
   href,
-  maxH = false
+  maxH = false,
+  priority = false
 } : CoverImageProps) {
   if (!coverImageUrl){
     return <></>
@@ -29,6 +31,7 @@ export default function CoverImage(
     image = <AdaptiveMaxHeightImage
       src={coverImageUrl}
       alt={`Cover Image for ${title}`}
+      priority={priority}
     />
   } else {
     image = (
@@ -40,6 +43,7 @@ export default function CoverImage(
         className={cn('shadow-small', {
           'hover:shadow-medium transition-shadow duration-200': slug,
         })}
+        priority={priority}
       />
     )
   }

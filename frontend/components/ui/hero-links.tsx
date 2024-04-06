@@ -19,15 +19,17 @@ type CustomLinkProps = {
 };
 
 const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdown, itemKey }) => {
+  // https://flowbite.com/docs/components/dropdowns/
+
   return (
-    <li key={itemKey} className="relative inline-block font-bold">
+    <li key={itemKey} className="relative inline-block font-bold whitespace-nowrap text-gray-900  text-xl md:text-2xl">
       <button
         onClick={toggleDropdown}
-        className="
+        className={`
           inline-flex items-center w-full px-7 py-2
-          text-sm md:text-lg
-          hover:bg-gray-100 hover:underline hover:text-blue-700
-          whitespace-nowrap"
+          hover:underline hover:text-indigo-600 hover:bg-gray-100
+          ${isOpen && 'underline text-indigo-600 bg-gray-100'}
+        `}
         type="button"
       >
         {link.name}
@@ -35,13 +37,13 @@ const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdow
       </button>
       {isOpen && (
         <ul className="
-          absolute z-10 w-44 mx-3 mt-2
+          absolute z-10 w-fit mx-3 mt-2 py-2
           origin-top-left
           rounded-lg shadow-lg bg-white border
           divide-y divide-gray-200"
         >
           {link.links.map((subLink, index) => (
-            <li key={index} className="px-4 py-2 text-xs md:text-sm text-gray-900 hover:bg-gray-100">
+            <li key={index} className="px-4 py-2 hover:bg-gray-100">
               <a href={subLink.href}>
                 {subLink.text}
               </a>
@@ -106,23 +108,21 @@ const HeroLinks = () => {
 
   // https://flowbite.com/docs/components/button-group/#default-example
   return (
-    <div className="w-full md:w-fit flex flex-col md:items-center">
-      <ul
-        ref={quickLinksRef}
-        className="flex flex-col md:flex-row rounded-md shadow-sm bg-white divide-y md:divide-y-0 md:divide-x divide-gray-200 border"
-        role="group"
-      >
-        {links.map((link, index) => (
-          <CustomLinkItem
-            key={index}
-            itemKey={index}
-            link={link}
-            isOpen={openIndex === index}
-            toggleDropdown={() => toggleDropdown(index)}
-          />
-        ))}
-      </ul>
-    </div>
+    <ul
+      ref={quickLinksRef}
+      className="w-full md:w-fit flex flex-col md:items-center lg:order-last md:flex-row rounded-md shadow-sm divide-y md:divide-y-0 md:divide-x divide-gray-200 border border-gray-200 bg-white"
+      role="group"
+    >
+      {links.map((link, index) => (
+        <CustomLinkItem
+          key={index}
+          itemKey={index}
+          link={link}
+          isOpen={openIndex === index}
+          toggleDropdown={() => toggleDropdown(index)}
+        />
+      ))}
+    </ul>
   );
 };
 

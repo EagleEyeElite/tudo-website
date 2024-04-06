@@ -27,8 +27,8 @@ export default function Overview({
       <PostBody content={page.content}/>
       {childPages.length > 0 ? (
         <ul className="flex flex-wrap justify-center gap-4">
-          {childPages.map((childPage) => (
-            <li key={childPage.id} className="py-4 w-full border-b border-gray-300 last:border-b-0">
+          {childPages.map((childPage,index) => (
+            <li key={index} className="py-4 w-full border-b border-gray-300 last:border-b-0">
               <Link href={`/${path}/${childPage.slug}`} className="group">
                 <div className="flex flex-col">
                   <h3
@@ -41,7 +41,9 @@ export default function Overview({
                         alt={childPage.title!}
                         src={childPage.featuredImageUrl!}
                         fill={true}
+                        sizes="100%"
                         className="object-cover"
+                        priority={index < 3}
                       />
                     </div>
                   )}

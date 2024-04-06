@@ -1,12 +1,12 @@
-import PicBanner from "../../public/assets/cafeBanner.jpg";
 import React from "react";
-import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
+import {ParallaxBanner} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
+import Image from 'next/image';
 
 export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string}) {
   const Component = () => {
     const background: BannerLayer = {
-      image: backgroundImageUrl,
+      children: <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true}/>,
       translateY: [0, 20],
       opacity: [0.4, 0.3],
       scale: [1.05, 1, "easeIn"],
@@ -41,7 +41,7 @@ export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string
       shouldAlwaysCompleteAnimation: true,
       expanded: false,
       children: (
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-blue-900" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-blue-900"/>
       ),
     };
 

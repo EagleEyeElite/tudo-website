@@ -23,7 +23,7 @@ export default function Meta() {
             sizes="16x16"
             href={`${folderPath}favicon-16x16.png`}
           />
-          <link rel="manifest" href={`${folderPath}site.webmanifest`} />
+          <link rel="manifest" href={`/favicon/site.webmanifest`} />
           <link
             rel="mask-icon"
             href={`${folderPath}safari-pinned-tab.svg`}
@@ -33,7 +33,6 @@ export default function Meta() {
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="msapplication-config" content={`${folderPath}browserconfig.xml`} />
           <meta name="theme-color" content="#000" />
-          <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
           <meta
             name="description"
             content="Das TuDo Makerspace an der Technischen Universität Berlin kombiniert eine gemütliche Café-Atmosphäre mit einer innovativen Makerspace-Ausstattung, einschließlich Holzwerkstatt und Lötbereich, ideal für kreative Projekte und Zusammenkünfte."

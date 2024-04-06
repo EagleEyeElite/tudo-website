@@ -25,7 +25,7 @@ export default function PostPreview({
     <div>
       <div className="mb-5">
         {coverImage && (
-          <CoverImage {...coverImage} />
+          <CoverImage {...coverImage} priority={false}/>
         )}
       </div>
       <h3 className="text-3xl mb-3 leading-snug">

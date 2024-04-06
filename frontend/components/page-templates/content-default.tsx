@@ -7,10 +7,9 @@ import HeaderLink, {HeaderLinkProps} from "../blocks/headerLink";
 import PostHeader from "../blocks/post-header";
 import Tags from "../blocks/tags";
 import React, {JSX} from "react";
-import CoverImage, {CoverImageProps} from "../blocks/cover-image";
+import {CoverImageProps} from "../blocks/cover-image";
 import {AuthorProps} from "../blocks/avatar";
 import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
-import Parrot from "./parrot.jpg";
 
 export interface ContentDefaultProps {
   headerLink?: HeaderLinkProps,
@@ -56,7 +55,7 @@ export default function ContentDefault({content, additionalContent}: {
       postHeader = <>
         <PostTitle>{content.title}</PostTitle>
         <div className="mb-8 md:mb-16 sm:mx-0">
-          <AdaptiveMaxHeightImage src={content.coverImage.coverImageUrl}/>
+          <AdaptiveMaxHeightImage src={content.coverImage.coverImageUrl} priority={true}/>
         </div>
       </>
     }
@@ -76,7 +75,7 @@ export default function ContentDefault({content, additionalContent}: {
     </Head>
     <Containers>
       {Category}
-      <article>
+      <article className="mb-20">
         {postHeader}
         <PostBody content={content.content} />
         {footer}

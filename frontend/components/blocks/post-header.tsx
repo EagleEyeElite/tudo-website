@@ -1,6 +1,6 @@
 import Avatar, {AuthorProps} from './avatar'
 import Date from './date'
-import CoverImage, {CoverImageProps} from './cover-image'
+import {CoverImageProps} from './cover-image'
 import PostTitle from './post-title'
 import Categories from './categories'
 import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
@@ -27,7 +27,7 @@ export default function PostHeader({
         <Avatar author={author} />
       </div>
       <div className="mb-8 md:mb-16 sm:mx-0">
-        {coverImage ? <AdaptiveMaxHeightImage src={coverImage.coverImageUrl} /> : null}
+        {coverImage ? <AdaptiveMaxHeightImage src={coverImage.coverImageUrl} priority={true} /> : null}
       </div>
       <div className="max-w-2xl mx-auto">
         <div className="block md:hidden mb-6">

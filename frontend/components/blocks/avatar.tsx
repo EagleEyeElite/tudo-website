@@ -24,6 +24,7 @@ export default function Avatar({ author }: { author: AuthorProps }) {
           fill
           className="rounded-full"
           alt={name}
+          sizes="100%"
         />
       </div>
       <div className="text-xl font-bold">{name}</div>
