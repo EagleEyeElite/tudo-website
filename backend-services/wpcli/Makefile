@@ -33,6 +33,7 @@ configure:
 	@mv ./wp-config-temp.php ./wp-config.php
 	@echo "🔐 JWT Auth secret key appended successfully."
 	wp plugin install https://github.com/wp-graphql/wp-graphql-meta-query/archive/refs/tags/v0.1.1.zip --activate
+	wp plugin install updraftplus --activate
 ifeq ($(ENVIRONMENT),dev)
 	@echo "🛠 WPGraphQL debug mode enabled."
 	wp config set GRAPHQL_DEBUG true --raw
@@ -150,32 +151,32 @@ create-pages:
 	    --post_parent=$(ABOUT_US_PAGE_ID) \
 	    --porcelain
 	@wp post create \
-            --post_type=page \
-            --post_title='Electronics Lab' \
-            --post_content="<p>Welcome to our state-of-the-art <strong>Electronics Lab</strong>. A hub for innovation and learning, equipped with the latest tools and technology.</p>" \
-            --post_status=publish \
-            --post_author=1 \
-            --menu_order=5 \
-            --post_parent=$(ABOUT_US_PAGE_ID) \
-            --porcelain
+		--post_type=page \
+		--post_title='Electronics Lab' \
+		--post_content="<p>Welcome to our state-of-the-art <strong>Electronics Lab</strong>. A hub for innovation and learning, equipped with the latest tools and technology.</p>" \
+		--post_status=publish \
+		--post_author=1 \
+		--menu_order=5 \
+		--post_parent=$(ABOUT_US_PAGE_ID) \
+		--porcelain
 	@wp post create \
-			--post_type=page \
-			--post_title='3D Printing' \
-			--post_content="<p>Our facility is equipped with <strong>3D printers</strong>, and you're only charged for the materials you use. After a quick introduction, you'll have the freedom to print your own designs and projects.</p>" \
-			--post_status=publish \
-			--post_author=1 \
-			--menu_order=6 \
-			--post_parent=$(ABOUT_US_PAGE_ID) \
-			--porcelain
+		--post_type=page \
+		--post_title='3D Printing' \
+		--post_content="<p>Our facility is equipped with <strong>3D printers</strong>, and you're only charged for the materials you use. After a quick introduction, you'll have the freedom to print your own designs and projects.</p>" \
+		--post_status=publish \
+		--post_author=1 \
+		--menu_order=6 \
+		--post_parent=$(ABOUT_US_PAGE_ID) \
+		--porcelain
 	@wp post create \
-			--post_type=page \
-			--post_title='Seminar Room' \
-			--post_content="<p>Our <strong>Seminar Room</strong> is designed to foster learning and collaboration, ideal for workshops, meetings, and classes.</p>" \
-			--post_status=publish \
-			--post_author=1 \
-			--menu_order=7 \
-			--post_parent=$(ABOUT_US_PAGE_ID) \
-			--porcelain
+		--post_type=page \
+		--post_title='Seminar Room' \
+		--post_content="<p>Our <strong>Seminar Room</strong> is designed to foster learning and collaboration, ideal for workshops, meetings, and classes.</p>" \
+		--post_status=publish \
+		--post_author=1 \
+		--menu_order=7 \
+		--post_parent=$(ABOUT_US_PAGE_ID) \
+		--porcelain
 	@wp post create \
 	    --post_type=page \
 	    --post_title='Wood Workshop' \

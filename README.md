@@ -51,4 +51,5 @@ The Next.js application is deployed on Vercel. For continuous deployment, ensure
 ## Backups
 
 The state of wordpress cms site is stored in docker volumes (defined in docker-services/docker-compose.yml).
-No backup strategy has been implemented yet, but its recommended, to backup the volumes regularly.
+
+Backups are  managed by the UpdraftPlus plugin. You can upload the backup files automatically to your cloud storage or download them locally.
