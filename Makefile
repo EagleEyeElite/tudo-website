@@ -20,7 +20,7 @@ up-frontend: check-env
 	docker compose --profile frontend watch
 
 wordpress-setup: reset start
-	docker-compose build wp-auto-config
+	docker compose build wp-auto-config
 	docker compose run --rm wp-auto-config
 
 quick-start: wordpress-setup
