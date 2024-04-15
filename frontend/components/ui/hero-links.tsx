@@ -62,7 +62,7 @@ const HeroLinks = () => {
 
   const links = [
     {
-      name: "About US",
+      name: "About Us",
       links: [
         {text: "Who are we", href: "/about-us/who-are-we"},
         {text: "How to find us", href: "/about-us/how-to-find-us"},
