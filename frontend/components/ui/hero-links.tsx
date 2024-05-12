@@ -43,8 +43,8 @@ const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdow
           divide-y divide-gray-200"
         >
           {link.links.map((subLink, index) => (
-            <li key={index} className="px-4 py-2 hover:bg-gray-100">
-              <a href={subLink.href}>
+            <li key={index} className="hover:bg-gray-100">
+              <a href={subLink.href} className="block w-full px-4 py-2">
                 {subLink.text}
               </a>
             </li>
@@ -85,6 +85,7 @@ const HeroLinks = () => {
       links: [
         {text: "3D Printing", href: "/about-us/3d-printing"},
         {text: "Screen Printing", href: "/events/screen-printing-workshop"},
+        {text: "Machine Sewing", href: "/events/nahen-lernen-workshop"},
       ]
     },
   ];

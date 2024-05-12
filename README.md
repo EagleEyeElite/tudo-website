@@ -36,7 +36,7 @@ Instead of typing every command per hand, you can use following `make` commands:
 Some more `make` commands are available:
 - `make up-backend` - Start all backend services
 - `make down` - Stop all services
-- `make wp-auto-config` - Setup wordpress
+- `make wordpress-setup` - Setup wordpress
 
 ### WP CLI
 You can interact with the wordpress instance via wpcli. For example, to change the display name of the admin user:
