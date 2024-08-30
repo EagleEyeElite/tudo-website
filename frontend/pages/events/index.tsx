@@ -1,8 +1,8 @@
 import { GetStaticProps, type InferGetStaticPropsType } from 'next';
 import React from 'react';
 import Layout from '../../components/layout/layout';
-import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
-import { getAllPostsForHome, getPageByTitle, PagePropsApi} from "../../lib/api";
+import {ActivityIndicatorState, getActivityIndicator} from "lib/api/activityIndicator";
+import { getAllPostsForHome, getPageByTitle, PagePropsApi} from "lib/api/wordpress";
 import {useRouter} from "next/router";
 import Loading from "../../components/page-templates/loading";
 import ErrorPage from "next/error";

@@ -1,5 +1,5 @@
 import {GraphQLClient} from "graphql-request";
-import {getSdk, PostIdType} from "./generated/graphql";
+import {getSdk, PostIdType} from "lib/generated/graphql";
 import _ from "lodash";
 
 
