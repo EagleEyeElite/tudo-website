@@ -3,7 +3,7 @@ import Footer from './footer'
 import Meta from './meta'
 import {Navbar} from "./navbar";
 import React from "react";
-import {ActivityIndicatorState} from "../../pages/api/activityIndicator";
+import {ActivityIndicatorState} from "lib/api/activityIndicator";
 
 interface Props {
   children: React.ReactNode

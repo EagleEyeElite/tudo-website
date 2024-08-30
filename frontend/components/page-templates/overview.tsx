@@ -3,7 +3,7 @@ import PostBody from "../blocks/post-body";
 import PostTitle from "../blocks/post-title";
 import HeaderLink from "../blocks/headerLink";
 import Link from "next/link";
-import {PagePropsApi} from "../../lib/api";
+import {PagePropsApi} from "lib/api/wordpress";
 import Image from "next/image";
 import React from "react";
 

@@ -1,7 +1,7 @@
 import Layout from "../layout/layout";
 import PostTitle from "../blocks/post-title";
 import Container from "../ui/container";
-import {ActivityIndicatorState} from "../../pages/api/activityIndicator";
+import {ActivityIndicatorState} from "lib/api/activityIndicator";
 
 
 

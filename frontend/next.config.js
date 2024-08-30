@@ -42,6 +42,7 @@ async function login() {
 // Next.js configuration
 const nextConfig = createNextConfig();
 
+/** @type {import('next').NextConfig} */
 function createNextConfig() {
   const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL;
   const defaultProtocol = WORDPRESS_API_URL.includes('localhost', "wordpress") ? 'http' : 'https';

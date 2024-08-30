@@ -3,11 +3,11 @@ import type {
   GetStaticProps,
   GetStaticPaths,
 } from 'next'
-import {childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle, PagePropsApi} from "../../lib/api";
+import {childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle, PagePropsApi} from "lib/api/wordpress";
 import {useRouter} from "next/router";
 import ErrorPage from "next/error";
 import Layout from "../../components/layout/layout";
-import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
+import {ActivityIndicatorState, getActivityIndicator} from "lib/api/activityIndicator";
 import ContentDefault from "../../components/page-templates/content-default";
 import Loading from "../../components/page-templates/loading";
 import {convertPage} from "../../lib/convertApiInterfaces";

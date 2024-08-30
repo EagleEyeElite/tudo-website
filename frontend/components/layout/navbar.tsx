@@ -3,7 +3,7 @@ import Image from "next/image";
 import TuDoLogo from "../../public/assets/tudo-logo.svg";
 import React from "react";
 import Link from "next/link";
-import {ActivityIndicatorState} from "../../pages/api/activityIndicator";
+import {ActivityIndicatorState} from "lib/api/activityIndicator";
 import OpenClosedIndicator from "./openClosedIndicator";
 
 interface Props {

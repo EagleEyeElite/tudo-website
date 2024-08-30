@@ -3,8 +3,8 @@ import ErrorPage from 'next/error'
 import {GetStaticPaths, GetStaticProps, InferGetStaticPropsType} from 'next'
 import MoreStories from '../../components/blocks/more-stories'
 import Layout from '../../components/layout/layout'
-import {getAllPostsWithSlug, getPostAndMorePosts, MorePostPropsApi, PostPropsApi} from '../../lib/api'
-import {ActivityIndicatorState, getActivityIndicator} from "../api/activityIndicator";
+import {getAllPostsWithSlug, getPostAndMorePosts, MorePostPropsApi, PostPropsApi} from 'lib/api/wordpress'
+import {ActivityIndicatorState, getActivityIndicator} from "lib/api/activityIndicator";
 import ContentDefault from "../../components/page-templates/content-default";
 import Loading from "../../components/page-templates/loading";
 import {convertPost, convertMorePosts} from "../../lib/convertApiInterfaces";

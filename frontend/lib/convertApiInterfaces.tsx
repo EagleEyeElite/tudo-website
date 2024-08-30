@@ -1,8 +1,8 @@
-import {CoverImageProps} from "../components/blocks/cover-image";
-import {AuthorProps} from "../components/blocks/avatar";
-import {AuthorPropsApi, MorePostPropsApi, PagePropsApi, PostPropsApi} from "./api";
-import {ContentDefaultProps} from "../components/page-templates/content-default";
-import {AllPostsForHomeProps} from "../components/blocks/more-stories";
+import {CoverImageProps} from "components/blocks/cover-image";
+import {AuthorProps} from "components/blocks/avatar";
+import {AuthorPropsApi, MorePostPropsApi, PagePropsApi, PostPropsApi} from "lib/api/wordpress";
+import {ContentDefaultProps} from "components/page-templates/content-default";
+import {AllPostsForHomeProps} from "components/blocks/more-stories";
 
 
 export function convertCoverImage(
