@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import {ParallaxBanner} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
