@@ -1,6 +1,5 @@
 import Alert from './alert'
 import Footer from './footer'
-import Meta from './meta'
 import {Navbar} from "./navbar";
 import React from "react";
 import {ActivityIndicatorState} from "lib/api/activityIndicator";
@@ -16,7 +15,6 @@ export default function Layout(
     : Props) {
   return (
     <>
-      <Meta/>
       <div className="min-h-screen">
         <Navbar activityIndicator={activityIndicator}/>
         <Alert preview={preview} />
