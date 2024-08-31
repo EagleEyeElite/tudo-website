@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import Container from 'components/ui/container';
-import MoreStories from 'components/blocks/more-stories';
-import HeroPost from 'components/blocks/hero-post';
-import Banner from 'components/blocks/banner';
-import { getAllPostsForHome, fetchMediaItemsWithBackgroundSet } from 'lib/api/wordpress';
-import { convertCoverImage, convertMorePosts } from 'lib/convertApiInterfaces';
+import Container from '@/components/ui/container';
+import MoreStories from '@/components/blocks/more-stories';
+import HeroPost from '@/components/blocks/hero-post';
+import Banner from '@/components/blocks/banner';
+import { getAllPostsForHome, fetchMediaItemsWithBackgroundSet } from '@/lib/api/wordpress';
+import { convertCoverImage, convertMorePosts } from '@/lib/convertApiInterfaces';
 import ClientWrapper from './ClientWrapper';
 
 export const revalidate = 1;
