@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
-import Alert from 'components/layout/alert'
-import Footer from 'components/layout/footer'
-import { Navbar } from "components/layout/navbar"
-import { getActivityIndicator } from "lib/api/activityIndicator"
+import Alert from '@/components/layout/alert'
+import Footer from '@/components/layout/footer'
+import { Navbar } from "@/components/layout/navbar"
+import { getActivityIndicator } from "@/lib/api/activityIndicator"
 import "styles/index.css"
 
 export async function generateMetadata(): Promise<Metadata> {
