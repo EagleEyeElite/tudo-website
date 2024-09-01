@@ -64,7 +64,7 @@ function createNextConfig() {
   };
 }
 
-
+/** @type {import('next').NextConfig} */
 module.exports = async () => {
   let refreshToken;
   if(process.env.NODE_ENV !== 'test') {
@@ -74,6 +74,15 @@ module.exports = async () => {
 
   return {
     ...nextConfig,
+    webpack: (config, { dev }) => {
+      if (!dev) {
+        config.module.rules.push({
+          test: /app[\\/]test.*\.(js|jsx|ts|tsx)$/,
+          loader: 'ignore-loader',
+        });
+      }
+      return config;
+    },
     env: {
       WORDPRESS_AUTH_REFRESH_TOKEN: refreshToken,
     },
