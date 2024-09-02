@@ -1,10 +1,12 @@
 import Container from '../ui/container';
 import cn from 'classnames';
-import Link from "next/link";
+import {draftMode} from "next/headers";
 
-export default function Alert({preview}) {
+export default function Alert() {
+  const { isEnabled } = draftMode();
+
   // Do not render anything if preview mode is not enabled
-  if (!preview) return null;
+  if (!isEnabled) return null;
 
   return (
     <div className={cn('border-b bg-accent-7 border-accent-7 text-white')}>
@@ -12,12 +14,11 @@ export default function Alert({preview}) {
         <div className="py-2 text-center text-sm">
           <>
             This is a page preview.{' '}
-            <Link
-              href="/api/exit-preview"
-              className="underline hover:text-cyan duration-200 transition-colors"
-            >
-              Click here
-            </Link>{' '}
+            <form action="/api/exit-preview" method="GET" className="inline">
+              <button type="submit" className="underline hover:text-cyan duration-200 transition-colors">
+                Click here
+              </button>
+            </form>{' '}
             to exit preview mode.
           </>
         </div>

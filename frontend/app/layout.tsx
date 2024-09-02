@@ -45,7 +45,7 @@ export default async function RootLayout({children}: {
     <body>
       <div className="min-h-screen">
         <Navbar activityIndicator={activityIndicator} />
-        <Alert preview={false} />
+        <Alert />
         <main>{children}</main>
       </div>
       <Footer />

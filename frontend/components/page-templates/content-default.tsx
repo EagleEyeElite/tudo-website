@@ -74,12 +74,6 @@ export default function ContentDefault({content, additionalContent}: {
   )
 
   return (<>
-    <Head>
-      <title>
-        {`${content.title} | TuDo Makerspace`}
-      </title>
-      {metaOgImage}
-    </Head>
     <Containers>
       {Category}
       <article className="mb-20">

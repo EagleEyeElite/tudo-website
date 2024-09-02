@@ -3,6 +3,13 @@ import { getPreviewPost } from 'lib/api/wordpress';
 import { PostIdType } from "lib/generated/graphql";
 import { draftMode } from 'next/headers';
 
+/**
+ * Enable Preview Mode
+ * For example http://localhost:3000/api/preview?slug=WP_SLUG=MY_SECRET
+ * in dev: http://localhost:3000/api/preview?slug=WP_SLUG
+ * @param request
+ * @constructor
+ */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
