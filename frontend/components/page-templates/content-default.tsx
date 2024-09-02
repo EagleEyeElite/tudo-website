@@ -1,4 +1,3 @@
-import Head from "next/head";
 import PostTitle from "../blocks/post-title";
 import ContainerWide, {ContainerTight} from "../ui/container";
 import PostBody from "../blocks/post-body";
@@ -31,7 +30,6 @@ export default function ContentDefault({content, additionalContent}: {
 
   const Containers = renderWide ? ContainerWide : ContainerTight;
   const Category = content.headerLink ? <HeaderLink {...content.headerLink}/> : undefined;
-  const metaOgImage = featuredImageUrl ? <meta property="og:image" content={featuredImageUrl}/> : null;
   let extra : JSX.Element | null = null
   if (additionalContent != null) {
     extra = <ContainerWide>
@@ -67,12 +65,6 @@ export default function ContentDefault({content, additionalContent}: {
   }
 
   return (<>
-    <Head>
-      <title>
-        {`${content.title} | TuDo Makerspace`}
-      </title>
-      {metaOgImage}
-    </Head>
     <Containers>
       {Category}
       <article className="mb-20">

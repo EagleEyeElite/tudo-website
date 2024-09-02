@@ -17,7 +17,6 @@ export default function Layout(
     <>
       <div className="min-h-screen">
         <Navbar activityIndicator={activityIndicator}/>
-        <Alert preview={preview} />
         <main>{children}</main>
       </div>
       <Footer/>
