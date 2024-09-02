@@ -15,7 +15,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { post } = await getPostAndMorePosts(params?.slug, false, null);
-  if (!post) return { title: 'Post Not Found' };
+  if (!post?.slug) {
+    notFound();
+  }
 
   const metadata = {
     title: `${post.title} | TuDo Makerspace`,
