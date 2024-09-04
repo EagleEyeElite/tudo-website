@@ -1,4 +1,3 @@
-import Head from "next/head";
 import PostBody from "../blocks/post-body";
 import PostTitle from "../blocks/post-title";
 import HeaderLink from "../blocks/headerLink";
@@ -18,9 +17,6 @@ export default function Overview({
 }) {
 
   return <>
-    <Head>
-      <title>{`${page.title} | TuDo Makerspace`}</title>
-    </Head>
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-32">
       <HeaderLink title="Home" href="/"/>
       <PostTitle>{page.title}</PostTitle>
