@@ -1,7 +1,7 @@
-import {ActivityIndicatorState} from "lib/api/activityIndicator";
+import {ActivityIndicatorState} from "@/lib/api/activityIndicator";
 import React from "react";
 import {CustomLink} from "../ui/links";
-import {OPENING_HOURS_PATH} from "../../lib/constants";
+import {OPENING_HOURS_PATH} from "@/lib/constants";
 
 function OpenButton() {
   return <a

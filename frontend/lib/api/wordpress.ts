@@ -63,6 +63,9 @@ export interface PagePropsApi {
 }
 export async function getPageByTitle(title: string): Promise<PagePropsApi | null>{
   const page = (await sdk.PageDetailsByTitle({ title })).pages!.nodes![0];
+  if (page === undefined ) {
+    return null
+  }
 
   let parent: ParentPagePropsApi | null = null;
   if (page.parent && page.parent.node.__typename === 'Page') {

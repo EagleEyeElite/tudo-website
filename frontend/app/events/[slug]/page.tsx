@@ -3,6 +3,7 @@ import MoreStories from '@/components/blocks/more-stories';
 import ContentDefault from "@/components/page-templates/content-default";
 import { getPostAndMorePosts, getAllPostsWithSlug } from '@/lib/api/wordpress';
 import { convertPost, convertMorePosts } from "@/lib/convertApiInterfaces";
+import {Metadata} from "next";
 
 export const dynamicParams = true;
 
@@ -13,7 +14,7 @@ export async function generateStaticParams() {
   return allPosts.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }): Promise<Metadata> {
   const { post } = await getPostAndMorePosts(params?.slug, false, null);
   if (!post?.slug) {
     notFound();
