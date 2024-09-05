@@ -2,6 +2,7 @@ import styles from '../post-body.module.css'
 import parse, {DOMNode, domToReact, Element} from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
+import OpenStatus from "@/components/blocks/open-status";
 
 
 function Link({ link }) {
@@ -26,22 +27,28 @@ export default function PostBody({content}: { content: string | null }) {
       if (!(domNode instanceof Element && domNode.attribs)) {
         return;
       }
-      if (domNode.name === 'img') {
-        const { src, alt, width, height } = domNode.attribs;
-        return (
-          <Image
-            src={src}
-            width={Number.parseInt(width)}
-            height={Number.parseInt(height)}
-            alt={alt || 'image'}
-            className="object-cover"
-          />
-        )
-      }
+      switch (domNode.name) {
+        case 'img':
+          const { src, alt, width, height } = domNode.attribs;
+          return (
+            <Image
+              src={src}
+              width={Number.parseInt(width)}
+              height={Number.parseInt(height)}
+              alt={alt || 'image'}
+              className="object-cover"
+            />
+          );
 
-      if (domNode.name === 'a') {
-        const children = domToReact(domNode.children as DOMNode[])
-        return <Link link={{children, href: domNode.attribs.href}}/>;
+        case 'a':
+          const children = domToReact(domNode.children as DOMNode[]);
+          return <Link link={{children, href: domNode.attribs.href}}/>;
+
+        case 'openstatus':
+          return <OpenStatus />;
+
+        default:
+          return;
       }
     }
   })

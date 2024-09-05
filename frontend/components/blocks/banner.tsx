@@ -8,7 +8,7 @@ import Image from 'next/image';
 export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string}) {
   const Component = () => {
     const background: BannerLayer = {
-      children: <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true}/>,
+      children: <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true} />,
       translateY: [0, 20],
       opacity: [0.4, 0.3],
       scale: [1.05, 1, "easeIn"],

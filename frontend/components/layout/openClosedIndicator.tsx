@@ -21,8 +21,6 @@ function OpenButton() {
       after:duration-200 after:transition-all
   
     `}
-    target= "_blank"
-    rel="noopener noreferrer"
     href={OPENING_HOURS_PATH}
   >
     <span
@@ -53,5 +51,8 @@ interface Props {
 }
 
 export default function OpenClosedIndicator({activityIndicator}: Props) {
+  if (activityIndicator.open) {
+    return OpenButton();
+  }
   return CustomLink({link: {text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}});
 }
