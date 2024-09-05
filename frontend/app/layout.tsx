@@ -41,7 +41,7 @@ export default async function RootLayout({children}: {
   const activityIndicator = await getActivityIndicator()
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
     <body>
       <div className="min-h-screen">
         <Navbar activityIndicator={activityIndicator} />
