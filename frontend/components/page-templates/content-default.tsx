@@ -10,6 +10,8 @@ import React, {JSX} from "react";
 import {CoverImageProps} from "../blocks/cover-image";
 import {AuthorProps} from "../blocks/avatar";
 import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
+import Date from "../blocks/date";
+import Categories from "../blocks/categories";
 
 export interface ContentDefaultProps {
   headerLink?: HeaderLinkProps,
@@ -32,26 +34,24 @@ export default function ContentDefault({content, additionalContent}: {
   const Containers = renderWide ? ContainerWide : ContainerTight;
   const Category = content.headerLink ? <HeaderLink {...content.headerLink}/> : undefined;
   const metaOgImage = featuredImageUrl ? <meta property="og:image" content={featuredImageUrl}/> : null;
-  let extra : JSX.Element | null = null
+  let extra: JSX.Element | null = null
   if (additionalContent != null) {
     extra = <ContainerWide>
-      <SectionSeparator />
+      <SectionSeparator/>
       {additionalContent}
     </ContainerWide>
   }
 
   let postHeader: JSX.Element;
-  if (content.date != null && content.author != null && content.categories != null) {
+  if (content.author != null) {
     postHeader = <PostHeader
       title={content.title}
       coverImage={content.coverImage}
-      date={content.date}
       author={content.author}
-      categories={content.categories}
     />;
   } else {
     postHeader = <PostTitle>{content.title}</PostTitle>;
-    if(content.coverImage?.coverImageUrl != null) {
+    if (content.coverImage?.coverImageUrl != null) {
       postHeader = <>
         <PostTitle>{content.title}</PostTitle>
         <div className="mb-8 md:mb-16 sm:mx-0">
@@ -61,10 +61,17 @@ export default function ContentDefault({content, additionalContent}: {
     }
   }
 
-  let footer: JSX.Element | null = null;
-  if ((content.tags?.length ?? 0) > 0) {
-    footer = <Tags tags={content.tags || []}/>;
-  }
+  const footer = (
+    <div className="max-w-2xl mx-auto mb-6 text-lg">
+      {content.date && (
+        <>
+          Posted <Date dateString={content.date} />
+        </>
+      )}
+      {content.categories && <Categories categories={content.categories} />}
+      {content.tags && content.tags.length > 0 && <Tags tags={content.tags} />}
+    </div>
+  )
 
   return (<>
     <Head>
@@ -77,7 +84,7 @@ export default function ContentDefault({content, additionalContent}: {
       {Category}
       <article className="mb-20">
         {postHeader}
-        <PostBody content={content.content} />
+        <PostBody content={content.content}/>
         {footer}
       </article>
     </Containers>
