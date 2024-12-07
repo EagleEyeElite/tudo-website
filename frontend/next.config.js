@@ -86,5 +86,8 @@ module.exports = async () => {
     env: {
       WORDPRESS_AUTH_REFRESH_TOKEN: refreshToken,
     },
+    experimental: {
+      ppr: 'incremental',
+    },
   };
 }
