@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Enable Draft Mode
-  draftMode().enable();
+  (await draftMode()).enable();
 
   // Redirect to the path from the fetched post
   // We don't redirect to `searchParams.get('slug')` as that might lead to open redirect vulnerabilities

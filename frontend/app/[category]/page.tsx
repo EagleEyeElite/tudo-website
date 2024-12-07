@@ -14,7 +14,8 @@ export async function generateStaticParams() {
     .map(category => ({ category }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
   const page = await getPageByTitle(params.category);
   if (!page) {
     notFound();
@@ -25,7 +26,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function OverviewPage({ params }) {
+export default async function OverviewPage(props) {
+  const params = await props.params;
   const path = params.category;
   const page = await getPageByTitle(path);
 

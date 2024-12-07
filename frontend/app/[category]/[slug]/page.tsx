@@ -9,10 +9,11 @@ export const dynamic = 'force-static'
 export const revalidate = 10
 
 type Props = {
-  params: { category: string; slug: string }
+  params: Promise<{ category: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const slug = params.slug
   const page = await getPageByTitle(slug)
 
@@ -44,7 +45,8 @@ export async function generateStaticParams() {
 }
 
 
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const slug = params.slug
   const page = await getPageByTitle(slug)
 

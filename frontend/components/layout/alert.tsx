@@ -1,9 +1,9 @@
 import Container from '../ui/container';
 import cn from 'classnames';
-import {draftMode} from "next/headers";
+import { draftMode, type UnsafeUnwrappedDraftMode } from "next/headers";
 
 export default function Alert() {
-  const { isEnabled } = draftMode();
+  const { isEnabled } = (draftMode() as unknown as UnsafeUnwrappedDraftMode);
 
   // Do not render anything if preview mode is not enabled
   if (!isEnabled) return null;
