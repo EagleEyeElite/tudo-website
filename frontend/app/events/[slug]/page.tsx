@@ -5,9 +5,7 @@ import { getPostAndMorePosts, getAllPostsWithSlug } from '@/lib/api/wordpress';
 import { convertPost, convertMorePosts } from "@/lib/convertApiInterfaces";
 import {Metadata} from "next";
 
-export const dynamicParams = true;
-
-export const revalidate = 10
+export const experimental_ppr = true
 
 export async function generateStaticParams() {
   const allPosts = await getAllPostsWithSlug();
@@ -54,7 +52,7 @@ export default async function Post(props0) {
   return (
     <ContentDefault
       content={{ ...postConverted, headerLink: props }}
-      additionalContent={morePostsConverted.length > 0 ? <MoreStories posts={morePostsConverted} /> : undefined}
+      additionalContent={morePostsConverted.length > 0 ? <MoreStories /> : undefined}
     />
   );
 }

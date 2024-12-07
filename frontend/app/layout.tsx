@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import Alert from '@/components/layout/alert'
 import Footer from '@/components/layout/footer'
 import { Navbar } from "@/components/layout/navbar"
-import { getActivityIndicator } from "@/lib/api/activityIndicator"
 import "styles/index.css"
+import {Suspense} from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   const folderPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
@@ -38,15 +38,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({children}: {
   children: React.ReactNode
 }) {
-  const activityIndicator = await getActivityIndicator()
-
   return (
     <html lang="en" suppressHydrationWarning={true}>
     <body>
       <div className="min-h-screen">
-        <Navbar activityIndicator={activityIndicator} />
-        <Alert />
-        <main>{children}</main>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Navbar />
+          <Alert />
+          <main>{children}</main>
+        </Suspense>
       </div>
       <Footer />
     </body>

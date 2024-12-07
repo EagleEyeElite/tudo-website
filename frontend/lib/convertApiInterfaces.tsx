@@ -2,7 +2,6 @@ import {CoverImageProps} from "components/blocks/cover-image";
 import {AuthorProps} from "components/blocks/avatar";
 import {AuthorPropsApi, MorePostPropsApi, PagePropsApi, PostPropsApi} from "lib/api/wordpress";
 import {ContentDefaultProps} from "components/page-templates/content-default";
-import {AllPostsForHomeProps} from "components/blocks/more-stories";
 
 
 export function convertCoverImage(
@@ -41,6 +40,15 @@ export function convertPost(post: PostPropsApi): ContentDefaultProps {
     categories: post.categories || undefined,
     tags: post.tags || undefined,
   };
+}
+
+interface AllPostsForHomeProps {
+  title?: string;
+  excerpt?: string,
+  slug?: string,
+  date?: string,
+  coverImage?: CoverImageProps
+  author: AuthorProps,
 }
 
 export function convertMorePosts(morePosts: MorePostPropsApi[]): AllPostsForHomeProps[] {

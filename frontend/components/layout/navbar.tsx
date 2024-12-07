@@ -3,14 +3,9 @@ import Image from "next/image";
 import TuDoLogo from "../../public/assets/tudo-logo.svg";
 import React from "react";
 import Link from "next/link";
-import {ActivityIndicatorState} from "lib/api/activityIndicator";
 import OpenClosedIndicator from "./openClosedIndicator";
 
-interface Props {
-  activityIndicator: ActivityIndicatorState
-}
-
-export function Navbar({activityIndicator}: Props) {
+export function Navbar() {
   return <nav
     className="sticky top-0 z-10 bg-white backdrop-filter backdrop-blur-md backdrop-saturate-150 bg-opacity-70 border-b border-black border-opacity-10 overflow-hidden">
     <Container>
@@ -22,7 +17,7 @@ export function Navbar({activityIndicator}: Props) {
             Makerspace
           </h2>
         </Link>
-        <OpenClosedIndicator activityIndicator={activityIndicator} />
+        <OpenClosedIndicator />
       </div>
     </Container>
   </nav>;

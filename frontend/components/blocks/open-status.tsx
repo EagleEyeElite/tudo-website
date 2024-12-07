@@ -23,7 +23,7 @@ function OpenStatusContent() {
         Status: <span className={`font-bold ${highlightColor}`}>{status}</span>
       </p>
       <p className="text-sm text-black">
-        {status !== 'Unknown' ? `${timeAgo}` : 'No timestamp available'}
+        updated {status !== 'Unknown' ? `${timeAgo}` : 'No timestamp available'}
       </p>
     </div>
   );
@@ -37,7 +37,7 @@ const OpenStatusSkeleton = () => {
         Status: <span className="font-bold inline-block w-16 h-6 bg-gray-200 rounded animate-pulse"></span>
       </p>
       <p className="text-sm text-black">
-        <span className="inline-block w-32 h-4 bg-gray-200 rounded animate-pulse"></span>
+        updated <span className="inline-block w-32 h-4 bg-gray-200 rounded animate-pulse"></span>
       </p>
     </div>
   );

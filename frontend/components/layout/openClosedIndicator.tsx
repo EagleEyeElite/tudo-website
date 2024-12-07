@@ -1,4 +1,4 @@
-import {ActivityIndicatorState} from "@/lib/api/activityIndicator";
+import {getActivityIndicator} from "@/lib/api/activityIndicator";
 import React from "react";
 import {CustomLink} from "../ui/links";
 import {OPENING_HOURS_PATH} from "@/lib/constants";
@@ -46,11 +46,9 @@ function OpenButton() {
   </a>
 }
 
-interface Props {
-  activityIndicator: ActivityIndicatorState
-}
+export default async function OpenClosedIndicator() {
+  const activityIndicator = await getActivityIndicator();
 
-export default function OpenClosedIndicator({activityIndicator}: Props) {
   if (activityIndicator.open) {
     return OpenButton();
   }

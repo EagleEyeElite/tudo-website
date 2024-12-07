@@ -1,21 +1,22 @@
-import CoverImage, {CoverImageProps} from './cover-image'
+'use cache';
+
+import CoverImage from './cover-image'
 import Link from 'next/link'
 import HeroLinks from "../ui/hero-links";
 import React from "react";
+import {getHeroPostForHome} from "@/lib/api/wordpress";
+import {convertCoverImage} from "@/lib/convertApiInterfaces";
 
-interface HeroPostProps {
-  title: string;
-  coverImage?: CoverImageProps;
-  excerpt: string;
-  slug: string;
-}
+export default async function HeroPost() {
+  const heroPost = await getHeroPostForHome();
 
-export default function HeroPost({
-  title,
-  coverImage,
-  excerpt,
-  slug,
-}: HeroPostProps) {
+  const {title, excerpt, slug, featuredImageUrl} = heroPost;
+  const coverImage = heroPost ? convertCoverImage(title!, featuredImageUrl, slug, "/about-us") : null;
+
+  if (!heroPost || !coverImage) {
+    return null
+  }
+
   return (
     <section>
       <div className="mt-8 mb-3 lg:my-6 flex flex-col lg:flex-row justify-between items-center">
@@ -26,7 +27,7 @@ export default function HeroPost({
           <Link
             href={`/about-us/${slug}`}
             className="hover:underline inline-block align-middle"
-            dangerouslySetInnerHTML={{__html: title}}
+            dangerouslySetInnerHTML={{__html: title!}}
           />
         </h2>
       </div>
@@ -38,7 +39,7 @@ export default function HeroPost({
       </div>
       <div
         className="text-lg leading-relaxed mb-10 md:mb-14 max-w-screen-md mx-auto"
-        dangerouslySetInnerHTML={{__html: excerpt}}
+        dangerouslySetInnerHTML={{__html: excerpt!}}
       />
 
     </section>

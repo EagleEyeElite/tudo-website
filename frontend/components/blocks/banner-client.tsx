@@ -1,14 +1,16 @@
-'use client';
+'use client'
 
 import React from "react";
 import {ParallaxBanner} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
 import Image from 'next/image';
 
-export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string}) {
+
+export default function BannerClient({backgroundImageUrl}: {backgroundImageUrl: string}) {
+
   const Component = () => {
     const background: BannerLayer = {
-      children: <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true} />,
+      children: <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true}/>,
       translateY: [0, 20],
       opacity: [0.4, 0.3],
       scale: [1.05, 1, "easeIn"],
@@ -47,12 +49,10 @@ export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string
       ),
     };
 
-    return (
-      <ParallaxBanner
-        layers={[background, headline, gradientOverlay]}
-        className="h-[60vh] w-full bg-gray-900"
-      />
-    );
+    return <ParallaxBanner
+      layers={[background, headline, gradientOverlay]}
+      className="h-[60vh] w-full bg-gray-900"
+    />
   };
 
   return (
@@ -68,7 +68,7 @@ export default function Banner({backgroundImageUrl}: {backgroundImageUrl: string
         </div>
       </Container>
      */}
-      <Component />
+      <Component/>
     </section>
   )
 }

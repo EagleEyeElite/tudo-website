@@ -1,5 +1,5 @@
 import {GraphQLClient} from "graphql-request";
-import {getSdk, PostIdType} from "lib/generated/graphql";
+import {getSdk, PostIdType} from "../generated/graphql";
 import _ from "lodash";
 
 
@@ -13,7 +13,15 @@ export function getInitializedSdk() {
     headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
   }
 
-  const client = new GraphQLClient(API_URL, { headers });
+  const client = new GraphQLClient(API_URL, {
+    headers,
+    fetch: (url: RequestInfo | URL, init?: RequestInit) => {
+      return fetch(url, {
+        ...init,
+      });
+    }
+  });
+
   return getSdk(client);
 }
 const sdk = getInitializedSdk();
@@ -98,14 +106,14 @@ export interface MorePostPropsApi {
   author: AuthorPropsApi | null;
 }
 
-export async function getAllPostsForHome(): Promise<{latestPost: MorePostPropsApi[], welcomePage: MorePostPropsApi}> {
+export async function getHeroPostForHome() {
   const data = await sdk.AllPostsAndWelcomePage();
   const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
   if (!(dataWelcomePost && dataWelcomePost.__typename === 'Page')) {
     throw new Error('Welcome page not found');
   }
 
-  const welcomePage = {
+  return {
     title: dataWelcomePost.title || null,
     excerpt: dataWelcomePost.content || null,
     slug: dataWelcomePost.slug || null,
@@ -113,8 +121,16 @@ export async function getAllPostsForHome(): Promise<{latestPost: MorePostPropsAp
     featuredImageUrl: dataWelcomePost.featuredImage?.node?.sourceUrl || null,
     author: null
   }
+}
 
-  const latestPost = data?.latestPosts?.nodes.map(node=> ({
+export async function getLatestPostsForHome() {
+  const data = await sdk.AllPostsAndWelcomePage();
+  const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
+  if (!(dataWelcomePost && dataWelcomePost.__typename === 'Page')) {
+    throw new Error('Welcome page not found');
+  }
+
+  return data?.latestPosts?.nodes.map(node=> ({
       title: node.title || null,
       excerpt: node.excerpt || null,
       slug: node.slug || null,
@@ -128,8 +144,6 @@ export async function getAllPostsForHome(): Promise<{latestPost: MorePostPropsAp
       },
     }
   )) || []
-
-  return {latestPost, welcomePage}
 }
 
 export interface PostPropsApi extends MorePostPropsApi {

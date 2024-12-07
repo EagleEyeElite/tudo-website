@@ -1,8 +1,6 @@
-import {GraphQLClient} from "graphql-request";
-import {getInitializedSdk} from "../../lib/api";
-
+import {getInitializedSdk} from "@/lib/api/wordpress";
 const sdk = getInitializedSdk();
-
+import 'isomorphic-fetch'
 
 describe('GraphQlQuery', () => {
   it('should do something', async () => {
