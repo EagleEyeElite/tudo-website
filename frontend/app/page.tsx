@@ -1,14 +1,13 @@
-import Container from '@/components/ui/container';
-import MoreStories from '@/components/blocks/more-stories';
-import HeroPost from '@/components/blocks/hero-post';
+'use cache'
 import Provider from "@/components/blocks/provider";
 import Banner from "@/components/blocks/banner-server";
-
-export const experimental_ppr = true
+import Container from "@/components/ui/container";
+import HeroPost from "@/components/blocks/hero-post";
+import MoreStories from "@/components/blocks/more-stories";
 
 export default async function Home() {
   return <Provider>
-    <Banner />
+    <Banner/>
     <Container>
       <HeroPost/>
       <MoreStories/>

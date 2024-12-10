@@ -18,6 +18,9 @@ export function getInitializedSdk() {
     fetch: (url: RequestInfo | URL, init?: RequestInit) => {
       return fetch(url, {
         ...init,
+        next: {
+          revalidate: 3600,
+        },
       });
     }
   });
@@ -107,6 +110,7 @@ export interface MorePostPropsApi {
 }
 
 export async function getHeroPostForHome() {
+  'use cache'
   const data = await sdk.AllPostsAndWelcomePage();
   const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
   if (!(dataWelcomePost && dataWelcomePost.__typename === 'Page')) {

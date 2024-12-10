@@ -5,8 +5,6 @@ import ContentDefault from "@/components/page-templates/content-default"
 import { convertPage } from "@/lib/convertApiInterfaces"
 import { HeaderLinkProps } from "@/components/blocks/headerLink"
 
-export const experimental_ppr = true
-
 type Props = {
   params: Promise<{ category: string; slug: string }>
 }

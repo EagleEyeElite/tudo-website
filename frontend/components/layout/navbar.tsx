@@ -1,9 +1,8 @@
 import Container from "../ui/container";
 import Image from "next/image";
 import TuDoLogo from "../../public/assets/tudo-logo.svg";
-import React from "react";
 import Link from "next/link";
-import OpenClosedIndicator from "./openClosedIndicator";
+import OpenClosedIndicator from "@/components/layout/openClosedIndicator";
 
 export function Navbar() {
   return <nav

@@ -76,7 +76,7 @@ const config = async (): Promise<NextConfig> => {
     },
     env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
     experimental: {
-      ppr: 'incremental',
+      ppr: true,
       dynamicIO: true,
     },
   };

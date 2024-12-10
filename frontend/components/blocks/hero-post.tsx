@@ -6,9 +6,14 @@ import HeroLinks from "../ui/hero-links";
 import React from "react";
 import {getHeroPostForHome} from "@/lib/api/wordpress";
 import {convertCoverImage} from "@/lib/convertApiInterfaces";
+import {unstable_cache} from "next/cache";
 
 export default async function HeroPost() {
-  const heroPost = await getHeroPostForHome();
+  const heroPost = await unstable_cache(
+    async () => await getHeroPostForHome(),
+    ['hero-post'],
+    { revalidate: 1, }
+  )();
 
   const {title, excerpt, slug, featuredImageUrl} = heroPost;
   const coverImage = heroPost ? convertCoverImage(title!, featuredImageUrl, slug, "/about-us") : null;

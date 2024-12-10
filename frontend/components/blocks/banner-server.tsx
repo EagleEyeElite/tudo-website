@@ -5,15 +5,11 @@ import React from "react";
 import BannerClient from "@/components/blocks/banner-client";
 import {cacheLife} from "next/dist/server/use-cache/cache-life";
 
-
 export default async function Banner() {
-  //cacheLife({
-  //  stale: undefined,     // Always serve stale data if available
-  //  revalidate: 0,        // Revalidate immediately after serving
-  //  expire: Infinity      // Never expire the cache
-  //})
-
-  cacheLife("seconds")
+  cacheLife({
+    revalidate: 1,  // Fetch a new one immediately after serving // TODO test how 0 works
+    expire: Infinity,
+  })
 
   const backgroundImageUrl = await fetchMediaItemsWithBackgroundSet();
 

@@ -5,8 +5,6 @@ import { getPostAndMorePosts, getAllPostsWithSlug } from '@/lib/api/wordpress';
 import { convertPost, convertMorePosts } from "@/lib/convertApiInterfaces";
 import {Metadata} from "next";
 
-export const experimental_ppr = true
-
 export async function generateStaticParams() {
   const allPosts = await getAllPostsWithSlug();
   return allPosts.map((slug) => ({ slug }));

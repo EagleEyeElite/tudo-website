@@ -1,10 +1,10 @@
+'use cache'
 import React from 'react';
 import { Metadata } from 'next';
 import { getLatestPostsForHome, getPageByTitle } from "lib/api/wordpress";
 import Overview from "../../components/page-templates/overview";
 import {notFound} from "next/navigation";
 
-export const experimental_ppr = true
 export const metadata: Metadata = {
   title: 'Events | TuDo Makerspace',
 };

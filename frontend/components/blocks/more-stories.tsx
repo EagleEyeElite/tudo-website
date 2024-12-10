@@ -1,5 +1,3 @@
-'use cache'
-
 import PostPreview from './post-preview'
 import {getLatestPostsForHome} from "@/lib/api/wordpress";
 import {convertMorePosts} from "@/lib/convertApiInterfaces";
