@@ -2,9 +2,11 @@ import Container from "../ui/container";
 import Image from "next/image";
 import TuDoLogo from "../../public/assets/tudo-logo.svg";
 import Link from "next/link";
-import OpenClosedIndicator from "@/components/layout/openClosedIndicator";
+import {getActivityIndicator} from "@/lib/api/activityIndicator";
+import ActivityIndicator from "@/components/layout/openClosedIndicator";
 
-export function Navbar() {
+export async function Navbar() {
+  const initialState = await getActivityIndicator();
   return <nav
     className="sticky top-0 z-10 bg-white backdrop-filter backdrop-blur-md backdrop-saturate-150 bg-opacity-70 border-b border-black border-opacity-10 overflow-hidden">
     <Container>
@@ -16,7 +18,10 @@ export function Navbar() {
             Makerspace
           </h2>
         </Link>
-        <OpenClosedIndicator />
+        <ActivityIndicator
+          fetchFnAction={getActivityIndicator}
+          initialData={initialState}
+        />
       </div>
     </Container>
   </nav>;

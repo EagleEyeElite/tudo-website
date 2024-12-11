@@ -1,56 +1,29 @@
-import {getActivityIndicator} from "@/lib/api/activityIndicator";
+'use client';
+import { ActivityIndicatorState } from "@/lib/api/activityIndicator";
 import React from "react";
-import {CustomLink} from "../ui/links";
-import {OPENING_HOURS_PATH} from "@/lib/constants";
+import { CustomLink } from "../ui/links";
+import { OPENING_HOURS_PATH } from "@/lib/constants";
+import useSWR from 'swr';
+import {OpenButton} from "@/components/ui/open-button";
 
-function OpenButton() {
-  return <a
-    className={`
-      group
-      flex
-      relative
-      mx-3 
-      
-      before:absolute before:inset-0 before:-z-10
-      before:bg-gradient-to-br before:from-green-400 before:via-green-500 before:to-green-600
-      before:hover:opacity-0 before:transition-all before:duration-50
-      
-      after:absolute after:inset-0 after:-z-30
-      after:shadow-lg after:shadow-green-500/50
-      after:hover:-translate-y-1.5
-      after:duration-200 after:transition-all
-  
-    `}
-    href={OPENING_HOURS_PATH}
-  >
-    <span
-      className="
-        relative
-        isolate
-        overflow-hidden
-        py-3 px-12 lg:px-8
-        font-bold text-white
-
-        before:absolute before:inset-0 before:-z-10
-        before:bg-gradient-to-tl before:from-green-400 before:to-green-600
-        before:opacity-0 before:group-hover:opacity-100 before:transition-all before:duration-50
-
-        after:absolute after:inset-0
-        after:bg-gradient-to-r after:from-transparent after:via-rose-100/30 after:to-transparent
-        after:group-hover:opacity-0 after:-translate-x-full after:animate-[shimmer_4s_infinite]
-        after:z-20
-        "
-    >
-      Geöffnet
-    </span>
-  </a>
+interface OpenClosedIndicatorProps {
+  fetchFnAction: () => Promise<ActivityIndicatorState>;
+  initialData: ActivityIndicatorState;
 }
 
-export default async function OpenClosedIndicator() {
-  const activityIndicator = await getActivityIndicator();
+export default function ActivityIndicator({ fetchFnAction, initialData }: OpenClosedIndicatorProps) {
+  const { data } = useSWR('activity-status', fetchFnAction, {
+    refreshInterval: 5 * 60 * 1000,  // Poll every 5 minutes
+    revalidateOnFocus: true,         // Fetch when tab is focused
+    revalidateOnReconnect: true,     // Fetch when internet reconnects
+    keepPreviousData: true,          // Show old data while fetching new
+    revalidateOnMount: true,         // Fetch fresh data on navigation/mount
+    fallbackData: initialData        // Use server data initially
+  });
 
-  if (activityIndicator.open) {
-    return OpenButton();
-  }
-  return CustomLink({link: {text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}});
+  const isOpen = data?.open ?? false;
+
+  return isOpen ?
+    <OpenButton /> :
+    <CustomLink link={{text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}} />;
 }
