@@ -1,7 +1,9 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle } from "@/lib/api/wordpress";
-import Overview from "@/components/page-templates/overview";
+import { getAllParentPagesAsSlug, getPageByTitle } from "@/lib/api/wordpress";
+import CacheWrapper from "@/app/[category]/cache-wrapper";
+import {Metadata} from "next";
+import {connection} from "next/server";
 
 export async function generateStaticParams() {
   const allParentPagesSlugs = await getAllParentPagesAsSlug();
@@ -10,9 +12,14 @@ export async function generateStaticParams() {
     .map(category => ({ category }));
 }
 
-export async function generateMetadata(props) {
-  const params = await props.params;
-  const page = await getPageByTitle(params.category);
+type Props = {
+  params: Promise<{ category: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const category = (await params).category;
+  const page = await getPageByTitle(category);
   if (!page) {
     notFound();
   }
@@ -22,17 +29,8 @@ export async function generateMetadata(props) {
   };
 }
 
-export default async function OverviewPage(props) {
-
-  const params = await props.params;
-  const path = params.category;
-  const page = await getPageByTitle(path);
-
-  if (!page) {
-    notFound();
-  }
-
-  const childPages = await childPagesByParentId(page.id!);
-
-  return <Overview path={path} page={page} childPages={childPages} />;
+export default async function OverviewPage({ params }: Props) {
+  await connection()
+  const category = (await params).category;
+  return <CacheWrapper path={category}/>
 }

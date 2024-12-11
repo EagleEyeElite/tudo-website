@@ -1,9 +1,8 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle } from "lib/api/wordpress"
-import ContentDefault from "@/components/page-templates/content-default"
-import { convertPage } from "@/lib/convertApiInterfaces"
-import { HeaderLinkProps } from "@/components/blocks/headerLink"
+import CacheWrapper2 from "@/app/[category]/[slug]/cache-wrapper-2";
+import {connection} from "next/server";
 
 type Props = {
   params: Promise<{ category: string; slug: string }>
@@ -43,26 +42,8 @@ export async function generateStaticParams() {
 
 
 export default async function Page(props) {
+  await connection()
   const params = await props.params;
   const slug = params.slug
-  const page = await getPageByTitle(slug)
-
-  if (!page) {
-    notFound()
-  }
-
-  let headerLinkProps: HeaderLinkProps | undefined = undefined
-  if (page.parent) {
-    headerLinkProps = {
-      title: page.parent.title!,
-      href: `/${page.parent.slug}`,
-    }
-  }
-
-  const content = {
-    ...convertPage(page),
-    headerLink: headerLinkProps
-  }
-
-  return <ContentDefault content={content} />
+  return <CacheWrapper2 slug={slug} />
 }

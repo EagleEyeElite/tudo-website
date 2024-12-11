@@ -1,3 +1,4 @@
+'use cache'
 import Container from "../ui/container";
 import Image from "next/image";
 import TuDoLogo from "../../public/assets/tudo-logo.svg";

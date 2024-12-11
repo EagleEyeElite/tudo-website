@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation';
-import MoreStories from '@/components/blocks/more-stories';
-import ContentDefault from "@/components/page-templates/content-default";
 import { getPostAndMorePosts, getAllPostsWithSlug } from '@/lib/api/wordpress';
-import { convertPost, convertMorePosts } from "@/lib/convertApiInterfaces";
 import {Metadata} from "next";
+import CacheWrapper3 from "@/app/events/[slug]/cache-wrapper-3";
 
 export async function generateStaticParams() {
   const allPosts = await getAllPostsWithSlug();
@@ -33,24 +31,5 @@ export async function generateMetadata(props): Promise<Metadata> {
 export default async function Post(props0) {
   const params = await props0.params;
   //const { isEnabled: isPreview } = draftMode();
-  const { post, morePosts } = await getPostAndMorePosts(params?.slug, false, null);
-
-  if (!post?.slug) {
-    notFound();
-  }
-
-  const postConverted = convertPost(post);
-  const morePostsConverted = convertMorePosts(morePosts);
-
-  const props = {
-    title: "Events",
-    href: `/events`,
-  };
-
-  return (
-    <ContentDefault
-      content={{ ...postConverted, headerLink: props }}
-      additionalContent={morePostsConverted.length > 0 ? <MoreStories /> : undefined}
-    />
-  );
+  return <CacheWrapper3 slug={params?.slug} />
 }
