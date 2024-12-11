@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "NEXT_DEBUG_PPR=1 NEXT_DEBUG_RENDER=1 next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

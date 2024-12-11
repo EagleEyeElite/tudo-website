@@ -1,9 +1,11 @@
 import React, { Suspense } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { getActivityIndicator } from "@/lib/api/activityIndicator";
+import { unstable_noStore as noStore } from 'next/cache';
 
-function OpenStatusContent() {
-  const data = React.use(getActivityIndicator());
+async function OpenStatusContent() {
+  noStore();
+  const data = await getActivityIndicator();
 
   const status = data.open === true ? 'Open' : data.open === false ? 'Closed' : 'Unknown';
   const bgColor = data.open === true ? 'bg-green-50' : data.open === false ? 'bg-red-50' : 'bg-gray-50';
@@ -43,16 +45,10 @@ const OpenStatusSkeleton = () => {
   );
 };
 
-function OpenStatus() {
+export default function OpenStatus() {
   return (
     <Suspense fallback={<OpenStatusSkeleton />}>
       <OpenStatusContent />
     </Suspense>
-  );
-}
-
-export default function OpenStatusWrapper() {
-  return (
-    <OpenStatus />
   );
 }
