@@ -1,9 +1,9 @@
 'use cache'
-
 import {fetchMediaItemsWithBackgroundSet} from "@/lib/api/wordpress";
 import React from "react";
 import BannerClient from "@/components/blocks/banner-client";
 import {cacheLife} from "next/dist/server/use-cache/cache-life";
+import Image from "next/image";
 
 export default async function Banner() {
   cacheLife({
@@ -12,10 +12,10 @@ export default async function Banner() {
   })
 
   const backgroundImageUrl = await fetchMediaItemsWithBackgroundSet();
-
   if (!backgroundImageUrl) {
     return null
   }
 
-  return <BannerClient backgroundImageUrl={backgroundImageUrl} />
+  const image = <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true}/>
+  return <BannerClient image={image} />
 }

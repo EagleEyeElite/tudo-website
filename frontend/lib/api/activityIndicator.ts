@@ -34,7 +34,7 @@ export async function getActivityIndicator() {
   cacheTag('activityIndicator')
   let state = await kv.get('activityIndicator') as ActivityIndicatorState | null;
   if (state === null) {
-    state = buildState(null);
+    return buildState(null);
   }
   return state;
 }

@@ -1,16 +1,13 @@
 'use client'
-
-import React from "react";
+import React, {ReactNode} from "react";
 import {ParallaxBanner} from 'react-scroll-parallax';
 import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
-import Image from 'next/image';
 
-
-export default function BannerClient({backgroundImageUrl}: {backgroundImageUrl: string}) {
+export default function BannerClient({image}: {image: ReactNode}) {
 
   const Component = () => {
     const background: BannerLayer = {
-      children: <Image src={backgroundImageUrl} alt={""} fill={true} className="object-cover" priority={true}/>,
+      children: image,
       translateY: [0, 20],
       opacity: [0.4, 0.3],
       scale: [1.05, 1, "easeIn"],

@@ -2,8 +2,7 @@ import styles from '../post-body.module.css'
 import parse, {DOMNode, domToReact, Element} from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
-import OpenStatus from "@/components/blocks/open-status";
-
+import OpenStatusCard from "@/components/blocks/open-status-card";
 
 function Link({ link }) {
   const isExternal = link.href?.startsWith('http://') || link.href?.startsWith('https://');
@@ -45,7 +44,7 @@ export default function PostBody({content}: { content: string | null }) {
           return <Link link={{children, href: domNode.attribs.href}}/>;
 
         case 'openstatus':
-          return <OpenStatus />;
+          return <OpenStatusCard />;
 
         default:
           return;
