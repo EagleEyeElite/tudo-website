@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getPostAndMorePosts, getAllPostsWithSlug } from '@/lib/api/wordpress';
 import {Metadata} from "next";
 import CacheWrapper3 from "@/app/events/[slug]/cache-wrapper-3";
+import {connection} from "next/server";
 
 export async function generateStaticParams() {
   const allPosts = await getAllPostsWithSlug();
@@ -29,6 +30,7 @@ export async function generateMetadata(props): Promise<Metadata> {
 }
 
 export default async function Post(props0) {
+  await connection()
   const params = await props0.params;
   //const { isEnabled: isPreview } = draftMode();
   return <CacheWrapper3 slug={params?.slug} />
