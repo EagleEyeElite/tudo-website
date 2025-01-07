@@ -2,7 +2,7 @@
 import { Metadata } from 'next'
 import Alert from '@/components/layout/alert'
 import Footer from '@/components/layout/footer'
-import { Navbar } from "@/components/layout/navbar"
+import {Navbar, NavbarSpacer} from "@/components/layout/navbar"
 import "styles/index.css"
 import React from "react";
 import { Analytics } from '@vercel/analytics/next';
@@ -40,11 +40,12 @@ export default async function RootLayout({children}: {
 }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-    <body>
-      <div className="min-h-screen">
+      <body>
         <Navbar />
-        <Alert />
-        <main>{children}</main>
+        <div className="flex flex-col min-h-screen">
+          <NavbarSpacer />
+          <Alert />
+          <main className="flex-grow">{children}</main>
         </div>
         <Footer />
         <Analytics />

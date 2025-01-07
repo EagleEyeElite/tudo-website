@@ -9,7 +9,7 @@ import ActivityIndicator from "@/components/layout/openClosedIndicator";
 export async function Navbar() {
   const initialState = await getActivityIndicator();
   return <nav
-    className="sticky top-0 z-10 bg-white backdrop-filter backdrop-blur-md backdrop-saturate-150 bg-opacity-70 border-b border-black border-opacity-10 overflow-hidden">
+    className="fixed left-0 right-0 top-0 z-10 bg-white backdrop-filter backdrop-blur-md backdrop-saturate-150 bg-opacity-70 border-b border-black border-opacity-10 overflow-hidden">
     <Container>
       <div className="flex items-center justify-between h-16">
         <Link href="/" className="flex items-center">
@@ -26,4 +26,8 @@ export async function Navbar() {
       </div>
     </Container>
   </nav>;
+}
+
+export async function NavbarSpacer() {
+  return <div className="h-16" />;
 }
