@@ -5,6 +5,8 @@ import Footer from '@/components/layout/footer'
 import { Navbar } from "@/components/layout/navbar"
 import "styles/index.css"
 import React from "react";
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const faviconPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
 export const metadata: Metadata = {
@@ -43,9 +45,11 @@ export default async function RootLayout({children}: {
         <Navbar />
         <Alert />
         <main>{children}</main>
-      </div>
-      <Footer />
-    </body>
+        </div>
+        <Footer />
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   )
 }
