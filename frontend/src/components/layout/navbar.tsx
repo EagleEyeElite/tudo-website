@@ -1,25 +1,65 @@
-import Container from '@/components/ui/container'
-import Image from 'next/image'
-import TuDoLogo from '@public/assets/tudo-logo.svg'
-import Link from 'next/link'
-import {getActivityIndicator} from '@/lib/api/activityIndicator'
-import ActivityIndicator from '@/components/layout/openClosedIndicator'
+'use client'
 
-export async function Navbar() {
-  const getInitialState = await getActivityIndicator()
+import React from "react";
+import {
+  Navbar,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem, NavbarMenuToggle,
+} from "@nextui-org/react";
+import Image from "next/image";
+import Link from "next/link";
+import TuDoLogo from "@public/assets/tudo-logo.svg";
+import {type ActivityIndicatorState} from "@/lib/api/activityIndicator";
+import ActivityIndicator from "@/components/layout/openClosedIndicator";
+import HeroLinks from "@/components/ui/hero-links";
+
+
+interface MainNavbarProps {
+  initialState: ActivityIndicatorState;
+}
+
+export default function MainNavbar({ initialState }: MainNavbarProps) {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
   return (
-    <nav className="sticky top-0 z-10 bg-white backdrop-filter backdrop-blur-md backdrop-saturate-150 bg-opacity-70 border-b border-black border-opacity-10 overflow-hidden">
-      <Container>
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center">
+    <>
+      <Navbar
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        className="sticky top-0 bg-white/70 border-b border-black/10 backdrop-blur-md backdrop-saturate-150 z-50"
+        maxWidth="full"
+        height="4rem"
+        isBlurred
+      >
+        <NavbarContent>
+          <Link href="/" className="flex items-center" onClick={() => isMenuOpen && setIsMenuOpen(false)}>
             <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
-            <h2 className="text-3xl font-bold tracking-tighter text-left ml-2 hidden sm:inline">
+            <h2 className="text-3xl font-bold tracking-tighter text-left ml-2 hidden sm:block">
               Makerspace
             </h2>
           </Link>
-          <ActivityIndicator initialData={getInitialState}/>
-        </div>
-      </Container>
-    </nav>
+        </NavbarContent>
+
+        <NavbarContent justify="end" className="gap-4">
+          <NavbarItem className={`transition-transform duration-300 ${isMenuOpen ? 'transform translate-y-[calc(100vh-8rem)]' : ''}`}>
+            <ActivityIndicator
+              initialData={initialState}
+            />
+          </NavbarItem>
+
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          />
+        </NavbarContent>
+
+        <NavbarMenu className="bg-white/70 backdrop-blur-md backdrop-saturate-150">
+          <NavbarMenuItem>
+            <HeroLinks />
+          </NavbarMenuItem>
+        </NavbarMenu>
+      </Navbar>
+    </>
   );
 }
