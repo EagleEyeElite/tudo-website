@@ -1,11 +1,12 @@
 import { Metadata } from 'next'
 import Alert from '@/components/layout/alert'
 import Footer from '@/components/layout/footer'
-import { Navbar } from '@/components/layout/navbar'
 import React from 'react'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './global.css'
+import MainNavbar from '@/components/layout/navbar';
+import { getActivityIndicator } from '@/lib/api/activityIndicator';
 
 export const revalidate = 10
 
@@ -39,11 +40,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({children}: {
   children: React.ReactNode
 }) {
-
+  const initialState = await getActivityIndicator()
   return (
     <html lang="en" suppressHydrationWarning>
     <body>
-    <Navbar/>
+    <MainNavbar initialState={initialState}/>
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
       <Alert/>
       <main className="flex-grow">{children}</main>
