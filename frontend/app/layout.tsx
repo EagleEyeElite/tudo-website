@@ -8,7 +8,7 @@ import React from "react";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import {getActivityIndicator} from "@/lib/api/activityIndicator";
-import MainNavbar from "@/components/layout/navbar";
+import MainNavbar, {NavbarSpacer} from "@/components/layout/navbar";
 
 const faviconPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
 export const metadata: Metadata = {
@@ -45,8 +45,9 @@ export default async function RootLayout({children}: {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body>
-        <MainNavbar />;
+        <MainNavbar initialState={initialState} />
         <div className="flex flex-col min-h-screen">
+          <NavbarSpacer />
           <Alert />
           <main className="flex-grow">{children}</main>
         </div>

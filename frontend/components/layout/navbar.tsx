@@ -20,6 +20,10 @@ interface MainNavbarProps {
   initialState: ActivityIndicatorState;
 }
 
+export function NavbarSpacer() {
+  return <div className="h-[4rem]" />;
+}
+
 export default function MainNavbar({ initialState }: MainNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -78,7 +82,7 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          <NavbarItem>
+          <NavbarItem className={`transition-transform duration-300 ${isMenuOpen ? 'transform translate-y-[calc(100vh-8rem)]' : ''}`}>
             <ActivityIndicator
               fetchFnAction={getActivityIndicator}
               initialData={initialState}
