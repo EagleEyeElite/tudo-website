@@ -3,18 +3,18 @@
 import React from "react";
 import {
   Navbar,
-  NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
+  NavbarMenuItem, NavbarMenuToggle,
 } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import TuDoLogo from "../../public/assets/tudo-logo.svg";
 import {type ActivityIndicatorState, getActivityIndicator} from "@/lib/api/activityIndicator";
 import ActivityIndicator from "@/components/layout/openClosedIndicator";
+import HeroLinks from "@/components/ui/hero-links";
+
 
 interface MainNavbarProps {
   initialState: ActivityIndicatorState;
@@ -27,19 +27,6 @@ export function NavbarSpacer() {
 export default function MainNavbar({ initialState }: MainNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
-
   return (
     <>
       <Navbar
@@ -51,56 +38,31 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
         isBlurred
       >
         <NavbarContent>
-          <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="sm:hidden"
-          />
-          <NavbarBrand as={Link} href="/">
+          <Link href="/" className="flex items-center" onClick={() => isMenuOpen && setIsMenuOpen(false)}>
             <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
-            <h2 className="text-3xl font-bold tracking-tighter text-left ml-2 hidden sm:inline">
+            <h2 className="text-3xl font-bold tracking-tighter text-left ml-2 hidden sm:block">
               Makerspace
             </h2>
-          </NavbarBrand>
+          </Link>
         </NavbarContent>
 
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem>
-            <Link href="#">
-              Features
-            </Link>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#" aria-current="page">
-              Customers
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link href="#">
-              Integrations
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
-
-        <NavbarContent justify="end">
+        <NavbarContent justify="end" className="gap-4">
           <NavbarItem className={`transition-transform duration-300 ${isMenuOpen ? 'transform translate-y-[calc(100vh-8rem)]' : ''}`}>
             <ActivityIndicator
               fetchFnAction={getActivityIndicator}
               initialData={initialState}
             />
           </NavbarItem>
+
+            <NavbarMenuToggle
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            />
         </NavbarContent>
 
-        <NavbarMenu>
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                className="w-full"
-                href="#"
-              >
-                {item}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+        <NavbarMenu className="bg-white/70 backdrop-blur-md backdrop-saturate-150">
+          <NavbarMenuItem>
+            <HeroLinks />
+          </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>
     </>
