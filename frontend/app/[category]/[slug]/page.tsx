@@ -1,26 +1,9 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle } from "lib/api/wordpress"
-import CacheWrapper2 from "@/app/[category]/[slug]/cache-wrapper-2";
-import {connection} from "next/server";
+import ContentDefault from "@/components/page-templates/content-default";
+import { convertPage } from "@/lib/convertApiInterfaces";
 
-type Props = {
-  params: Promise<{ category: string; slug: string }>
-}
-
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params;
-  const slug = params.slug
-  const page = await getPageByTitle(slug)
-
-  if (!page) {
-    notFound()
-  }
-
-  return {
-    title: page.title,
-  }
-}
 
 export async function generateStaticParams() {
   const parentSlugs = await getAllParentPagesAsSlug()
@@ -40,10 +23,38 @@ export async function generateStaticParams() {
   return paths
 }
 
+type Props = {
+  params: Promise<{ category: string; slug: string }>
+}
 
-export default async function Page(props) {
-  await connection()
-  const params = await props.params;
-  const slug = params.slug
-  return <CacheWrapper2 slug={slug} />
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPageByTitle(slug);
+  if (!page) {
+    notFound()
+  }
+
+  return {
+    title: page.title,
+  }
+}
+
+export default async function Page({ params }: Props) {
+  const { slug } = await params;
+  const page = await getPageByTitle(slug);
+  if (!page) {
+    notFound();
+  }
+
+  const headerLinkProps = page.parent ? {
+    title: page.parent.title!,
+    href: `/${page.parent.slug}`
+  } : undefined;
+
+  const content = {
+    ...convertPage(page),
+    headerLink: headerLinkProps
+  };
+
+  return <ContentDefault content={content} />;
 }

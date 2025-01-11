@@ -10,7 +10,7 @@ export default async function Home() {
     <Banner/>
     <Container>
       <HeroPost/>
-      <MoreStories/>
+      <MoreStories home={true}/>
     </Container>
   </Provider>;
 }

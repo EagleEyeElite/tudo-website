@@ -1,12 +1,10 @@
-import Head from "next/head";
 import PostTitle from "../blocks/post-title";
 import ContainerWide, {ContainerTight} from "../ui/container";
 import PostBody from "../blocks/post-body";
-import SectionSeparator from "../blocks/section-separator";
 import HeaderLink, {HeaderLinkProps} from "../blocks/headerLink";
 import PostHeader from "../blocks/post-header";
 import Tags from "../blocks/tags";
-import React, {JSX} from "react";
+import React from "react";
 import {CoverImageProps} from "../blocks/cover-image";
 import {AuthorProps} from "../blocks/avatar";
 import AdaptiveMaxHeightImage from "../ui/adaptive-max-height-image";
@@ -24,64 +22,57 @@ export interface ContentDefaultProps {
   tags?: string[],
 }
 
-export default function ContentDefault({content, additionalContent}: {
-  content: ContentDefaultProps;
-  additionalContent?: JSX.Element;
-}) {
-  const featuredImageUrl = content.coverImage?.coverImageUrl;
-  const renderWide = featuredImageUrl != undefined;
 
-  const Containers = renderWide ? ContainerWide : ContainerTight;
-  const Category = content.headerLink ? <HeaderLink {...content.headerLink}/> : undefined;
-  const metaOgImage = featuredImageUrl ? <meta property="og:image" content={featuredImageUrl}/> : null;
-  let extra: JSX.Element | null = null
-  if (additionalContent != null) {
-    extra = <ContainerWide>
-      <SectionSeparator/>
-      {additionalContent}
-    </ContainerWide>
+function ContentHeader({ title, coverImage, author }: Pick<ContentDefaultProps, 'title' | 'coverImage' | 'author'>) {
+  if (author) {
+    return <PostHeader title={title} coverImage={coverImage} author={author} />;
   }
 
-  let postHeader: JSX.Element;
-  if (content.author != null) {
-    postHeader = <PostHeader
-      title={content.title}
-      coverImage={content.coverImage}
-      author={content.author}
-    />;
-  } else {
-    postHeader = <PostTitle>{content.title}</PostTitle>;
-    if (content.coverImage?.coverImageUrl != null) {
-      postHeader = <>
-        <PostTitle>{content.title}</PostTitle>
-        <div className="mb-8 md:mb-16 sm:mx-0">
-          <AdaptiveMaxHeightImage src={content.coverImage.coverImageUrl} priority={true}/>
-        </div>
-      </>
-    }
+  if (coverImage?.coverImageUrl) {
+    return <>
+      <PostTitle>{title}</PostTitle>
+      <div className="mb-8 md:mb-16 sm:mx-0">
+        <AdaptiveMaxHeightImage src={coverImage.coverImageUrl} priority={true} />
+      </div>
+    </>;
   }
 
-  const footer = (
+  return <PostTitle>{title}</PostTitle>;
+}
+
+function ContentFooter({ date, categories, tags }: Pick<ContentDefaultProps, 'date' | 'categories' | 'tags'>) {
+  return (
     <div className="max-w-2xl mx-auto mb-6 text-lg">
-      {content.date && (
-        <>
-          Posted <Date dateString={content.date} />
-        </>
-      )}
-      {content.categories && <Categories categories={content.categories} />}
-      {content.tags && content.tags.length > 0 && <Tags tags={content.tags} />}
+      {date && <> Posted <Date dateString={date} /> </>}
+      {categories && <Categories categories={categories} />}
+      {tags?.length! > 0 && <Tags tags={tags!} />}
     </div>
-  )
+  );
+}
 
-  return (<>
-    <Containers>
-      {Category}
+export default function ContentDefault({
+  content
+}: {
+  content: ContentDefaultProps;
+}) {
+  const Container = content.coverImage?.coverImageUrl ? ContainerWide : ContainerTight;
+
+  return (
+    <Container>
+      {content.headerLink && <HeaderLink {...content.headerLink} />}
       <article className="mb-20">
-        {postHeader}
-        <PostBody content={content.content}/>
-        {footer}
+        <ContentHeader
+          title={content.title}
+          coverImage={content.coverImage}
+          author={content.author}
+        />
+        <PostBody content={content.content} />
+        <ContentFooter
+          date={content.date}
+          categories={content.categories}
+          tags={content.tags}
+        />
       </article>
-    </Containers>
-    {extra}
-  </>)
+    </Container>
+  );
 }

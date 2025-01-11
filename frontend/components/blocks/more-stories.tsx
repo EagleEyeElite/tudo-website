@@ -1,9 +1,17 @@
 import PostPreview from './post-preview'
-import {getLatestPostsForHome} from "@/lib/api/wordpress";
+import {getLatestPostsForHome, getMorePosts} from "@/lib/api/wordpress";
 import {convertMorePosts} from "@/lib/convertApiInterfaces";
 
-export default async function MoreStories() {
-  const morePosts = await getLatestPostsForHome();
+export default async function MoreStories({slug, home}: {
+  slug?: string;
+  home?: boolean;
+}) {
+  let morePosts: any;
+  if (home || slug === undefined) {
+    morePosts = await getLatestPostsForHome();
+  } else {
+    morePosts = await getMorePosts(slug);
+  }
   const morePostsConverted = convertMorePosts(morePosts);
 
   if (morePostsConverted.length == 0) {
