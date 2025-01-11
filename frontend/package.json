@@ -10,6 +10,7 @@
     "graphql-codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.6.11",
     "@vercel/analytics": "^1.4.1",
     "@vercel/kv": "^3.0.0",
     "@vercel/speed-insights": "^1.1.0",

@@ -2,11 +2,13 @@
 import { Metadata } from 'next'
 import Alert from '@/components/layout/alert'
 import Footer from '@/components/layout/footer'
-import {Navbar, NavbarSpacer} from "@/components/layout/navbar"
+
 import "styles/index.css"
 import React from "react";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import {getActivityIndicator} from "@/lib/api/activityIndicator";
+import MainNavbar from "@/components/layout/navbar";
 
 const faviconPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
 export const metadata: Metadata = {
@@ -38,12 +40,13 @@ export const metadata: Metadata = {
 export default async function RootLayout({children}: {
   children: React.ReactNode
 }) {
+  const initialState = await getActivityIndicator();
+
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body>
-        <Navbar />
+        <MainNavbar />;
         <div className="flex flex-col min-h-screen">
-          <NavbarSpacer />
           <Alert />
           <main className="flex-grow">{children}</main>
         </div>
