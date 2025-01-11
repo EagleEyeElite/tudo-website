@@ -4,7 +4,8 @@ import {kv} from "@vercel/kv";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 import { unstable_cacheTag as cacheTag } from 'next/cache'
 import { revalidateTag } from 'next/cache'
-import {buildState} from "@/lib/api/test";
+import buildState from "@/lib/api/test";
+
 
 export type ActivityIndicatorState = {
   open: null

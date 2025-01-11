@@ -1,9 +1,9 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {
-  buildState,
   getActivityIndicator,
   setActivityIndicator
 } from "lib/api/activityIndicator";
+import buildState from "@/lib/api/test";
 
 function parseBoolean(value: string | null): boolean | null {
   if (value === null) return null;
