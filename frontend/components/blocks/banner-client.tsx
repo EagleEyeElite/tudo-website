@@ -1,72 +1,66 @@
 'use client'
-import React, {ReactNode} from "react";
-import {ParallaxBanner} from 'react-scroll-parallax';
-import {BannerLayer} from "react-scroll-parallax/src/components/ParallaxBanner/types";
 
-export default function BannerClient({image}: {image: ReactNode}) {
+import React, {ReactNode, useEffect} from "react";
+import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
+import { useParallaxController } from 'react-scroll-parallax';
 
-  const Component = () => {
-    const background: BannerLayer = {
-      children: image,
-      translateY: [0, 20],
-      opacity: [0.4, 0.3],
-      scale: [1.05, 1, "easeIn"],
-      shouldAlwaysCompleteAnimation: true,
+
+function useUpdateControllerOnScrollTop() {
+  const parallaxController = useParallaxController();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        parallaxController?.update();
+      }
     };
 
-    const headline: BannerLayer = {
-      translateY: [0, 30],
-      scale: [1, 1.05, 'easeOutCubic'],
-      shouldAlwaysCompleteAnimation: true,
-      expanded: false,
-      className: "mix-blend-hard-light",
-      children: (
-        <div className="absolute inset-0 flex-col flex items-center justify-center text-white">
-          {/*
-          <h1 className="text-[10rem] font-bold tracking-tighter leading-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-            TuDo
-          </h1>
-          */}
-          <h1 className="text-[10rem] font-bold tracking-tighter leading-tight">
-            TuDo
-          </h1>
-          <h3 className="text-6xl font-bold tracking-tighter hidden sm:block">
-            Makerspace & Café
-          </h3>
-        </div>
-      ),
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [parallaxController]);
+}
 
-    const gradientOverlay: BannerLayer = {
-      opacity: [0, 0.9],
-      shouldAlwaysCompleteAnimation: true,
-      expanded: false,
-      children: (
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-blue-900"/>
-      ),
-    };
 
-    return <ParallaxBanner
-      layers={[background, headline, gradientOverlay]}
-      className="h-[60vh] w-full bg-gray-900"
-    />
-  };
+export default function BannerClient({bannerImage}: {bannerImage: ReactNode}) {
+  useUpdateControllerOnScrollTop();
 
   return (
     <section>
-      {/*<Container>
-        <div className="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-40 md:mb-12">
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
-            TuDo
-          </h1>
-          <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
-            A space for creativity and innovation.
-          </h4>
-        </div>
-      </Container>
-     */}
-      <Component/>
+      <ParallaxBanner
+        className="h-[60vh] w-full bg-gray-900"
+      >
+        <ParallaxBannerLayer
+          shouldAlwaysCompleteAnimation={true}
+          expanded={false}
+          translateY={[0, 20]}
+          opacity={[0.6, 0.2]}
+          scale={[1.05, 1, "easeOut"]}
+        >
+          {bannerImage}
+        </ParallaxBannerLayer>
+        <ParallaxBannerLayer
+          shouldAlwaysCompleteAnimation={true}
+          opacity={[0, 0.9]}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-blue-900"/>
+        </ParallaxBannerLayer>
+        <ParallaxBannerLayer
+          shouldAlwaysCompleteAnimation={true}
+          expanded={false}
+          translateY={ [0, 50]}
+          opacity={[1, 0.5, 'easeIn']}
+          scale={[1, 1.05, 'easeOut']}
+        >
+          <div className="absolute inset-0 flex-col flex items-center justify-center text-white">
+            <h1 className="text-[10rem] font-bold tracking-tighter leading-tight">
+              TuDo
+            </h1>
+            <h3 className="text-6xl font-bold tracking-tighter hidden sm:block">
+              Makerspace & Café
+            </h3>
+          </div>
+        </ParallaxBannerLayer>
+      </ParallaxBanner>
     </section>
-  )
+  );
 }
-
