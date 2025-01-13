@@ -74,11 +74,7 @@ const config = async (): Promise<NextConfig> => {
       }
       return config;
     },
-    env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
-    experimental: {
-      ppr: true,
-      dynamicIO: true,
-    },
+    env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() }
   };
 };
 

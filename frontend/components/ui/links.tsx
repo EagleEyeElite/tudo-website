@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link"
 
 type Link = {
     text: string,
@@ -17,13 +18,13 @@ export function CustomLink({ link }) {
     const externalAttrs = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
     return (
-      <a
+      <Link
         href={link.href}
         className={`mx-3 font-bold ${styling}`}
         {...externalAttrs}
       >
           {link.text}
-      </a>
+      </Link>
     );
 }
 

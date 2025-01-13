@@ -1,8 +1,9 @@
 import {OPENING_HOURS_PATH} from "@/lib/constants";
 import React from "react";
+import Link from "next/link";
 
 export function OpenButton() {
-  return <a
+  return <Link
     className={`
       group
       flex
@@ -40,5 +41,5 @@ export function OpenButton() {
     >
   Geöffnet
   </span>
-  </a>
+  </Link>
 }

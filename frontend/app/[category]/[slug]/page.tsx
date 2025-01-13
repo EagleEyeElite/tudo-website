@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { childPagesByParentId, getAllParentPagesAsSlug, getPageByTitle } from "lib/api/wordpress"
-import ContentDefault from "@/components/page-templates/content-default";
-import { convertPage } from "@/lib/convertApiInterfaces";
+import ContentDefault from "@/components/page-templates/content-default"
+import { convertPage } from "@/lib/convertApiInterfaces"
 
+export const revalidate = 60
 
 export async function generateStaticParams() {
   const parentSlugs = await getAllParentPagesAsSlug()
@@ -28,33 +29,24 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const page = await getPageByTitle(slug);
-  if (!page) {
-    notFound()
-  }
-
-  return {
-    title: page.title,
-  }
+  const { slug } = await params
+  const page = await getPageByTitle(slug)
+  if (!page) notFound()
+  return { title: page.title }
 }
 
 export default async function Page({ params }: Props) {
-  const { slug } = await params;
-  const page = await getPageByTitle(slug);
-  if (!page) {
-    notFound();
-  }
-
-  const headerLinkProps = page.parent ? {
-    title: page.parent.title!,
-    href: `/${page.parent.slug}`
-  } : undefined;
+  const { slug } = await params
+  const page = await getPageByTitle(slug)
+  if (!page) notFound()
 
   const content = {
     ...convertPage(page),
-    headerLink: headerLinkProps
-  };
+    headerLink: page.parent ? {
+      title: page.parent.title!,
+      href: `/${page.parent.slug}`
+    } : undefined
+  }
 
-  return <ContentDefault content={content} />;
+  return <ContentDefault content={content} />
 }

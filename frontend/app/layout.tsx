@@ -1,12 +1,13 @@
-'use cache'
 import { Metadata } from 'next'
 import Alert from '@/components/layout/alert'
 import Footer from '@/components/layout/footer'
-import {Navbar, NavbarSpacer} from "@/components/layout/navbar"
+import { Navbar } from "@/components/layout/navbar"
 import "styles/index.css"
-import React from "react";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import React from "react"
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+
+export const revalidate = 1
 
 const faviconPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
 export const metadata: Metadata = {
@@ -38,19 +39,19 @@ export const metadata: Metadata = {
 export default async function RootLayout({children}: {
   children: React.ReactNode
 }) {
+
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body>
-        <Navbar />
-        <div className="flex flex-col min-h-screen">
-          <NavbarSpacer />
-          <Alert />
-          <main className="flex-grow">{children}</main>
-        </div>
-        <Footer />
-        <Analytics />
-        <SpeedInsights />
-      </body>
+    <html lang="en" suppressHydrationWarning>
+    <body>
+    <Navbar/>
+    <div className="flex flex-col min-h-[calc(100vh-4rem)]">
+      <Alert/>
+      <main className="flex-grow">{children}</main>
+    </div>
+    <Footer/>
+    <Analytics/>
+    <SpeedInsights/>
+    </body>
     </html>
   )
 }

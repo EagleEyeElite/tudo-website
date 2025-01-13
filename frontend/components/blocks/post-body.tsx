@@ -3,16 +3,18 @@ import parse, {DOMNode, domToReact, Element} from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
 import OpenStatusCard from "@/components/blocks/open-status-card";
+import Link from "next/link";
 
-function Link({ link }) {
+
+function CustomLink({ link }) {
   const isExternal = link.href?.startsWith('http://') || link.href?.startsWith('https://');
   const externalAttrs = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
-    <a href={link.href} {...externalAttrs} className="inline-flex items-center">
+    <Link href={link.href} {...externalAttrs} className="inline-flex items-center">
       {link.children}
       {isExternal && <MdOpenInNew/>}
-    </a>
+    </Link>
   );
 }
 
@@ -41,7 +43,7 @@ export default function PostBody({content}: { content: string | null }) {
 
         case 'a':
           const children = domToReact(domNode.children as DOMNode[]);
-          return <Link link={{children, href: domNode.attribs.href}}/>;
+          return <CustomLink link={{children, href: domNode.attribs.href}}/>;
 
         case 'openstatus':
           return <OpenStatusCard />;

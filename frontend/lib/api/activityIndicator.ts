@@ -1,7 +1,6 @@
-import {kv} from "@vercel/kv";
-import { unstable_cacheLife as cacheLife } from "next/cache";
-import { unstable_cacheTag as cacheTag } from 'next/cache'
-import { revalidateTag } from 'next/cache'
+import { kv } from "@vercel/kv";
+import {revalidatePath, revalidateTag} from 'next/cache'
+import { unstable_cache } from 'next/cache'
 
 export type ActivityIndicatorState = {
   open: null
@@ -16,35 +15,41 @@ export type ActivityIndicatorState = {
  */
 export function buildState(open: boolean | null): ActivityIndicatorState {
   if (open === null) {
-    return {open: null} as ActivityIndicatorState
+    return { open: null }
   }
-  return {open: open, timestamp: new Date()} as ActivityIndicatorState;
+  return {
+    open,
+    timestamp: new Date()
+  }
 }
 
+const getKvState = unstable_cache(
+  async () => {
+    const state = await kv.get('activityIndicator') as ActivityIndicatorState | null
+    return state ?? buildState(null)
+  },
+  ['activityIndicator'],
+  {
+    revalidate: 30,
+    tags: ['activity-status']
+  }
+)
 
 /**
  * Queries the KV DB for the current state of the activity indicator
  */
-export async function getActivityIndicator() {
-  'use cache'
-  cacheLife({
-    revalidate: 1,
-    expire: Infinity,
-  })
-  cacheTag('activityIndicator')
-  let state = await kv.get('activityIndicator') as ActivityIndicatorState | null;
-  if (state === null) {
-    return buildState(null);
-  }
-  return state;
+export async function getActivityIndicator(): Promise<ActivityIndicatorState> {
+  'use server'
+  return getKvState()
 }
 
 /**
  * Sets the state of the activity indicator in the KV DB
- * @param state
+ * @param state The new activity indicator state
  */
-export async function setActivityIndicator(state: ActivityIndicatorState) {
+export async function setActivityIndicator(state: ActivityIndicatorState): Promise<void> {
   'use server'
-  await kv.set('activityIndicator', state);
-  revalidateTag('activityIndicator')
+  await kv.set('activityIndicator', state)
+  revalidateTag('activity-status')
+  revalidatePath('/', 'layout')     // Root layout and its routes
 }

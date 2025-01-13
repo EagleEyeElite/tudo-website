@@ -1,5 +1,5 @@
 'use client'
-
+import Link from "next/link";
 import React, {useState, useEffect, useRef} from "react";
 import { FaAngleRight } from 'react-icons/fa';
 
@@ -46,9 +46,9 @@ const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdow
         >
           {link.links.map((subLink, index) => (
             <li key={index} className="hover:bg-gray-100">
-              <a href={subLink.href} className="block w-full px-4 py-2">
+              <Link href={subLink.href} className="block w-full px-4 py-2">
                 {subLink.text}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

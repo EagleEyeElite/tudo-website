@@ -109,12 +109,21 @@ export interface MorePostPropsApi {
   author: AuthorPropsApi | null;
 }
 
-export async function getHeroPostForHome() {
-  'use cache'
-  const data = await sdk.AllPostsAndWelcomePage();
+type HeroPost = {
+  title: string | null
+  excerpt: string | null
+  slug: string | null
+  date: string | null
+  featuredImageUrl: string | null
+  author: null
+}
+
+export async function getHeroPostForHome(): Promise<HeroPost> {
+  const data = await sdk.AllPostsAndWelcomePage()
   const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
+
   if (!(dataWelcomePost && dataWelcomePost.__typename === 'Page')) {
-    throw new Error('Welcome page not found');
+    throw new Error('Welcome page not found')
   }
 
   return {

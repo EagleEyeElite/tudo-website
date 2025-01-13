@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { formatDistanceToNow } from 'date-fns';
+import {formatDistance, formatDistanceToNow } from 'date-fns';
 import { ActivityIndicatorState } from "@/lib/api/activityIndicator";
 import useSWR from 'swr';
 
@@ -9,8 +9,8 @@ interface OpenStatusProps {
   initialData: ActivityIndicatorState;
 }
 
-export default function OpenStatusClient({ fetchFnAction, initialData }: OpenStatusProps) {
-  const { data } = useSWR('open-status', fetchFnAction, {
+export default function OpenStatusClient({ fetchFnAction, initialData}: OpenStatusProps) {
+  const { data, error } = useSWR('open-status', fetchFnAction, {
     refreshInterval: 5 * 60 * 1000,  // Poll every 5 minutes
     revalidateOnFocus: true,         // Fetch when tab is focused
     revalidateOnReconnect: true,     // Fetch when internet reconnects
@@ -26,8 +26,8 @@ export default function OpenStatusClient({ fetchFnAction, initialData }: OpenSta
 
   let timeAgo = 'N/A';
   if ('timestamp' in data && data.timestamp) {
-    const date = new Date(data.timestamp);
-    timeAgo = formatDistanceToNow(date, { addSuffix: true });
+    const now = performance.timeOrigin + performance.now();
+    timeAgo = formatDistance(data.timestamp, now, { addSuffix: true });
   }
 
   return (
