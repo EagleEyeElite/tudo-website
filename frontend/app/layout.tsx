@@ -7,7 +7,7 @@ import React from "react"
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
-export const revalidate = 1
+export const revalidate = 10
 
 const faviconPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
 export const metadata: Metadata = {
