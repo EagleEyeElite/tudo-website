@@ -117,9 +117,40 @@ export default function PostBody({content}: { content: string | null }) {
         [&>blockquote>cite]:not-italic
       
         [&>audio]:w-full
+        
+       
+        [&_.wp-block-image_img]:max-w-full 
+        [&_.wp-block-image_img]:mt-2
+       
+        [&_.wp-block-image.aligncenter]:text-center
+    
+        [&_.wp-block-image.alignfull_img]:w-full
+        [&_.wp-block-image.alignwide_img]:w-full
+
+        [&_.wp-block-image_.aligncenter]:table
+        [&_.wp-block-image.is-resized]:table
+        [&_.wp-block-image_.aligncenter]:mx-0
+        [&_.wp-block-image.is-resized]:mx-0
+
+        [&_.wp-block-image_.aligncenter>figcaption]:table-caption
+        [&_.wp-block-image.is-resized>figcaption]:table-caption
+        [&_.wp-block-image_.aligncenter>figcaption]:[caption-side:bottom]
+        [&_.wp-block-image.is-resized>figcaption]:[caption-side:bottom]
+      
+        [&_.wp-block-image_.alignleft]:float-left
+        [&_.wp-block-image_.alignleft]:mr-4
+        [&_.wp-block-image_.alignleft>figcaption]:table-caption
+        [&_.wp-block-image_.alignleft>figcaption]:[caption-side:bottom]
+      
+        [&_.wp-block-image_.alignright]:float-right
+        [&_.wp-block-image_.alignright]:ml-4
+        [&_.wp-block-image_.alignright>figcaption]:table-caption
+        [&_.wp-block-image_.alignright>figcaption]:[caption-side:bottom]
+      
+        [&_.wp-block-image_.aligncenter]:m-auto
       `}>
-        {processedContent}
-      </div>
+          {processedContent}
+        </div>
     </div>
   );
 }
