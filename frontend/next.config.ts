@@ -2,8 +2,8 @@ import path from 'path';
 import { NextConfig } from 'next';
 import dotenvSafe from 'dotenv-safe';
 import dotenvExpand from 'dotenv-expand';
-import { getInitializedSdk } from "@/lib/api/wordpress";
-import type {ImageConfig} from "next/dist/shared/lib/image-config";
+import type {ImageConfig} from 'next/dist/shared/lib/image-config';
+import { getInitializedSdk } from './src/lib/api/wordpress';
 
 function loadEnvFile() {
   // When running tests, don't use any production services, use the .env.example file for now
@@ -74,8 +74,9 @@ const config = async (): Promise<NextConfig> => {
       }
       return config;
     },
-    env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() }
-  };
+    env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
+
+  } satisfies NextConfig;
 };
 
 export default config;

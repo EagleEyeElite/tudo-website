@@ -6,8 +6,11 @@
       "dom.iterable",
       "esnext"
     ],
-    "baseUrl": ".",
-    "paths": { "@/*": ["./*"] },
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@public/*": ["../public/*"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,

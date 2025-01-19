@@ -1,3 +1,7 @@
+/*
+ * used for IDE only
+ */
+
 const dotenv = require('dotenv-safe');
 const dotenvExpand = require('dotenv-expand');
 
