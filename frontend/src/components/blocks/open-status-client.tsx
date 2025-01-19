@@ -32,11 +32,11 @@ export default function OpenStatusClient({ fetchFnAction, initialData}: OpenStat
 
   return (
     <div className={`p-4 rounded-lg shadow-sm ${bgColor} ${borderColor} border`}>
-      <h2 className="text-xl font-semibold mb-2 text-black">Activity Status</h2>
-      <p className="mb-1 text-black">
+      <h2 className="font-semibold text-3xl mt-12 mb-4 leading-snug text-black">Activity Status</h2>
+      <p className="mb-1 my-6 text-black">
         Status: <span className={`font-bold ${highlightColor}`}>{status}</span>
       </p>
-      <p className="text-sm text-black">
+      <p className="text-sm my-6 text-black">
         {status !== 'Unknown' ? `updated ${timeAgo}` : 'No timestamp available'}
       </p>
     </div>

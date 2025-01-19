@@ -1,4 +1,3 @@
-import styles from '@/components/post-body.module.css'
 import parse, {DOMNode, domToReact, Element} from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
@@ -56,7 +55,69 @@ export default function PostBody({content}: { content: string | null }) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className={styles.content}>
+      <div className={`
+        text-lg leading-relaxed
+      
+        [&>p]:my-6 
+        [&>ul]:my-6 
+        [&>ol]:my-6 
+        [&>blockquote]:my-6
+      
+        [&>a]:underline
+      
+        [&>ul]:pl-4 
+        [&>ol]:pl-4
+        [&>ul]:list-disc
+        [&>ol]:list-decimal
+      
+        [&>ul>li>ul]:my-0 
+        [&>ul>li>ul]:ml-4 
+        [&>ol>li>ol]:my-0 
+        [&>ol>li>ol]:ml-4
+        [&>ul>li>ul]:list-[circle]
+      
+        [&>h2]:text-3xl 
+        [&>h2]:mt-12 
+        [&>h2]:mb-4 
+        [&>h2]:leading-snug
+      
+        [&>h3]:text-2xl 
+        [&>h3]:mt-8 
+        [&>h3]:mb-4 
+        [&>h3]:leading-snug
+      
+        [&>h4]:text-xl 
+        [&>h4]:mt-6 
+        [&>h4]:mb-4 
+        [&>h4]:leading-snug
+      
+        [&>pre]:whitespace-pre 
+        [&>pre]:overflow-x-auto 
+        [&>pre]:p-4 
+        [&>pre]:text-sm 
+        [&>pre]:leading-tight 
+        [&>pre]:border 
+        [&>pre]:border-gray-400 
+        [&>pre]:bg-gray-100
+      
+        [&>code]:text-sm
+      
+        [&>figcaption]:text-center 
+        [&>figcaption]:text-sm
+      
+        [&>blockquote]:border-l-4 
+        [&>blockquote]:border-gray-500 
+        [&>blockquote]:bg-gray-200 
+        [&>blockquote]:italic 
+        [&>blockquote]:ml-0 
+        [&>blockquote]:py-4 
+        [&>blockquote]:px-6
+      
+        [&>blockquote>p]:mt-0
+        [&>blockquote>cite]:not-italic
+      
+        [&>audio]:w-full
+      `}>
         {processedContent}
       </div>
     </div>
