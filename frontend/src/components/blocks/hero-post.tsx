@@ -4,6 +4,7 @@ import HeroLinks from '@/components/ui/hero-links'
 import React from 'react'
 import { getHeroPostForHome } from '@/lib/api/wordpress'
 import { convertCoverImage } from '@/lib/convertApiInterfaces'
+import { HTMLRenderer } from '@/components/render/renderWordpress';
 
 type HeroPostProps = {
   title: string;
@@ -24,9 +25,10 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
         >
           <Link
             href={`/about-us/${slug}`}
-            className="hover:underline inline-block align-middle"
-            dangerouslySetInnerHTML={{__html: title}}
-          />
+            className="hover:underline inline-block align-middle prose prose-l"
+          >
+            <HTMLRenderer content={title} />
+          </Link>
         </h2>
       </div>
 
@@ -35,9 +37,10 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
       </div>
 
       <div
-        className="text-lg leading-relaxed mb-10 md:mb-14 max-w-screen-md mx-auto"
-        dangerouslySetInnerHTML={{__html: excerpt}}
-      />
+        className="mb-10 md:mb-14 max-w-screen-md mx-auto prose prose-l"
+      >
+        <HTMLRenderer content={title} />
+      </div>
     </section>
   )
 }
