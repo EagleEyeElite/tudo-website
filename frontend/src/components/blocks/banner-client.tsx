@@ -1,28 +1,26 @@
 'use client'
 
-import React, {ReactNode, useEffect} from 'react';
-import {ParallaxBanner, ParallaxBannerLayer} from 'react-scroll-parallax';
-import { useParallaxController } from 'react-scroll-parallax';
+import React, { ReactNode, useEffect } from 'react';
+import { ParallaxBanner, ParallaxBannerLayer, useParallaxController } from 'react-scroll-parallax';
+import { usePathname } from 'next/navigation';
 
-
-function useUpdateControllerOnScrollTop() {
+export default function BannerClient({bannerImage}: {bannerImage: ReactNode}) {
+  const pathname = usePathname();
   const parallaxController = useParallaxController();
-
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY === 0) {
+    const handleSamePathNavigation = (e) => {
+      const link = e.target.closest('a');
+      if (!link) return;
+
+      const href = link.getAttribute('href');
+      if (href === pathname) {
         parallaxController?.update();
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [parallaxController]);
-}
-
-
-export default function BannerClient({bannerImage}: {bannerImage: ReactNode}) {
-  useUpdateControllerOnScrollTop();
+    document.addEventListener('click', handleSamePathNavigation);
+    return () => document.removeEventListener('click', handleSamePathNavigation);
+  }, [pathname, parallaxController]);
 
   return (
     <section>
