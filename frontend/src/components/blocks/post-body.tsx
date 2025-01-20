@@ -10,7 +10,7 @@ function CustomLink({ link }) {
   const externalAttrs = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
-    <Link href={link.href} {...externalAttrs} className="inline-flex items-center">
+    <Link href={link.href} {...externalAttrs} className="inline-flex items-center underline">
       {link.children}
       {isExternal && <MdOpenInNew/>}
     </Link>
@@ -110,7 +110,8 @@ export default function PostBody({content}: { content: string | null }) {
         [&>blockquote]:bg-gray-200 
         [&>blockquote]:italic 
         [&>blockquote]:ml-0 
-        [&>blockquote]:py-4 
+        [&>blockquote]:pt-4
+        [&>blockquote]:pb-10 
         [&>blockquote]:px-6
       
         [&>blockquote>p]:mt-0
