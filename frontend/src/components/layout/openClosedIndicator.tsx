@@ -5,12 +5,15 @@ import {CustomLink} from '@/components/ui/links';
 import {OPENING_HOURS_PATH} from '@/lib/constants';
 import {OpenButton} from '@/components/ui/open-button';
 import useSWR from 'swr';
+import { usePathname } from 'next/navigation';
 
 interface OpenClosedIndicatorProps {
   initialData: ActivityIndicatorState;
 }
 
 export default function ActivityIndicator({ initialData }: OpenClosedIndicatorProps) {
+  const pathname = usePathname(); // remove the hover effect on route change
+
   const { data, error } = useSWR(
     'activity-status',
     async () => {
@@ -28,7 +31,7 @@ export default function ActivityIndicator({ initialData }: OpenClosedIndicatorPr
   );
 
   if (error || !data?.open)
-    return <CustomLink link={{text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}} />;
+    return <CustomLink link={{text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}} key={pathname}/>;
 
-  return <OpenButton />
+  return <OpenButton key={pathname}/>
 }
