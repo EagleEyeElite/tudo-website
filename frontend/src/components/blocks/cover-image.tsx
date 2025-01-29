@@ -1,8 +1,7 @@
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
-import AdaptiveMaxHeightImage from '@/components/ui/adaptive-max-height-image';
-import React from 'react';
+import React from 'react'
 
 export interface CoverImageProps {
   title: string
@@ -19,41 +18,29 @@ export default function CoverImage(
   coverImageUrl,
   slug,
   href,
-  maxH = false,
-  priority = false
-} : CoverImageProps) {
-  if (!coverImageUrl){
-    return <></>
-  }
+  priority = false,
+}: CoverImageProps) {
+  if (!coverImageUrl) return null
 
-  let image: React.ReactNode;
-  if (maxH) {
-    image = <AdaptiveMaxHeightImage
-      src={coverImageUrl}
+  const image =  (
+    <Image
       alt={`Cover Image for ${title}`}
       priority={priority}
+      src={coverImageUrl}
+      width={2000}
+      height={1000}
+      className={cn('shadow-small', {
+        'hover:shadow-medium transition-shadow duration-200': slug,
+      })}
     />
-  } else {
-    image = (
-      <Image
-        width={2000}
-        height={1000}
-        alt={`Cover Image for ${title}`}
-        src={coverImageUrl}
-        className={cn('shadow-small', {
-          'hover:shadow-medium transition-shadow duration-200': slug,
-        })}
-        priority={priority}
-      />
-    )
-  }
+  )
+
+  if (!href)
+    return image
+
   return (
-    <div className="sm:mx-0">
-      {href ? (
-        <Link href={href} aria-label={title}>
-          {image}
-        </Link>
-      ) : image}
-    </div>
+    <Link href={href} aria-label={title}>
+      {image}
+    </Link>
   )
 }

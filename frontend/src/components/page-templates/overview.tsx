@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {PagePropsApi} from 'lib/api/wordpress';
 import Image from 'next/image';
 import React from 'react';
-import { HTMLRenderer } from '@/components/render/renderWordpress';
 
 export default function Overview({
   path,
@@ -28,8 +27,8 @@ export default function Overview({
             <li key={index} className="py-4 w-full border-b border-gray-300 last:border-b-0">
               <Link href={`/${path}/${childPage.slug}`} className="group">
                 <div className="flex flex-col">
-                  <h3 className="text-3xl mb-3 leading-snug self-start group-hover:underline prose prose-l">
-                    <HTMLRenderer content={childPage.title!} />
+                  <h3 className="text-3xl mb-3 leading-snug self-start group-hover:underline">
+                    {childPage.title!}
                   </h3>
                   {childPage.featuredImageUrl && (
                     <div

@@ -1,4 +1,4 @@
-import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
+import parse, { DOMNode, domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
 import OpenStatusCard from '@/components/blocks/open-status-card';
@@ -41,14 +41,12 @@ export function HTMLRenderer({
 
   const processedContent = parse(content, {
     replace(domNode) {
-      if (!(domNode instanceof Element && domNode.attribs)) {
+      if (!(domNode instanceof Element)) {
         return;
       }
       switch (domNode.name) {
-        case 'img':
+        case 'img': {
           const { src, alt, width, height } = domNode.attribs;
-
-          // Get alignment class from WordPress parent
           const alignmentClass = (domNode.parent as Element)?.attribs?.class?.match(/align(left|right|center|wide|full)/)?.[0] || '';
 
           return (
@@ -69,10 +67,12 @@ export function HTMLRenderer({
               `}
             />
           );
+        }
 
-        case 'a':
+        case 'a': {
           const children = domToReact(domNode.children as DOMNode[]);
           return <CustomLink link={{ children, href: domNode.attribs.href }} />;
+        }
 
         case 'openstatus':
           return <OpenStatusCard />;
@@ -84,7 +84,7 @@ export function HTMLRenderer({
   });
 
   const proseClasses = proseSize === 'base' ? 'prose' : `prose prose-${proseSize}`;
-  const combinedClasses = `max-w-2xl mx-auto ${proseClasses} ${className} `;
+  const combinedClasses = `${proseClasses} ${className} `;
 
   return (
     <div className={combinedClasses}>

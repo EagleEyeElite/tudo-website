@@ -19,5 +19,5 @@ function CustomLink({ link }) {
 }
 
 export default function PostBody({content}: { content: string | null }) {
-  return <HTMLRenderer content={content} />;
+  return <HTMLRenderer content={content} className="max-w-2xl mx-auto" />;
 }

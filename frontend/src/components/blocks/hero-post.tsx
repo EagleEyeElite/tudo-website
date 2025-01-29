@@ -1,10 +1,10 @@
-import CoverImage from '@/components/blocks/cover-image'
 import Link from 'next/link'
 import HeroLinks from '@/components/ui/hero-links'
 import React from 'react'
 import { getHeroPostForHome } from '@/lib/api/wordpress'
 import { convertCoverImage } from '@/lib/convertApiInterfaces'
 import { HTMLRenderer } from '@/components/render/renderWordpress';
+import AdaptiveMaxHeightImage from '@/components/ui/adaptive-max-height-image';
 
 type HeroPostProps = {
   title: string;
@@ -25,22 +25,21 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
         >
           <Link
             href={`/about-us/${slug}`}
-            className="hover:underline inline-block align-middle prose prose-l"
+            className="hover:underline inline-block align-middle"
           >
-            <HTMLRenderer content={title} />
+            {title}
           </Link>
         </h2>
       </div>
 
       <div className="mb-8 md:mb-16">
-        <CoverImage {...coverImage} maxH={true} priority={true}/>
+        <AdaptiveMaxHeightImage
+          alt={`Cover Image for ${title}`}
+          priority={true}
+          src={coverImage.coverImageUrl}
+        />
       </div>
-
-      <div
-        className="mb-10 md:mb-14 max-w-screen-md mx-auto prose prose-l"
-      >
-        <HTMLRenderer content={title} />
-      </div>
+      <HTMLRenderer content={excerpt} className={"text-lg leading-relaxed mb-10 md:mb-14 mx-auto"}/>
     </section>
   )
 }
