@@ -24,24 +24,6 @@ function CustomLink({ link }: CustomLinkProps) {
   );
 }
 
-// WordPress specific image styles that aren't covered by @tailwindcss/typography
-const WP_IMAGE_STYLES = `
-  [&_.wp-block-image_img]:max-w-full 
-  [&_.wp-block-image_img]:mt-2
-  
-  [&_.wp-block-image.aligncenter]:text-center
-  [&_.wp-block-image.alignfull_img]:w-full
-  [&_.wp-block-image.alignwide_img]:w-full
-  
-  [&_.wp-block-image_.alignleft]:float-left
-  [&_.wp-block-image_.alignleft]:mr-4
-  
-  [&_.wp-block-image_.alignright]:float-right
-  [&_.wp-block-image_.alignright]:ml-4
-  
-  [&_.wp-block-image_.aligncenter]:m-auto
-`;
-
 interface HTMLRendererProps {
   content: string | null;
   className?: string;
@@ -65,13 +47,26 @@ export function HTMLRenderer({
       switch (domNode.name) {
         case 'img':
           const { src, alt, width, height } = domNode.attribs;
+
+          // Get alignment class from WordPress parent
+          const alignmentClass = (domNode.parent as Element)?.attribs?.class?.match(/align(left|right|center|wide|full)/)?.[0] || '';
+
           return (
             <Image
               src={src}
               width={Number.parseInt(width)}
               height={Number.parseInt(height)}
               alt={alt || 'image'}
-              className="object-cover"
+              style={{ objectFit: 'cover' }}
+              className={`
+                mt-2 
+                [&.alignfull]:w-full 
+                [&.alignwide]:w-full
+                [&.alignleft]:float-left [&.alignleft]:mr-4
+                [&.alignright]:float-right [&.alignright]:ml-4
+                [&.aligncenter]:mx-auto
+                ${alignmentClass}
+              `}
             />
           );
 
@@ -89,7 +84,7 @@ export function HTMLRenderer({
   });
 
   const proseClasses = proseSize === 'base' ? 'prose' : `prose prose-${proseSize}`;
-  const combinedClasses = `max-w-2xl mx-auto ${proseClasses} ${WP_IMAGE_STYLES} ${className}`;
+  const combinedClasses = `max-w-2xl mx-auto ${proseClasses} ${className} `;
 
   return (
     <div className={combinedClasses}>
