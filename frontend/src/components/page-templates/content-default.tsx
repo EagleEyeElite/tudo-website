@@ -43,7 +43,7 @@ function ContentHeader({ title, coverImage, author }: Pick<ContentDefaultProps, 
 
 function ContentFooter({ date, categories, tags }: Pick<ContentDefaultProps, 'date' | 'categories' | 'tags'>) {
   return (
-    <div className="max-w-2xl mx-auto mb-6 text-lg">
+    <div className="max-w-2xl mx-auto pt-8 text-lg">
       {date && <> Posted <Date dateString={date} /> </>}
       {categories && <Categories categories={categories} />}
       {tags?.length! > 0 && <Tags tags={tags!} />}

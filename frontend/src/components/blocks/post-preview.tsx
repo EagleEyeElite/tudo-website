@@ -30,9 +30,7 @@ export default function PostPreview({
         <h3 className="text-3xl leading-snug">{title}</h3>
       </Link>
       <Date className="block text-lg pt-3" dateString={date} />
-      <HTMLRenderer
-        content={excerpt}
-        className="text-lg leading-relaxed py-4"
+      <HTMLRenderer content={excerpt} className="py-4"
       />
       <Avatar author={author} />
     </div>

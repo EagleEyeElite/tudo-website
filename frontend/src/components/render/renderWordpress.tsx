@@ -1,4 +1,4 @@
-import parse, { DOMNode, domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
+import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
 import OpenStatusCard from '@/components/blocks/open-status-card';
@@ -27,13 +27,11 @@ function CustomLink({ link }: CustomLinkProps) {
 interface HTMLRendererProps {
   content: string | null;
   className?: string;
-  proseSize?: 'sm' | 'base' | 'lg' | 'xl' | '2xl';
 }
 
 export function HTMLRenderer({
                                content,
-                               className = '',
-                               proseSize = 'lg'
+                               className = ''
                              }: HTMLRendererProps) {
   if (!content) {
     return null;
@@ -83,11 +81,8 @@ export function HTMLRenderer({
     }
   });
 
-  const proseClasses = proseSize === 'base' ? 'prose' : `prose prose-${proseSize}`;
-  const combinedClasses = `${proseClasses} ${className} `;
-
   return (
-    <div className={combinedClasses}>
+    <div className={`text-lg prose leading-relaxed ${className}`}>
       {processedContent}
     </div>
   );

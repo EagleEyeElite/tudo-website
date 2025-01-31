@@ -39,7 +39,7 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
           src={coverImage.coverImageUrl}
         />
       </div>
-      <HTMLRenderer content={excerpt} className={"text-lg leading-relaxed mb-10 md:mb-14 mx-auto"}/>
+      <HTMLRenderer content={excerpt} className={"mb-10 md:mb-14 mx-auto"}/>
     </section>
   )
 }
