@@ -4,20 +4,30 @@ import React from 'react';
 import {CustomLink} from '@/components/ui/links';
 import {OPENING_HOURS_PATH} from '@/lib/constants';
 import {OpenButton} from '@/components/ui/open-button';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { usePathname } from 'next/navigation';
 
 interface OpenClosedIndicatorProps {
   initialData: ActivityIndicatorState;
 }
 
-export default function ActivityIndicator({ initialData }: OpenClosedIndicatorProps) {
-  const pathname = usePathname(); // remove the hover effect on route change
+export default function ActivityIndicator(props: OpenClosedIndicatorProps) {
+  const pathname = usePathname();
+  // use path to remount on path change, to reset hover effect on navigation
+  return <ActivityIndicatorContent key={pathname} {...props} />;
+}
+
+function ActivityIndicatorContent({ initialData }: OpenClosedIndicatorProps) {
+  const pathname = usePathname();
+  const { mutate } = useSWRConfig();
 
   const { data, error } = useSWR(
     'activity-status',
     async () => {
-      const res = await fetch("/api/activityIndicator");
+      const res = await fetch("/api/activityIndicator", {
+        cache: 'no-store'
+      });
+      if (!res.ok) throw new Error('Failed to fetch');
       return await res.json() as ActivityIndicatorState;
     },
     {
@@ -30,8 +40,18 @@ export default function ActivityIndicator({ initialData }: OpenClosedIndicatorPr
     }
   );
 
-  if (error || !data?.open)
-    return <CustomLink link={{text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}} key={pathname}/>;
+  // Force revalidation on pathname change
+  React.useEffect(() => {
+    mutate('activity-status').catch(console.error);
+  }, [pathname, mutate]);
 
-  return <OpenButton key={pathname}/>
+  if (error || !data?.open) {
+    return (
+      <CustomLink
+        link={{text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}}
+      />
+    );
+  }
+
+  return <OpenButton />;
 }
