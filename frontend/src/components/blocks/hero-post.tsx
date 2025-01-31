@@ -32,14 +32,14 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
         </h2>
       </div>
 
-      <div className="mb-8 md:mb-16">
+      <Link href={`/about-us/${slug}`}>
         <AdaptiveMaxHeightImage
           alt={`Cover Image for ${title}`}
           priority={true}
           src={coverImage.coverImageUrl}
         />
-      </div>
-      <HTMLRenderer content={excerpt} className={"mb-10 md:mb-14 mx-auto"}/>
+      </Link>
+      <HTMLRenderer content={excerpt} className={"pt-8 md:pt-16 pb-10 md:pb-14 mx-auto"}/>
     </section>
   )
 }
