@@ -41,9 +41,19 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
         </Link>
       </NavbarContent>
 
-      <NavbarContent justify="end">
+
+      <NavbarContent justify="end" className="gap-4">
+        <NavbarItem>
+          <div className="relative">
+            <div className="h-3 w-3 rounded-full bg-green-500" />
+            <div
+              className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 [animation:delayedPing_3s_infinite]"
+            />
+          </div>
+          <style>{`@keyframes delayedPing{0%{transform:scale(1);opacity:.4}40%{transform:scale(2);opacity:0}41%,to{transform:scale(1);opacity:0}}`}</style>
+        </NavbarItem>
         <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
         />
       </NavbarContent>
 
