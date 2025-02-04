@@ -15,7 +15,13 @@ interface RootLayoutClientProps {
 export default function RootLayoutClient({ children, initialState }: RootLayoutClientProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
+  const frameCount = useRef(0);
+
+  // Reset frame count when menu state changes
+  useEffect(() => {
+    frameCount.current = 0;
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const applyTransform = () => {
@@ -37,22 +43,44 @@ export default function RootLayoutClient({ children, initialState }: RootLayoutC
       if (isMenuOpen) {
         // Apply transform with calculated origin
         element.style.transformOrigin = `${viewportCenterX}px ${originY}px`;
-        element.style.transform = 'scale(0.95)';
+
+        // Only apply transform after initial origin set
+        if (frameCount.current > 0) {
+          element.style.transform = 'scale(0.95)';
+        }
+
+        // Increment frame count
+        frameCount.current++;
+
+        // Request next frame if still within initial frames
+        if (frameCount.current <= 2) {
+          animationRef.current = requestAnimationFrame(applyTransform);
+        }
       } else {
         element.style.transform = 'none';
+        frameCount.current = 0;
       }
-
-      // Request next frame
-      animationRef.current = requestAnimationFrame(applyTransform);
     };
 
     // Start animation
     animationRef.current = requestAnimationFrame(applyTransform);
 
+    // Also update on scroll
+    const handleScroll = () => {
+      if (isMenuOpen) {
+        requestAnimationFrame(applyTransform);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
   }, [isMenuOpen]);
 
@@ -61,7 +89,7 @@ export default function RootLayoutClient({ children, initialState }: RootLayoutC
       <MainNavbar initialState={initialState} onMenuOpenChange={setIsMenuOpen} />
       <div
         ref={contentRef}
-        className="relative transition-all duration-300"
+        className="relative transition-transform duration-300"
       >
         <main className="min-h-[calc(100vh-4rem)]">
           {children}
