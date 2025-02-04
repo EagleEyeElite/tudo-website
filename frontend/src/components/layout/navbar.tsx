@@ -57,121 +57,126 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
   ];
 
   return (
-    <Navbar
-      isMenuOpen={isMenuOpen}
-      onMenuOpenChange={setIsMenuOpen}
-      className={`sticky top-0 z-50 border-b border-black/10 ${
-        isMenuOpen
-          ? 'bg-white'
-          : 'bg-white/70 backdrop-blur-md backdrop-saturate-150'
-      }`}
-      maxWidth="full"
-      height="4rem"
-      isBlurred={!isMenuOpen}
-    >
-      <NavbarContent>
-        <Link href="/" className="flex items-center" onClick={() => isMenuOpen && setIsMenuOpen(false)}>
-          <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
-          <h2 className="text-3xl font-bold tracking-tighter text-left pl-4">
-            Makerspace
-          </h2>
-        </Link>
-      </NavbarContent>
+    <>
+      {/* Single border element */}
+      <div className="fixed top-[4rem] left-0 right-0 border-b border-black/10 z-[9999]" />
 
-      <NavbarContent className="hidden lg:flex gap-4" justify="center">
-        {menuItems.map((item, index) => (
-          <NavbarItem key={`${item.name}-${index}`}>
-            <Dropdown>
-              <DropdownTrigger>
-                <button className="text-lg hover:text-primary transition-colors">
-                  {item.name}
-                </button>
-              </DropdownTrigger>
-              <DropdownMenu aria-label={`${item.name} navigation`}>
-                {item.links.map((link, linkIndex) => (
-                  <DropdownItem key={`${link.text}-${linkIndex}`}>
-                    <Link
-                      href={link.href}
-                      className="w-full text-lg hover:text-primary transition-colors"
-                    >
-                      {link.text}
-                    </Link>
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+      <Navbar
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        className={`sticky top-0 z-50 ${
+          isMenuOpen
+            ? 'bg-white'
+            : 'bg-white/70 backdrop-blur-md backdrop-saturate-150'
+        }`}
+        maxWidth="full"
+        height="4rem"
+        isBlurred={!isMenuOpen}
+      >
+        <NavbarContent>
+          <Link href="/" className="flex items-center" onClick={() => isMenuOpen && setIsMenuOpen(false)}>
+            <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
+            <h2 className="text-3xl font-bold tracking-tighter text-left pl-4">
+              Makerspace
+            </h2>
+          </Link>
+        </NavbarContent>
+
+        <NavbarContent className="hidden lg:flex gap-4" justify="center">
+          {menuItems.map((item, index) => (
+            <NavbarItem key={`${item.name}-${index}`}>
+              <Dropdown>
+                <DropdownTrigger>
+                  <button className="text-lg hover:text-primary transition-colors">
+                    {item.name}
+                  </button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label={`${item.name} navigation`}>
+                  {item.links.map((link, linkIndex) => (
+                    <DropdownItem key={`${link.text}-${linkIndex}`}>
+                      <Link
+                        href={link.href}
+                        className="w-full text-lg hover:text-primary transition-colors"
+                      >
+                        {link.text}
+                      </Link>
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarItem>
+          ))}
+        </NavbarContent>
+
+        <NavbarContent justify="end" className="gap-4">
+          <NavbarItem className="hidden md:flex">
+            <ActivityIndicator initialData={initialState} />
           </NavbarItem>
-        ))}
-      </NavbarContent>
 
-      <NavbarContent justify="end" className="gap-4">
-        <NavbarItem className="hidden md:flex">
-          <ActivityIndicator initialData={initialState} />
-        </NavbarItem>
+          <NavbarItem className={`md:hidden ${isMenuOpen ? "hidden" : "block"}`}>
+            <div className="relative">
+              <div className="h-3 w-3 rounded-full bg-green-500" />
+              <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 animate-ping" />
+            </div>
+          </NavbarItem>
 
-        <NavbarItem className={`md:hidden ${isMenuOpen ? "hidden" : "block"}`}>
-          <div className="relative">
-            <div className="h-3 w-3 rounded-full bg-green-500" />
-            <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 animate-ping" />
-          </div>
-        </NavbarItem>
+          <NavbarMenuToggle
+            className="lg:hidden"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          />
+        </NavbarContent>
 
-        <NavbarMenuToggle
-          className="lg:hidden"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        />
-      </NavbarContent>
-
-      <NavbarMenu
-        className="bg-white/70 backdrop-blur-md backdrop-saturate-150"
-        motionProps={{
-          variants: {
-            enter: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                duration: 0.2,
-                ease: "easeOut"
+        <NavbarMenu
+          className="bg-white/70 backdrop-blur-md backdrop-saturate-150"
+          motionProps={{
+            variants: {
+              enter: {
+                y: 0,
+                opacity: 1,
+                transition: {
+                  duration: 0.2,
+                  ease: "easeOut"
+                }
+              },
+              exit: {
+                y: "-30%",
+                opacity: 0,
+                transition: {
+                  duration: 0.2,
+                  ease: "easeIn"
+                }
               }
             },
-            exit: {
-              y: "-30%",
-              opacity: 0,
-              transition: {
-                duration: 0.2,
-                ease: "easeIn"
-              }
-            }
-          },
-          initial: { y: "-30%", opacity: 0 }
-        }}
-      >
-        <div className="flex justify-end md:hidden">
-          <ActivityIndicator initialData={initialState} />
-        </div>
-        {menuItems.map((item, index) => (
-          <div
-            key={`${item.name}-${index}`}
-            className="mt-6"
-          >
-            <div className="font-semibold text-xl mb-2">{item.name}</div>
-            {item.links.map((link, linkIndex) => (
-              <NavbarMenuItem
-                key={`${link.text}-${linkIndex}`}
-                className="mb-1"
-              >
-                <Link
-                  href={link.href}
-                  className="w-full py-2 text-lg hover:text-primary transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.text}
-                </Link>
-              </NavbarMenuItem>
-            ))}
+            initial: { y: "-30%", opacity: 0 }
+          }}
+        >
+          <div className="flex justify-end md:hidden">
+            <ActivityIndicator initialData={initialState} />
           </div>
-        ))}
-      </NavbarMenu>
-    </Navbar>
+          {menuItems.map((item, index) => (
+            <div
+              key={`${item.name}-${index}`}
+              className="mt-6"
+            >
+              <div className="font-semibold text-xl mb-2">{item.name}</div>
+              {item.links.map((link, linkIndex) => (
+                <NavbarMenuItem
+                  key={`${link.text}-${linkIndex}`}
+                  className="mb-1"
+                >
+                  <Link
+                    href={link.href}
+                    className="w-full py-2 text-lg hover:text-primary transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.text}
+                  </Link>
+                </NavbarMenuItem>
+              ))}
+            </div>
+          ))}
+        </NavbarMenu>
+      </Navbar>
+    </>
   );
 }
