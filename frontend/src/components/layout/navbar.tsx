@@ -21,10 +21,16 @@ import ActivityIndicator from "@/components/layout/openClosedIndicator";
 
 interface MainNavbarProps {
   initialState: ActivityIndicatorState;
+  onMenuOpenChange: (isOpen: boolean) => void;
 }
 
-export default function MainNavbar({ initialState }: MainNavbarProps) {
+export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const handleMenuChange = (open: boolean) => {
+    setIsMenuOpen(open);
+    onMenuOpenChange(open);
+  };
 
   const menuItems = [
     {
@@ -58,12 +64,11 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
 
   return (
     <>
-      {/* Single border element */}
       <div className="fixed top-[4rem] left-0 right-0 border-b border-black/10 z-[9999]" />
 
       <Navbar
         isMenuOpen={isMenuOpen}
-        onMenuOpenChange={setIsMenuOpen}
+        onMenuOpenChange={handleMenuChange}
         className={`sticky top-0 z-50 ${
           isMenuOpen
             ? 'bg-white'
@@ -74,7 +79,7 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
         isBlurred={!isMenuOpen}
       >
         <NavbarContent>
-          <Link href="/" className="flex items-center" onClick={() => isMenuOpen && setIsMenuOpen(false)}>
+          <Link href="/" className="flex items-center" onClick={() => isMenuOpen && handleMenuChange(false)}>
             <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
             <h2 className="text-3xl font-bold tracking-tighter text-left pl-4">
               Makerspace
@@ -167,7 +172,7 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
                   <Link
                     href={link.href}
                     className="w-full py-2 text-lg hover:text-primary transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => handleMenuChange(false)}
                   >
                     {link.text}
                   </Link>
