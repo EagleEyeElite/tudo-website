@@ -74,7 +74,6 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
         </Link>
       </NavbarContent>
 
-      {/* Desktop Navigation with Dropdowns - Only visible on large screens */}
       <NavbarContent className="hidden lg:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
           <NavbarItem key={`${item.name}-${index}`}>
@@ -101,40 +100,62 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
         ))}
       </NavbarContent>
 
-      {/* Right side content */}
       <NavbarContent justify="end" className="gap-4">
-        {/* Activity Indicator - Hidden on small screens */}
         <NavbarItem className="hidden md:flex">
           <ActivityIndicator initialData={initialState} />
         </NavbarItem>
 
-        {/* Green Ping - Only visible on small screens when menu is closed */}
-        <NavbarItem className={`md:hidden ${isMenuOpen ? 'hidden' : 'block'}`}>
+        <NavbarItem className={`md:hidden ${isMenuOpen ? "hidden" : "block"}`}>
           <div className="relative">
             <div className="h-3 w-3 rounded-full bg-green-500" />
-            <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 [animation:delayedPing_3s_infinite]" />
+            <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 animate-ping" />
           </div>
-          <style>{`@keyframes delayedPing{0%{transform:scale(1);opacity:.4}40%{transform:scale(2);opacity:0}41%,to{transform:scale(1);opacity:0}}`}</style>
         </NavbarItem>
 
-        {/* Burger Menu Toggle - Visible on all screens except large */}
         <NavbarMenuToggle
           className="lg:hidden"
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         />
       </NavbarContent>
 
-      {/* Mobile Menu */}
-      <NavbarMenu className="bg-white/70 backdrop-blur-md backdrop-saturate-150">
-        {/* Only show ActivityIndicator in menu for small screens */}
+      <NavbarMenu
+        className="bg-white/70 backdrop-blur-md backdrop-saturate-150"
+        motionProps={{
+          variants: {
+            enter: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.2,
+                ease: "easeOut"
+              }
+            },
+            exit: {
+              y: "-30%",
+              opacity: 0,
+              transition: {
+                duration: 0.2,
+                ease: "easeIn"
+              }
+            }
+          },
+          initial: { y: "-30%", opacity: 0 }
+        }}
+      >
         <div className="flex justify-end md:hidden">
           <ActivityIndicator initialData={initialState} />
         </div>
         {menuItems.map((item, index) => (
-          <div key={`${item.name}-${index}`} className="mt-6">
+          <div
+            key={`${item.name}-${index}`}
+            className="mt-6"
+          >
             <div className="font-semibold text-xl mb-2">{item.name}</div>
             {item.links.map((link, linkIndex) => (
-              <NavbarMenuItem key={`${link.text}-${linkIndex}`} className="mb-1">
+              <NavbarMenuItem
+                key={`${link.text}-${linkIndex}`}
+                className="mb-1"
+              >
                 <Link
                   href={link.href}
                   className="w-full py-2 text-lg hover:text-primary transition-colors"
