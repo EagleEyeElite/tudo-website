@@ -60,7 +60,7 @@ export default function MainNavbar({ initialState }: MainNavbarProps) {
     <Navbar
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className="sticky top-0 bg-white/70 border-b border-black/10 backdrop-blur-md backdrop-saturate-150 z-50"
+      className={`sticky top-0 bg-white/70 backdrop-blur-md backdrop-saturate-150 z-50 ${!isMenuOpen ? 'border-b border-black/10' : ''}`}
       maxWidth="full"
       height="4rem"
       isBlurred
