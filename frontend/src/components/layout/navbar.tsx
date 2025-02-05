@@ -19,6 +19,7 @@ import Link from "next/link";
 import TuDoLogo from "@public/assets/tudo-logo.svg";
 import { type ActivityIndicatorState } from "@/lib/api/activityIndicator";
 import ActivityIndicator from "@/components/layout/openClosedIndicator";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface MainNavbarProps {
   initialState: ActivityIndicatorState;
@@ -64,139 +65,154 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
   ];
 
   return (
-    <div className="sticky top-0 z-50">
-      {/* Layer 1: Fixed Blur Effect - Never changes */}
-      {!isMenuOpen && (
+    <>
+      {/* Animated full viewport overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 bg-white/70 backdrop-blur-md backdrop-saturate-150 origin-top"
+            style={{ zIndex: 48 }}
+            initial={{ scaleY: 0.7, opacity: 0 }}
+            animate={{ scaleY: 1, opacity: 1 }}
+            exit={{ scaleY: 0.7, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="sticky top-0 z-50">
+        {/* Layer 1: Fixed Blur Effect for navbar only */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 transition-opacity duration-200"
           style={{
-            zIndex: 1,
+            opacity: isMenuOpen ? 0 : 1,
             transform: 'translateZ(0)',
             willChange: 'transform',
             background: 'rgba(255, 255, 255, 0.7)',
             backdropFilter: 'blur(12px) saturate(150%)',
+            zIndex: 1,
           }}
         />
-      )}
 
-      {/* Layer 2: Main Content */}
-      <Navbar
-        isMenuOpen={isMenuOpen}
-        onMenuOpenChange={handleMenuChange}
-        className={isMenuOpen ? 'bg-white' : 'bg-transparent'}
-        maxWidth="full"
-        height="4rem"
-        style={{ zIndex: 2 }}
-        isBlurred={false}
-      >
-        <NavbarContent>
-          <Link href="/" className="flex items-center" onClick={() => isMenuOpen && handleMenuChange(false)}>
-            <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
-            <h2 className="text-3xl font-bold tracking-tighter text-left pl-4">
-              Makerspace
-            </h2>
-          </Link>
-        </NavbarContent>
-
-        <NavbarContent className="hidden lg:flex gap-4" justify="center">
-          {menuItems.map((item, index) => (
-            <NavbarItem key={`${item.name}-${index}`}>
-              <Dropdown>
-                <DropdownTrigger>
-                  <button className="text-lg hover:text-primary transition-colors">
-                    {item.name}
-                  </button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label={`${item.name} navigation`}>
-                  {item.links.map((link, linkIndex) => (
-                    <DropdownItem key={`${link.text}-${linkIndex}`}>
-                      <Link
-                        href={link.href}
-                        className="w-full text-lg hover:text-primary transition-colors"
-                      >
-                        {link.text}
-                      </Link>
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            </NavbarItem>
-          ))}
-        </NavbarContent>
-
-        <NavbarContent justify="end" className="gap-4">
-          <NavbarItem className="hidden md:flex">
-            <ActivityIndicator initialData={initialState} />
-          </NavbarItem>
-
-          <NavbarItem className={`md:hidden ${isMenuOpen ? "hidden" : "block"}`}>
-            <div className="relative">
-              <div className="h-3 w-3 rounded-full bg-green-500" />
-              <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 animate-ping" />
-            </div>
-          </NavbarItem>
-
-          <NavbarMenuToggle
-            className="lg:hidden"
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          />
-        </NavbarContent>
-
-        <NavbarMenu
-          className="bg-white/70 backdrop-blur-md backdrop-saturate-150"
-          style={{ zIndex: 4 }}
-          motionProps={{
-            variants: {
-              enter: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                  duration: 0.2,
-                  ease: "easeOut"
-                }
-              },
-              exit: {
-                y: "-30%",
-                opacity: 0,
-                transition: {
-                  duration: 0.2,
-                  ease: "easeIn"
-                }
-              }
-            },
-            initial: { y: "-30%", opacity: 0 }
-          }}
+        {/* Layer 2: Main Content */}
+        <Navbar
+          isMenuOpen={isMenuOpen}
+          onMenuOpenChange={handleMenuChange}
+          className={isMenuOpen ? 'bg-transparent' : 'bg-transparent'}
+          maxWidth="full"
+          height="4rem"
+          style={{ zIndex: 2 }}
+          isBlurred={false}
         >
-          <div className="flex justify-end md:hidden">
-            <ActivityIndicator initialData={initialState} />
-          </div>
-          {menuItems.map((item, index) => (
-            <div
-              key={`${item.name}-${index}`}
-              className="mt-6"
-            >
-              <div className="font-semibold text-xl mb-2">{item.name}</div>
-              {item.links.map((link, linkIndex) => (
-                <NavbarMenuItem
-                  key={`${link.text}-${linkIndex}`}
-                  className="mb-1"
-                >
-                  <Link
-                    href={link.href}
-                    className="w-full py-2 text-lg hover:text-primary transition-colors"
-                    onClick={() => handleMenuChange(false)}
-                  >
-                    {link.text}
-                  </Link>
-                </NavbarMenuItem>
-              ))}
-            </div>
-          ))}
-        </NavbarMenu>
-      </Navbar>
+          <NavbarContent>
+            <Link href="/" className="flex items-center" onClick={() => isMenuOpen && handleMenuChange(false)}>
+              <Image src={TuDoLogo} alt="TuDo" className="h-10 w-fit" />
+              <h2 className="text-3xl font-bold tracking-tighter text-left pl-4">
+                Makerspace
+              </h2>
+            </Link>
+          </NavbarContent>
 
-      {/* Border at the bottom */}
-      <div className="absolute bottom-0 left-0 right-0 border-b border-black/10" style={{ zIndex: 4 }} />
-    </div>
+          <NavbarContent className="hidden lg:flex gap-4" justify="center">
+            {menuItems.map((item, index) => (
+              <NavbarItem key={`${item.name}-${index}`}>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <button className="text-lg hover:text-primary transition-colors">
+                      {item.name}
+                    </button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label={`${item.name} navigation`}>
+                    {item.links.map((link, linkIndex) => (
+                      <DropdownItem key={`${link.text}-${linkIndex}`}>
+                        <Link
+                          href={link.href}
+                          className="w-full text-lg hover:text-primary transition-colors"
+                        >
+                          {link.text}
+                        </Link>
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </NavbarItem>
+            ))}
+          </NavbarContent>
+
+          <NavbarContent justify="end" className="gap-4">
+            <NavbarItem className="overflow-hidden hidden md:flex isolate">
+              <ActivityIndicator initialData={initialState} />
+            </NavbarItem>
+
+            <NavbarItem className={`md:hidden ${isMenuOpen ? "hidden" : "block"}`}>
+              <div className="relative">
+                <div className="h-3 w-3 rounded-full bg-green-500" />
+                <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 animate-ping" />
+              </div>
+            </NavbarItem>
+
+            <NavbarMenuToggle
+              className="lg:hidden"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            />
+          </NavbarContent>
+
+          <NavbarMenu
+            className="pt-6 bg-transparent mt-4"
+            style={{ zIndex: 49 }}
+            motionProps={{
+              variants: {
+                enter: {
+                  y: 0,
+                  opacity: 1,
+                  transition: {
+                    duration: 0.2,
+                    ease: 'easeOut',
+                  },
+                },
+                exit: {
+                  y: '-30%',
+                  opacity: 0,
+                  transition: {
+                    duration: 0.2,
+                    ease: 'easeIn',
+                  },
+                },
+              },
+              initial: { y: '-30%', opacity: 0 },
+            }}
+          >
+            <div className="flex justify-end md:hidden">
+              <ActivityIndicator initialData={initialState} />
+            </div>
+            {menuItems.map((item, index) => (
+              <div
+                key={`${item.name}-${index}`}
+                className="mt-6"
+              >
+                <div className="font-semibold text-xl mb-2">{item.name}</div>
+                {item.links.map((link, linkIndex) => (
+                  <NavbarMenuItem
+                    key={`${link.text}-${linkIndex}`}
+                    className="mb-1"
+                  >
+                    <Link
+                      href={link.href}
+                      className="w-full py-2 text-lg hover:text-primary transition-colors"
+                      onClick={() => handleMenuChange(false)}
+                    >
+                      {link.text}
+                    </Link>
+                  </NavbarMenuItem>
+                ))}
+              </div>
+            ))}
+          </NavbarMenu>
+        </Navbar>
+
+        {/* Border at the bottom */}
+        <div className="absolute bottom-0 left-0 right-0 border-b border-black/10" style={{ zIndex: 2 }} />
+      </div>
+    </>
   );
 }
