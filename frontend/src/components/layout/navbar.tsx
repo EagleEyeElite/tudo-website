@@ -1,3 +1,4 @@
+// components/layout/navbar.tsx
 'use client'
 
 import React from "react";
@@ -63,20 +64,30 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
   ];
 
   return (
-    <>
-      <div className="fixed top-[4rem] left-0 right-0 border-b border-black/10 z-[9999]" />
+    <div className="sticky top-0 z-50">
+      {/* Layer 1: Fixed Blur Effect - Never changes */}
+      {!isMenuOpen && (
+        <div
+          className="absolute inset-0"
+          style={{
+            zIndex: 1,
+            transform: 'translateZ(0)',
+            willChange: 'transform',
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(12px) saturate(150%)',
+          }}
+        />
+      )}
 
+      {/* Layer 2: Main Content */}
       <Navbar
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={handleMenuChange}
-        className={`sticky top-0 z-50 ${
-          isMenuOpen
-            ? 'bg-white'
-            : 'bg-white/70 backdrop-blur-md backdrop-saturate-150'
-        }`}
+        className={isMenuOpen ? 'bg-white' : 'bg-transparent'}
         maxWidth="full"
         height="4rem"
-        isBlurred={!isMenuOpen}
+        style={{ zIndex: 2 }}
+        isBlurred={false}
       >
         <NavbarContent>
           <Link href="/" className="flex items-center" onClick={() => isMenuOpen && handleMenuChange(false)}>
@@ -133,6 +144,7 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
 
         <NavbarMenu
           className="bg-white/70 backdrop-blur-md backdrop-saturate-150"
+          style={{ zIndex: 4 }}
           motionProps={{
             variants: {
               enter: {
@@ -182,6 +194,9 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
           ))}
         </NavbarMenu>
       </Navbar>
-    </>
+
+      {/* Border at the bottom */}
+      <div className="absolute bottom-0 left-0 right-0 border-b border-black/10" style={{ zIndex: 4 }} />
+    </div>
   );
 }

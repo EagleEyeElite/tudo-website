@@ -1,45 +1,49 @@
-import {OPENING_HOURS_PATH} from '@/lib/constants';
+// components/layout/openButton.tsx
+import { OPENING_HOURS_PATH } from '@/lib/constants';
 import React from 'react';
 import Link from 'next/link';
 
 export function OpenButton() {
-  return <Link
-    className={`
-      group
-      flex
-      relative
-      mx-3 
-      
-      before:absolute before:inset-0 before:-z-10
-      before:bg-gradient-to-br before:from-green-400 before:via-green-500 before:to-green-600
-      before:hover:opacity-0 before:transition-all before:duration-50
-      
-      after:absolute after:inset-0 after:-z-30
-      after:shadow-lg after:shadow-green-500/50
-      after:hover:-translate-y-1.5
-      after:duration-200 after:transition-all
-    `}
-    href={OPENING_HOURS_PATH}
-  >
-    <span
-      className="
-  relative
-  isolate
-  overflow-hidden
-  py-3 px-12 lg:px-8
-  font-bold text-white
+  return (
+    <div className="relative isolate" style={{ contain: 'paint layout style' }}>
+      {/* Base Button */}
+      <Link
+        href={OPENING_HOURS_PATH}
+        className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none"
+      >
+        <span className="relative z-10">Geöffnet</span>
+      </Link>
 
-  before:absolute before:inset-0 before:-z-10
-  before:bg-gradient-to-tl before:from-green-400 before:to-green-600
-  before:opacity-0 before:group-hover:opacity-100 before:transition-all before:duration-50
+      {/* Fixed Animation Layer */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 overflow-hidden rounded-md pointer-events-none"
+        style={{
+          mixBlendMode: 'plus-lighter',
+          willChange: 'transform',
+          transform: 'translate3d(0, 0, 0)'
+        }}
+      >
+        <div
+          className="absolute inset-0 bg-green-500/30"
+          style={{
+            animation: 'buttonSlide 2s ease-in-out infinite',
+            willChange: 'transform',
+            transform: 'translate3d(0, 0, 0)'
+          }}
+        />
+      </div>
 
-  after:absolute after:inset-0
-  after:bg-gradient-to-r after:from-transparent after:via-rose-100/30 after:to-transparent
-  after:group-hover:opacity-0 after:-translate-x-full after:animate-[shimmer_4s_infinite]
-  after:z-20
-  "
-    >
-  Geöffnet
-  </span>
-  </Link>
+      <style jsx>{`
+          @keyframes buttonSlide {
+              from {
+                  transform: translate3d(-100%, 0, 0);
+              }
+              to {
+                  transform: translate3d(100%, 0, 0);
+              }
+          }
+      `}</style>
+    </div>
+  );
 }
