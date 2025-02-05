@@ -1,4 +1,3 @@
-// components/layout/navbar.tsx
 'use client'
 
 import React from "react";
@@ -76,18 +75,14 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 bg-white/70 backdrop-blur-md backdrop-saturate-150 origin-top"
+            className="fixed inset-0 bg-white/70 backdrop-blur-md backdrop-saturate-150"
             style={{ zIndex: 48 }}
-            initial={{ scaleY: 0.7, opacity: 0 }}
-            animate={{ scaleY: 1, opacity: 1 }}
-            exit={{ scaleY: 0.7, opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{
               duration: 0.2,
-              ease: "easeInOut",
-              opacity: {
-                duration: 0.06,
-                ease: "linear"
-              }
+              ease: "easeInOut"
             }}
           />
         )}
