@@ -96,7 +96,6 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
           className="bg-transparent"
           maxWidth="full"
           height="4rem"
-          style={{ zIndex: 2 }}
           isBlurred={false}
         >
           <NavbarContent>
@@ -153,57 +152,67 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
           </NavbarContent>
 
           <NavbarMenu
-            className="pt-6 bg-transparent mt-4"
+            className="bg-transparent mt-4"
             style={{ zIndex: 49 }}
-            motionProps={{
-              variants: {
-                enter: {
-                  y: 0,
-                  opacity: 1,
-                  transition: {
-                    duration: 0.2,
-                    ease: "easeOut"
-                  }
-                },
-                exit: {
-                  y: "-30%",
-                  opacity: 0,
-                  transition: {
-                    duration: 0.2,
-                    ease: "easeIn"
-                  }
-                }
-              },
-              initial: { y: "-30%", opacity: 0 }
-            }}
           >
-            {menuItems.map((item, index) => (
-              <div
-                key={`${item.name}-${index}`}
-                className="mt-6"
+            {/* Menu content wrapper with mask */}
+            <div className="relative">
+
+
+              {/* Menu content */}
+              <motion.div
+                variants={{
+                  enter: {
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                      duration: 0.2,
+                      ease: "easeOut"
+                    }
+                  },
+                  exit: {
+                    y: "-30%",
+                    opacity: 0,
+                    transition: {
+                      duration: 0.2,
+                      ease: "easeIn"
+                    }
+                  }
+                }}
+                initial={{ y: "-30%", opacity: 0 }}
+                animate="enter"
+                exit="exit"
+                style={{ zIndex: 1 }}
               >
-                <div className="font-semibold text-xl mb-2">{item.name}</div>
-                {item.links.map((link, linkIndex) => (
-                  <NavbarMenuItem
-                    key={`${link.text}-${linkIndex}`}
-                    className="mb-1"
+                {menuItems.map((item, index) => (
+                  <div
+                    key={`${item.name}-${index}`}
+                    className=""
                   >
-                    <Link
-                      href={link.href}
-                      className="w-full py-2 text-lg hover:text-primary transition-colors"
-                      onClick={() => handleMenuChange(false)}
-                    >
-                      {link.text}
-                    </Link>
-                  </NavbarMenuItem>
+                    <div className="font-semibold text-xl mb-2">{item.name}</div>
+                    {item.links.map((link, linkIndex) => (
+                      <NavbarMenuItem
+                        key={`${link.text}-${linkIndex}`}
+                        className="mb-1"
+                      >
+                        <Link
+                          href={link.href}
+                          className="w-full py-2 text-lg hover:text-primary transition-colors"
+                          onClick={() => handleMenuChange(false)}
+                        >
+                          {link.text}
+                        </Link>
+                      </NavbarMenuItem>
+                    ))}
+                  </div>
                 ))}
-              </div>
-            ))}
+              </motion.div>
+            </div>
           </NavbarMenu>
         </Navbar>
 
         {/* Border at the bottom */}
-        <div className="absolute bottom-0 left-0 right-0 border-b border-black/10" style={{ zIndex: 2 }} />
+        <div className="absolute bottom-0 left-0 right-0 border-b border-black/10" />
       </div>
     </>
   );
