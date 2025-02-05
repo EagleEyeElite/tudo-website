@@ -66,7 +66,13 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
 
   return (
     <>
-      {/* Animated full viewport overlay */}
+      {/* Fixed navbar blur - always visible */}
+      <div
+        className="fixed inset-x-0 top-0 h-16 bg-white/70 backdrop-blur-md backdrop-saturate-150"
+        style={{ zIndex: 48 }}
+      />
+
+      {/* Animated full viewport blur for menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -75,30 +81,24 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
             initial={{ scaleY: 0.7, opacity: 0 }}
             animate={{ scaleY: 1, opacity: 1 }}
             exit={{ scaleY: 0.7, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            transition={{
+              duration: 0.2,
+              ease: "easeInOut",
+              opacity: {
+                duration: 0.06,
+                ease: "linear"
+              }
+            }}
           />
         )}
       </AnimatePresence>
 
       <div className="sticky top-0 z-50">
-        {/* Layer 1: Fixed Blur Effect for navbar only */}
-        <div
-          className="absolute inset-0 transition-opacity duration-200"
-          style={{
-            opacity: isMenuOpen ? 0 : 1,
-            transform: 'translateZ(0)',
-            willChange: 'transform',
-            background: 'rgba(255, 255, 255, 0.7)',
-            backdropFilter: 'blur(12px) saturate(150%)',
-            zIndex: 1,
-          }}
-        />
-
-        {/* Layer 2: Main Content */}
+        {/* Main Content */}
         <Navbar
           isMenuOpen={isMenuOpen}
           onMenuOpenChange={handleMenuChange}
-          className={isMenuOpen ? 'bg-transparent' : 'bg-transparent'}
+          className="bg-transparent"
           maxWidth="full"
           height="4rem"
           style={{ zIndex: 2 }}
@@ -167,24 +167,21 @@ export default function MainNavbar({ initialState, onMenuOpenChange }: MainNavba
                   opacity: 1,
                   transition: {
                     duration: 0.2,
-                    ease: 'easeOut',
-                  },
+                    ease: "easeOut"
+                  }
                 },
                 exit: {
-                  y: '-30%',
+                  y: "-30%",
                   opacity: 0,
                   transition: {
                     duration: 0.2,
-                    ease: 'easeIn',
-                  },
-                },
+                    ease: "easeIn"
+                  }
+                }
               },
-              initial: { y: '-30%', opacity: 0 },
+              initial: { y: "-30%", opacity: 0 }
             }}
           >
-            <div className="flex justify-end md:hidden">
-              <ActivityIndicator initialData={initialState} />
-            </div>
             {menuItems.map((item, index) => (
               <div
                 key={`${item.name}-${index}`}
