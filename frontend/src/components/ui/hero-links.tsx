@@ -113,7 +113,7 @@ const HeroLinks = () => {
   return (
     <ul
       ref={quickLinksRef}
-      className="w-full md:w-fit flex flex-col md:items-center lg:order-last md:flex-row rounded-md shadow-sm divide-y md:divide-y-0 md:divide-x divide-gray-200 border border-gray-200 bg-white"
+      className="w-full md:w-fit flex flex-col md:items-center lg:order-last md:flex-row rounded-md shadow-xs divide-y md:divide-y-0 md:divide-x divide-gray-200 border border-gray-200 bg-white"
       role="group"
     >
       {links.map((link, index) => (

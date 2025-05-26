@@ -40,7 +40,7 @@ export default function BannerClient({bannerImage}: {bannerImage: ReactNode}) {
           shouldAlwaysCompleteAnimation={true}
           opacity={[0, 0.9]}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-blue-900"/>
+          <div className="absolute inset-0 bg-linear-to-t from-gray-900 to-blue-900"/>
         </ParallaxBannerLayer>
         <ParallaxBannerLayer
           shouldAlwaysCompleteAnimation={true}

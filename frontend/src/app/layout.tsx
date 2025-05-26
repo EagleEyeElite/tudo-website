@@ -46,7 +46,7 @@ export default async function RootLayout({children}: {
     <Navbar/>
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
       <Alert/>
-      <main className="flex-grow">{children}</main>
+      <main className="grow">{children}</main>
     </div>
     <Footer/>
     <Analytics/>

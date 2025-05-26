@@ -31,7 +31,7 @@ export default function OpenStatusClient({ fetchFnAction, initialData}: OpenStat
   }
 
   return (
-    <div className={`p-4 rounded-lg shadow-sm ${bgColor} ${borderColor} border`}>
+    <div className={`p-4 rounded-lg shadow-xs ${bgColor} ${borderColor} border`}>
       <h2 className="font-semibold text-3xl mt-12 mb-4 leading-snug text-black">Activity Status</h2>
       <p className="mb-1 my-6 text-black">
         Status: <span className={`font-bold ${highlightColor}`}>{status}</span>

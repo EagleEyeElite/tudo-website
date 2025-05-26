@@ -32,7 +32,7 @@ export default function Overview({
                   </h3>
                   {childPage.featuredImageUrl && (
                     <div
-                      className="relative h-[150px] shadow rounded-lg overflow-hidden mb-2 group-hover:scale-105 duration-200">
+                      className="relative h-[150px] shadow-sm rounded-lg overflow-hidden mb-2 group-hover:scale-105 duration-200">
                       <Image
                         alt={childPage.title!}
                         src={childPage.featuredImageUrl!}
