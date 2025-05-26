@@ -73,7 +73,9 @@ export function HTMLRenderer({
         }
 
         case 'openstatus':
-          return <OpenStatusCard />;
+          return <div className={"not-prose"}>
+            <OpenStatusCard />
+          </div>;
 
         default:
           return;

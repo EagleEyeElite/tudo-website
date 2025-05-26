@@ -9,13 +9,13 @@ export default async function Alert() {
   if (!isEnabled) return null;
 
   return (
-    <div className={cn('border-b bg-accent-7 border-accent-7 text-white')}>
+    <div className={cn('border-b border-[#333] bg-[#333] text-white')}>
       <Container>
         <div className="py-2 text-center text-sm">
           <>
             This is a page preview.{' '}
             <form action="/api/exit-preview" method="GET" className="inline">
-              <button type="submit" className="underline hover:text-cyan duration-200 transition-colors">
+              <button type="submit" className="underline hover:text-[#79ffe1] duration-200 transition-colors">
                 Click here
               </button>
             </form>{' '}

@@ -21,25 +21,23 @@ export function OpenButton() {
     `}
     href={OPENING_HOURS_PATH}
   >
-    <span
-      className="
-  relative
-  isolate
-  overflow-hidden
-  py-3 px-12 lg:px-8
-  font-bold text-white
+    <span className="
+      relative
+      isolate
+      overflow-hidden
+      py-3 px-12 lg:px-8
+      font-bold text-white
 
-  before:absolute before:inset-0 before:-z-10
-  before:bg-linear-to-tl before:from-green-400 before:to-green-600
-  before:opacity-0 group-hover:before:opacity-100 before:transition-all before:duration-50
+      before:absolute before:inset-0 before:-z-10
+      before:bg-gradient-to-tl before:from-green-400 before:to-green-600
+      before:opacity-0 group-hover:before:opacity-100 before:transition-all before:duration-50
 
-  after:absolute after:inset-0
-  after:bg-linear-to-r after:from-transparent after:via-rose-100/30 after:to-transparent
-  group-hover:after:opacity-0 after:-translate-x-full after:animate-[shimmer_4s_infinite]
-  after:z-20
-  "
+      after:absolute after:inset-0 after:z-20
+      after:bg-gradient-to-r after:from-transparent after:via-rose-100/30 after:to-transparent
+      after:animate-[shimmer_4s_infinite]
+      group-hover:after:opacity-0"
     >
-  Geöffnet
-  </span>
+      Geöffnet
+    </span>
   </Link>
 }

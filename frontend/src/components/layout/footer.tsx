@@ -25,7 +25,7 @@ function Logo() {
 
 export default function Footer() {
   return (
-    <footer className="bg-accent-1 border-t border-accent-2">
+    <footer className="bg-[#fafafa] border-t border-[#eaeaea]">
       <Container>
         <div className="py-28 flex flex-col lg:flex-row justify-between">
           <Logo/>

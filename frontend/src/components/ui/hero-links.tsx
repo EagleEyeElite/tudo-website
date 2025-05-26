@@ -41,7 +41,7 @@ const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdow
         <ul className="
           absolute z-10 w-fit mx-3 mt-2 py-2
           origin-top-left
-          rounded-lg shadow-lg bg-white border
+          rounded-lg shadow-lg bg-white border border-gray-200
           divide-y divide-gray-200"
         >
           {link.links.map((subLink, index) => (
