@@ -26,7 +26,7 @@ const config: CodegenConfig = {
   ignoreNoDocuments: true,
   watch: true,
   generates: {
-    "lib/generated/graphql.ts": {
+    "src/lib/generated/graphql.ts": {
       plugins: [
         "typescript",
         "typescript-operations",

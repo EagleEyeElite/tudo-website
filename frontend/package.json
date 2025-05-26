@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.6",
+    "@graphql-codegen/typescript-graphql-request": "^6.2.1",
     "@tailwindcss/typography": "^0.5.16",
     "cli-real-favicon": "^0.0.9",
     "eslint": "^9.27.0",

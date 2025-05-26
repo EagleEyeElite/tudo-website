@@ -97,17 +97,17 @@ query PageDetailsByTitle($title: String!) {
 }
 
 query AllPostsAndWelcomePage {
-    welcomePage: pages(where: { name: "about-us"}, first: 1) {
-        nodes{
+    welcomePage: pages(where: {name: "about-us"}, first: 1) {
+        nodes {
             children(first: 1, where: {orderby: {field: MENU_ORDER, order: ASC}}) {
                 nodes {
                     __typename
-                    ... ContentFields
+                    ...ContentFields
                 }
             }
         }
     }
-    latestPosts: posts(first: 20, where: {orderby: {field: DATE, order: DESC}}) {
+    latestPosts: posts(first: 100, where: {orderby: {field: DATE, order: DESC}}) {
         nodes {
             ...ContentFields
         }
