@@ -15,7 +15,7 @@ import ContainerWide from '@/components/ui/container';
 import SectionSeparator from '@/components/blocks/section-separator';
 import React from 'react';
 
-export const revalidate = 60;
+export const revalidate = 10;
 
 export async function generateStaticParams() {
   // Get all category paths
