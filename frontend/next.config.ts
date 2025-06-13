@@ -56,6 +56,7 @@ function createImageConfig(): ImageConfig {
       { protocol: defaultProtocol, hostname: '2.gravatar.com' },
       { protocol: defaultProtocol, hostname: 'secure.gravatar.com' },
     ],
+    unoptimized: true // vercel's free plan does not cover enough for: Image Optimization - Transformations
   };
 }
 
