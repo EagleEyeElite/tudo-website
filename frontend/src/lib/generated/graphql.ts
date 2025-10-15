@@ -10738,7 +10738,10 @@ export const AllPostsAndWelcomePageDocument = gql`
       }
     }
   }
-  latestPosts: posts(first: 100, where: {orderby: {field: DATE, order: DESC}}) {
+  latestPosts: posts(
+    first: 100
+    where: {orderby: {field: DATE, order: DESC}, stati: [PUBLISH, FUTURE]}
+  ) {
     nodes {
       ...ContentFields
     }
@@ -10765,7 +10768,10 @@ export const PublishedPostAndMorePostsDocument = gql`
       }
     }
   }
-  posts(first: 4, where: {orderby: {field: DATE, order: DESC}}) {
+  posts(
+    first: 4
+    where: {orderby: {field: DATE, order: DESC}, stati: [PUBLISH, FUTURE]}
+  ) {
     nodes {
       ...PostFields
     }
