@@ -1,7 +1,8 @@
-import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
+import parse, { DOMNode, domToReact, Element, Text } from 'html-react-parser';
 import { MdOpenInNew } from 'react-icons/md';
 import Image from 'next/image';
 import OpenStatusCard from '@/components/blocks/open-status-card';
+import Lineup, { LineupFloor } from '@/components/blocks/lineup';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -76,6 +77,25 @@ export function HTMLRenderer({
           return <div className={"not-prose"}>
             <OpenStatusCard />
           </div>;
+
+        case 'lineup': {
+          // Extract JSON data from the 'data' attribute
+          if (!domNode.attribs?.data) {
+            throw new Error('Lineup tag requires a "data" attribute with JSON lineup data');
+          }
+
+          let lineupData: LineupFloor[];
+          try {
+            lineupData = JSON.parse(domNode.attribs.data);
+          } catch (error) {
+            console.error('Failed to parse lineup JSON data:', error);
+            throw new Error('Invalid JSON in lineup data attribute');
+          }
+
+          return <div className={"not-prose"}>
+            <Lineup data={lineupData} />
+          </div>;
+        }
 
         default:
           return;
