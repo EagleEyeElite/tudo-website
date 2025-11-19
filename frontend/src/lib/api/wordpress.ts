@@ -19,7 +19,7 @@ export function getInitializedSdk() {
       return fetch(url, {
         ...init,
         next: {
-          revalidate: 3600,
+          revalidate: 5,
         },
       });
     }
