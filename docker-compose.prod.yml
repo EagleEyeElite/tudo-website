@@ -1,0 +1,27 @@
+# Production overrides: no published ports, services are reached through the reverse proxy network.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+  wordpress:
+    ports: !reset []
+    expose:
+      - 80
+
+  phpmyadmin:
+    ports: !reset []
+    expose:
+      - 80
+
+  activity-indicator-kv-interface:
+    ports: !reset []
+    expose:
+      - 80
+
+  activity-indicator-db:
+    ports: !reset []
+    expose:
+      - 6379
+
+networks:
+  default:
+    name: proxy
+    external: true

@@ -23,6 +23,11 @@ wordpress-setup: reset start
 	docker compose build wp-auto-config
 	docker compose run --rm wp-auto-config
 
+# Updates core, plugins and themes of the existing installation, keeping all content
+wordpress-update: check-env up-backend
+	docker compose build wp-auto-config
+	docker compose run --rm wp-auto-config update
+
 quick-start: wordpress-setup
 	@echo "Autoinstall complete. Starting frontend..."
 	$(MAKE) up-frontend

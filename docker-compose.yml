@@ -24,6 +24,8 @@ services:
       - MYSQL_USER=${DATABASE_USER:-root}
       - MYSQL_PASSWORD=${DATABASE_PASSWORD:-password}
       - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME:-wordpress}
+      # Upgrades the system tables of an existing database after a MariaDB version bump
+      - MARIADB_AUTO_UPGRADE=1
     volumes:
       - wordpress-db:/var/lib/mysql
     restart: always
@@ -67,7 +69,8 @@ services:
     image: wpcli
     build: backend-services/wpcli
     profiles: ["wp-auto-config"]
-    entrypoint: sh -c "/wait && make -f /scripts/Makefile"
+    # Runs the Makefile's default target (fresh install), or the given target, e.g. `update`
+    entrypoint: ["sh", "-c", "/wait && make -f /scripts/Makefile \"$$@\"", "--"]
     volumes:
       - wordpress:/var/www/html
       - ./backend-services/wpcli/uploads:/uploads
@@ -79,9 +82,9 @@ services:
     environment:
       # Waiting for MySQL and wordpress -------------------
       - WAIT_HOSTS=mysql:3306,wordpress:80
-      - WAIT_BEFORE_HOSTS=${WAIT_BEFORE_HOSTS:-30}
-      - WAIT_AFTER_HOSTS=${WAIT_AFTER_HOSTS:-15}
-      - WAIT_HOSTS_TIMEOUT=${WAIT_HOSTS_TIMEOUT:-300}
+      - WAIT_BEFORE=${WAIT_BEFORE_HOSTS:-30}
+      - WAIT_AFTER=${WAIT_AFTER_HOSTS:-15}
+      - WAIT_TIMEOUT=${WAIT_HOSTS_TIMEOUT:-300}
       - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
       - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
       # Wordpress configuration -----------------------------

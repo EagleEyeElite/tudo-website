@@ -50,6 +50,11 @@ Instead of typing every command per hand, you can use following `make` commands:
     make wordpress-setup
     ```
 
+- Update wordPress core, plugins and themes to the latest versions, keeps all data
+    ```bash
+    make wordpress-update
+    ```
+
 
 ### WP CLI
 You can interact with the wordPress instance via wpcli. For example, to change the display name of the admin user:
@@ -60,6 +65,13 @@ You can interact with the wordPress instance via wpcli. For example, to change t
 ## Deployment
 
 The Next.js application is deployed on Vercel. For continuous deployment, ensure your Vercel project is correctly set up to track your repository.
+
+The backend services run with the production overrides (no published ports, external `proxy` network for the reverse proxy):
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm wp-auto-config update
+```
+The update sets a new JWT secret if the existing one is shorter than 32 characters. Redeploy the frontend afterwards, since it fetches its WordPress token at build time.
 
 ## Backups
 

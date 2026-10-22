@@ -14,6 +14,9 @@ RUN chmod +x /wait
 ADD Makefile entrypoint.sh /scripts/
 RUN chmod +x /scripts/entrypoint.sh
 
+# The www-data user has no writable home directory
+ENV WP_CLI_CACHE_DIR=/tmp/wp-cli-cache
+
 ENTRYPOINT [ "/scripts/entrypoint.sh" ]
 USER 33:33
 CMD ["wp", "shell"]

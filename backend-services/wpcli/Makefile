@@ -1,3 +1,9 @@
+# Plugins that are not on wordpress.org are pinned to their latest release, all others install the latest version
+JWT_AUTH_PLUGIN := https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.2.zip
+META_QUERY_PLUGIN := https://github.com/wp-graphql/wp-graphql-meta-query/archive/refs/tags/v0.1.1.zip
+ACF_WPCLI_PLUGIN := https://github.com/hoppinger/advanced-custom-fields-wpcli/archive/refs/tags/4.0.2.zip
+JWT_SECRET_PLACEHOLDER := change-me-to-a-random-secret-of-at-least-32-chars
+
 install: banner configure set-default-content-draft setup-categories upload_images set_avatar set_favicon create-pages posts end_banner
 
 banner:
@@ -21,23 +27,72 @@ configure:
 	wp option update siteurl "${WORDPRESS_WEBSITE_URL}"
 	@echo "🔌 Installing and activating plugins."
 	wp plugin install wp-graphql --activate
-	wp plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.2.zip --activate
+	wp plugin install $(JWT_AUTH_PLUGIN) --activate
 	wp plugin install simple-local-avatars --activate
-	# WQ graphql acf plugin support
-	wp plugin install advanced-custom-fields --activate
+	# WQ graphql acf plugin support, Secure Custom Fields is the free, community maintained ACF
+	wp plugin install secure-custom-fields --activate
 	wp plugin install wpgraphql-acf --activate
-	wp plugin install https://github.com/hoppinger/advanced-custom-fields-wpcli/archive/refs/tags/3.2.0.zip --activate
+	wp plugin install $(ACF_WPCLI_PLUGIN) --activate
 	wp acf import --json_file=/php-scripts/acf.json
-	# The GRAPHQL_JWT_AUTH_SECRET_KEY must not be at the end of the file. It has to be before the ABSPATH definition.
-	@awk '/NONCE_SALT/{print;print "define( '\''GRAPHQL_JWT_AUTH_SECRET_KEY'\'', '\''${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY}'\'' );";next}1' ./wp-config.php > ./wp-config-temp.php
-	@mv ./wp-config-temp.php ./wp-config.php
-	@echo "🔐 JWT Auth secret key appended successfully."
-	wp plugin install https://github.com/wp-graphql/wp-graphql-meta-query/archive/refs/tags/v0.1.1.zip --activate
+	$(MAKE) -f $(firstword $(MAKEFILE_LIST)) jwt-secret
+	wp plugin install $(META_QUERY_PLUGIN) --activate
 	wp plugin install updraftplus --activate
 ifeq ($(ENVIRONMENT),dev)
 	@echo "🛠 WPGraphQL debug mode enabled."
 	wp config set GRAPHQL_DEBUG true --raw
 endif
+
+# The JWT plugin needs a secret of at least 32 bytes. wp config set places it before the ABSPATH definition.
+jwt-secret:
+	@if [ $${#WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY} -lt 32 ]; then \
+		echo "❌ WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY must be at least 32 characters long."; exit 1; \
+	fi
+ifneq ($(ENVIRONMENT),dev)
+	@if [ "$${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY}" = "$(JWT_SECRET_PLACEHOLDER)" ]; then \
+		echo "❌ Set WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY to a random secret in production."; exit 1; \
+	fi
+endif
+	@wp config set GRAPHQL_JWT_AUTH_SECRET_KEY "$${WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY}" --quiet
+	@echo "🔐 JWT Auth secret key set successfully."
+
+# Updates an existing installation (e.g. production) to the latest versions, keeping all content
+update: banner update-core migrate-to-scf update-plugins update-themes update-jwt-secret
+	wp cache flush
+	@echo "✅ WordPress update completed."
+	wp core version
+	wp plugin list
+	wp theme list
+
+update-core:
+	@echo "⬆️ Updating WordPress core and database..."
+	wp core update
+	wp core update-db
+
+# Field groups are stored in the database and shared by ACF and Secure Custom Fields
+migrate-to-scf:
+	@if wp plugin is-installed advanced-custom-fields; then \
+		echo "🔁 Replacing Advanced Custom Fields with Secure Custom Fields..."; \
+		wp plugin deactivate advanced-custom-fields && \
+		wp plugin install secure-custom-fields --activate && \
+		wp plugin delete advanced-custom-fields; \
+	fi
+
+update-plugins:
+	@echo "🔌 Updating plugins..."
+	wp plugin update --all
+	wp plugin install $(JWT_AUTH_PLUGIN) --force --activate
+	wp plugin install $(META_QUERY_PLUGIN) --force --activate
+	wp plugin install $(ACF_WPCLI_PLUGIN) --force --activate
+
+update-themes:
+	@echo "🎨 Updating themes..."
+	wp theme update --all
+
+# Only replaces a missing or too short secret, so existing tokens stay valid
+update-jwt-secret:
+	@if [ $$(wp config get GRAPHQL_JWT_AUTH_SECRET_KEY 2>/dev/null | tr -d '\n' | wc -c) -lt 32 ]; then \
+		$(MAKE) -f $(firstword $(MAKEFILE_LIST)) jwt-secret; \
+	fi
 
 set-default-content-draft:
 	@echo "Setting up default content to draft status..."
