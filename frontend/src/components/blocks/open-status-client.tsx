@@ -8,9 +8,10 @@ import { useNow } from '@/lib/useNow';
 interface OpenStatusProps {
   fetchFnAction: () => Promise<ActivityIndicatorState>;
   initialData: ActivityIndicatorState;
+  renderedAt: number;
 }
 
-export default function OpenStatusClient({ fetchFnAction, initialData}: OpenStatusProps) {
+export default function OpenStatusClient({ fetchFnAction, initialData, renderedAt }: OpenStatusProps) {
   const { data } = useSWR('open-status', fetchFnAction, {
     refreshInterval: 5 * 60 * 1000,  // Poll every 5 minutes
     revalidateOnFocus: true,         // Fetch when tab is focused
@@ -19,7 +20,7 @@ export default function OpenStatusClient({ fetchFnAction, initialData}: OpenStat
     revalidateOnMount: true,         // Fetch fresh data on navigation/mount
     fallbackData: initialData        // Use server data initially
   });
-  const now = useNow();
+  const now = useNow(renderedAt);
 
   const status = data?.open === true ? 'Open' : data?.open === false ? 'Closed' : 'Unknown';
   const bgColor = data?.open === true ? 'bg-green-50' : data?.open === false ? 'bg-red-50' : 'bg-gray-50';

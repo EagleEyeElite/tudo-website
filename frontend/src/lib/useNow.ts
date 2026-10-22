@@ -12,14 +12,10 @@ function getSnapshot() {
   return Math.floor(Date.now() / MINUTE) * MINUTE;
 }
 
-function getServerSnapshot() {
-  return null;
-}
-
 /**
  * Current time in milliseconds, updated every minute.
- * `null` on the server and during hydration, so time dependent output is only rendered on the client.
+ * On the server and during hydration it is `serverNow`, by default `null` so time dependent output is only rendered on the client.
  */
-export function useNow(): number | null {
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+export function useNow(serverNow: number | null = null): number | null {
+  return useSyncExternalStore(subscribe, getSnapshot, () => serverNow);
 }
