@@ -66,15 +66,6 @@ const config = async (): Promise<NextConfig> => {
 
   return {
     images: createImageConfig(),
-    webpack: (config, { dev }) => {
-      if (!dev) {
-        config.module.rules.push({
-          test: /app[\\/]test.*\.(js|jsx|ts|tsx)$/,
-          loader: 'ignore-loader',
-        });
-      }
-      return config;
-    },
     env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
 
   } satisfies NextConfig;

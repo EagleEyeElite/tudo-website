@@ -1,4 +1,4 @@
-FROM wordpress:cli
+FROM wordpress:cli-php8.5
 
 # Install make tool
 USER root
@@ -6,7 +6,7 @@ RUN apk add --no-cache make
 
 # Make docker compose wait for container dependencies be ready
 # Add the wait script to the image
-ENV WAIT_VERSION 2.7.2
+ENV WAIT_VERSION=2.12.1
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
 

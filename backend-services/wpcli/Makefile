@@ -21,11 +21,11 @@ configure:
 	wp option update siteurl "${WORDPRESS_WEBSITE_URL}"
 	@echo "🔌 Installing and activating plugins."
 	wp plugin install wp-graphql --activate
-	wp plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.0.zip --activate
+	wp plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.2.zip --activate
 	wp plugin install simple-local-avatars --activate
 	# WQ graphql acf plugin support
 	wp plugin install advanced-custom-fields --activate
-	wp plugin install https://github.com/wp-graphql/wpgraphql-acf/releases/download/v2.2.0/wpgraphql-acf.zip --activate
+	wp plugin install wpgraphql-acf --activate
 	wp plugin install https://github.com/hoppinger/advanced-custom-fields-wpcli/archive/refs/tags/3.2.0.zip --activate
 	wp acf import --json_file=/php-scripts/acf.json
 	# The GRAPHQL_JWT_AUTH_SECRET_KEY must not be at the end of the file. It has to be before the ABSPATH definition.

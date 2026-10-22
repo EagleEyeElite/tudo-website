@@ -2,7 +2,7 @@ import PostBody from '@/components/blocks/post-body';
 import PostTitle from '@/components/blocks/post-title';
 import HeaderLink from '@/components/blocks/headerLink';
 import Link from 'next/link';
-import {PagePropsApi} from 'lib/api/wordpress';
+import {PagePropsApi} from '@/lib/api/wordpress';
 import Image from 'next/image';
 import React from 'react';
 

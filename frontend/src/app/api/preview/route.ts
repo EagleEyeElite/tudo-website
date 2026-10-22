@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPreviewPost } from 'lib/api/wordpress';
-import { PostIdType } from 'lib/generated/graphql';
+import { getPreviewPost } from '@/lib/api/wordpress';
+import { PostIdType } from '@/lib/generated/graphql';
 import { draftMode } from 'next/headers';
 
 /**

@@ -1,6 +1,11 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 import {revalidatePath, revalidateTag} from 'next/cache'
 import { unstable_cache } from 'next/cache'
+
+const kv = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+})
 
 export type ActivityIndicatorState = {
   open: null
@@ -50,6 +55,6 @@ export async function getActivityIndicator(): Promise<ActivityIndicatorState> {
 export async function setActivityIndicator(state: ActivityIndicatorState): Promise<void> {
   'use server'
   await kv.set('activityIndicator', state)
-  revalidateTag('activity-status')
+  revalidateTag('activity-status', { expire: 0 })
   revalidatePath('/', 'layout')     // Root layout and its routes
 }

@@ -28,10 +28,12 @@ const config: CodegenConfig = {
   generates: {
     "src/lib/generated/graphql.ts": {
       plugins: [
-        "typescript",
         "typescript-operations",
         "typescript-graphql-request",
       ],
+      config: {
+        enumType: "native",
+      },
     },
   },
 };

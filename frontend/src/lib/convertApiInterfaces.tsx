@@ -1,7 +1,7 @@
-import {CoverImageProps} from 'components/blocks/cover-image';
-import {AuthorProps} from 'components/blocks/avatar';
-import {AuthorPropsApi, MorePostPropsApi, PagePropsApi, PostPropsApi} from 'lib/api/wordpress';
-import {ContentDefaultProps} from 'components/page-templates/content-default';
+import {CoverImageProps} from '@/components/blocks/cover-image';
+import {AuthorProps} from '@/components/blocks/avatar';
+import {AuthorPropsApi, MorePostPropsApi, PagePropsApi, PostPropsApi} from '@/lib/api/wordpress';
+import {ContentDefaultProps} from '@/components/page-templates/content-default';
 
 
 export function convertCoverImage(
