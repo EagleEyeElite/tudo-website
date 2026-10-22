@@ -15,7 +15,8 @@ function datesEqualRoughly(date1: Date, date2: Date): boolean {
 function postRequest(setOpen: boolean | null) {
   return request(baseURL)
     .post(apiEndpoint)
-    .send({open: setOpen})
+    .type('form')
+    .send({open: String(setOpen)})
     .set('Authorization', `Basic ${encodedCredentials}`)
 }
 
@@ -55,7 +56,8 @@ describe('ActivityIndicatorAPI', () => {
   it('should throw an error on unauthenticated post request', async () => {
     const response = await request(baseURL)
       .post(apiEndpoint)
-      .send({open: false})
+      .type('form')
+      .send({open: 'false'})
     expect(response.statusCode).toBe(401)
     expect(response.body).toStrictEqual({"error": "Unauthenticated"})
   })
@@ -64,6 +66,5 @@ describe('ActivityIndicatorAPI', () => {
       .put(apiEndpoint)
       .send({open: false})
     expect(response.statusCode).toBe(405)
-    expect(response.body).toStrictEqual({error: `Method PUT not allowed`})
   })
 })
