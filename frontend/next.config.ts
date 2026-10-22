@@ -69,9 +69,7 @@ const config = async (): Promise<NextConfig> => {
     env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
     reactCompiler: true,
     cacheComponents: true,
-    // Without Partial Prefetching, unknown slugs keep answering with a real 404 status instead of a streamed
-    // soft 404 (200 + noindex). Partial Prefetching becomes the default in the next major Next.js release.
-    partialPrefetching: false,
+    partialPrefetching: true,
     // Omitted values (stale, expire) inherit the 'default' profile, like the previous ISR setup
     cacheLife: {
       // WordPress content, same as the previous fetch revalidate of 5 seconds

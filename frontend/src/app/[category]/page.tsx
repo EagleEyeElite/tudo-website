@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import Loading from '@/app/loading';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import {
@@ -14,9 +15,6 @@ type Props = {
   params: Promise<{ category: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
-
-// Params are awaited before streaming starts, so unknown slugs still answer with a real 404 status
-export const instant = false;
 
 export async function generateStaticParams() {
   const allParentPagesSlugs = await getAllParentPagesAsSlug();
@@ -36,7 +34,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function OverviewPage({ params }: Props) {
+export default function OverviewPage({ params }: Props) {
+  // Params are read inside Suspense, so unlisted paths get an instant shell (Partial Prefetching)
+  return (
+    <Suspense fallback={<Loading />}>
+      <OverviewContent params={params} />
+    </Suspense>
+  );
+}
+
+async function OverviewContent({ params }: Pick<Props, 'params'>) {
   const category = (await params).category;
   const page = await getPageByTitle(category);
   if (!page) {

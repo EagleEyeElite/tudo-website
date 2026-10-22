@@ -13,11 +13,9 @@ import { convertPage, convertPost } from '@/lib/convertApiInterfaces';
 import MoreStories from '@/components/blocks/more-stories';
 import ContainerWide from '@/components/ui/container';
 import SectionSeparator from '@/components/blocks/section-separator';
-import React from 'react';
+import React, { Suspense } from 'react';
+import Loading from '@/app/loading';
 
-
-// Params are awaited before streaming starts, so unknown slugs still answer with a real 404 status
-export const instant = false;
 
 export async function generateStaticParams() {
   // Get all category paths
@@ -71,7 +69,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: `${page.title}` };
 }
 
-export default async function DetailPage({ params }: Props) {
+export default function DetailPage({ params }: Props) {
+  // Params are read inside Suspense, so unlisted paths get an instant shell (Partial Prefetching)
+  return (
+    <Suspense fallback={<Loading />}>
+      <Detail params={params} />
+    </Suspense>
+  );
+}
+
+async function Detail({ params }: Pick<Props, 'params'>) {
   const { category, slug } = await params;
 
   if (category === 'events') {
