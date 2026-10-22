@@ -1,6 +1,7 @@
 import {GraphQLClient} from 'graphql-request';
 import {getSdk, PostIdType} from '../generated/graphql';
 import _ from 'lodash';
+import { cacheLife, cacheTag } from 'next/cache';
 
 
 export function getInitializedSdk() {
@@ -13,17 +14,7 @@ export function getInitializedSdk() {
     headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
   }
 
-  const client = new GraphQLClient(API_URL, {
-    headers,
-    fetch: (url: RequestInfo | URL, init?: RequestInit) => {
-      return fetch(url, {
-        ...init,
-        next: {
-          revalidate: 5,
-        },
-      });
-    }
-  });
+  const client = new GraphQLClient(API_URL, { headers });
 
   return getSdk(client);
 }
@@ -49,12 +40,18 @@ export async function getPreviewPost(id, idType: PostIdType = PostIdType.Databas
 }
 
 export async function getAllPostsWithSlug() {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const data = await sdk.GetALLPostsWithSlug();
   return (data.posts?.nodes.map(node => node.slug || null)
     .filter((slug): slug is string => slug !== null) || []) ;
 }
 
 export async function getAllParentPagesAsSlug(): Promise<string[]> {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const data = await sdk.GetAllParentPagesAsSlug();
   return data.pages?.nodes.map(({ slug }) => slug!) || [];
 }
@@ -73,6 +70,9 @@ export interface PagePropsApi {
   parent: ParentPagePropsApi | null;
 }
 export async function getPageByTitle(title: string): Promise<PagePropsApi | null>{
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const page = (await sdk.PageDetailsByTitle({ title })).pages!.nodes![0];
   if (page === undefined ) {
     return null
@@ -119,6 +119,9 @@ type HeroPost = {
 }
 
 export async function getHeroPostForHome(): Promise<HeroPost> {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const data = await sdk.AllPostsAndWelcomePage()
   const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
 
@@ -137,6 +140,9 @@ export async function getHeroPostForHome(): Promise<HeroPost> {
 }
 
 export async function getLatestPostsForHome() {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const data = await sdk.AllPostsAndWelcomePage();
   const dataWelcomePost = data.welcomePage?.nodes[0].children?.nodes[0]
   if (!(dataWelcomePost && dataWelcomePost.__typename === 'Page')) {
@@ -166,6 +172,9 @@ export interface PostPropsApi extends MorePostPropsApi {
 }
 
 export async function getPost(slug: string) {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const response = await sdk.PublishedPostAndMorePosts({slug});
 
   return {
@@ -187,6 +196,9 @@ export async function getPost(slug: string) {
 }
 
 export async function getMorePosts(currentSlug: string) {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const response = await sdk.PublishedPostAndMorePosts({slug: currentSlug});
   const posts = response.posts?.nodes;
 
@@ -209,6 +221,9 @@ export async function getMorePosts(currentSlug: string) {
 }
 
 export async function childPagesByParentId(parentId: string) {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const response = await sdk.ChildPagesByParentId({ parentId });
   const childPages: PagePropsApi[] = response.pages!.nodes.map(node => ({
     id: node.id,
@@ -223,6 +238,9 @@ export async function childPagesByParentId(parentId: string) {
 }
 
 export async function fetchMediaItemsWithBackgroundSet() {
+  'use cache';
+  cacheLife('wordpress');
+  cacheTag('wordpress');
   const response = await sdk.FetchMediaItemsWithBackgroundSet();
   const mediaItems = response.mediaItems?.nodes;
 

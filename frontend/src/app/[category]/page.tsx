@@ -9,7 +9,6 @@ import {
 } from '@/lib/api/wordpress';
 import Overview from '@/components/page-templates/overview';
 
-export const revalidate = 10;
 
 type Props = {
   params: Promise<{ category: string }>

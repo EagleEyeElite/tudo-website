@@ -3,7 +3,8 @@ import Image from 'next/image'
 import TuDoLogo from '@public/assets/tudo-logo.svg'
 import Link from 'next/link'
 import {getActivityIndicator} from '@/lib/api/activityIndicator'
-import ActivityIndicator from '@/components/layout/openClosedIndicator'
+import ActivityIndicator, { ActivityIndicatorView } from '@/components/layout/openClosedIndicator'
+import { Suspense } from 'react'
 
 export async function Navbar() {
   const getInitialState = await getActivityIndicator()
@@ -17,7 +18,9 @@ export async function Navbar() {
               Makerspace
             </h2>
           </Link>
-          <ActivityIndicator initialData={getInitialState}/>
+          <Suspense fallback={<ActivityIndicatorView open={!!getInitialState.open} />}>
+            <ActivityIndicator initialData={getInitialState}/>
+          </Suspense>
         </div>
       </Container>
     </nav>

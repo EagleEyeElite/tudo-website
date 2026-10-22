@@ -5,8 +5,6 @@ import { ImageResponse } from 'next/og';
  * Open Graph images are used to display a preview of the website when shared on social media.
  */
 
-//export const runtime = 'edge';
-
 export async function GET() {
   return new ImageResponse(
     (

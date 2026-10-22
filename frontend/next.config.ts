@@ -67,7 +67,20 @@ const config = async (): Promise<NextConfig> => {
   return {
     images: createImageConfig(),
     env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
-
+    reactCompiler: true,
+    cacheComponents: true,
+    partialPrefetching: true,
+    // Omitted values (stale, expire) inherit the 'default' profile, like the previous ISR setup
+    cacheLife: {
+      // WordPress content, same as the previous fetch revalidate of 5 seconds
+      wordpress: {
+        revalidate: 5,
+      },
+      // Open/closed state, additionally invalidated on every update via its cache tag
+      activityIndicator: {
+        revalidate: 30,
+      },
+    },
   } satisfies NextConfig;
 };
 

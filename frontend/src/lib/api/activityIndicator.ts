@@ -1,6 +1,5 @@
 import { Redis } from '@upstash/redis';
-import {revalidatePath, revalidateTag} from 'next/cache'
-import { unstable_cache } from 'next/cache'
+import { cacheLife, cacheTag, revalidatePath, revalidateTag } from 'next/cache'
 
 const kv = new Redis({
   url: process.env.KV_REST_API_URL!,
@@ -28,17 +27,13 @@ export function buildState(open: boolean | null): ActivityIndicatorState {
   }
 }
 
-const getKvState = unstable_cache(
-  async () => {
-    const state = await kv.get('activityIndicator') as ActivityIndicatorState | null
-    return state ?? buildState(null)
-  },
-  ['activityIndicator'],
-  {
-    revalidate: 30,
-    tags: ['activity-status']
-  }
-)
+async function getKvState(): Promise<ActivityIndicatorState> {
+  'use cache'
+  cacheLife('activityIndicator')
+  cacheTag('activity-status')
+  const state = await kv.get('activityIndicator') as ActivityIndicatorState | null
+  return state ?? buildState(null)
+}
 
 /**
  * Queries the KV DB for the current state of the activity indicator
@@ -49,11 +44,11 @@ export async function getActivityIndicator(): Promise<ActivityIndicatorState> {
 }
 
 /**
- * Sets the state of the activity indicator in the KV DB
+ * Sets the state of the activity indicator in the KV DB.
+ * Not a server action on purpose: only the authenticated API route may call it.
  * @param state The new activity indicator state
  */
 export async function setActivityIndicator(state: ActivityIndicatorState): Promise<void> {
-  'use server'
   await kv.set('activityIndicator', state)
   revalidateTag('activity-status', { expire: 0 })
   revalidatePath('/', 'layout')     // Root layout and its routes

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ImExit } from 'react-icons/im';
 import Link from 'next/link';
+import { useNow } from '@/lib/useNow';
 
 export interface LineupSlot {
   start: string;
@@ -31,8 +32,8 @@ function timeToMinutes(time: string): number {
   return minutes;
 }
 
-function getCurrentMinutes(): number {
-  const now = new Date();
+function getCurrentMinutes(timestamp: number): number {
+  const now = new Date(timestamp);
   const currentHour = now.getHours();
   const currentMinute = now.getMinutes();
   let currentMinutes = currentHour * 60 + currentMinute;
@@ -80,8 +81,9 @@ function getSlotHeight(start: string, end: string, columnGap: number = 12, pixel
   return fullHeight - columnGap;
 }
 
-function isSlotActive(slot: LineupSlot): boolean {
-  const now = getCurrentMinutes();
+function isSlotActive(slot: LineupSlot, timestamp: number | null): boolean {
+  if (timestamp === null) return false;
+  const now = getCurrentMinutes(timestamp);
   const start = timeToMinutes(slot.start);
   const end = timeToMinutes(slot.end);
   return now >= start && now < end;
@@ -194,54 +196,29 @@ function DJInfoModal({
   color,
   onClose
 }: {
-  slot: LineupSlot | null;
+  slot: LineupSlot;
   color: 'purple' | 'blue' | 'yellow';
   onClose: () => void;
 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    if (slot) {
-      setShouldRender(true);
-      // Trigger animation after render using requestAnimationFrame for reliable timing
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setIsVisible(true);
-        });
-      });
-
-      // Check if slot is active
-      const checkActive = () => setIsActive(isSlotActive(slot));
-      checkActive();
-      const interval = setInterval(checkActive, 60000);
-      return () => clearInterval(interval);
-    } else {
-      setIsVisible(false);
-      // Remove from DOM after animation
-      const timer = setTimeout(() => setShouldRender(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [slot]);
+  // Fade in via CSS @starting-style, fade out before unmounting
+  const [isClosing, setIsClosing] = useState(false);
+  const isActive = isSlotActive(slot, useNow());
 
   const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => onClose(), 300);
+    setIsClosing(true);
+    setTimeout(onClose, 300);
   };
-
-  if (!shouldRender || !slot) return null;
 
   const colors = getColorClasses(color);
 
   return (
     <div
-      className={`fixed inset-0 h-lvh bg-black/10 backdrop-blur-md backdrop-saturate-150 flex items-center justify-center z-50 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      className={`fixed inset-0 h-lvh bg-black/10 backdrop-blur-md backdrop-saturate-150 flex items-center justify-center z-50 transition-opacity duration-300 starting:opacity-0 ${isClosing ? 'opacity-0' : 'opacity-100'}`}
       onClick={handleClose}
     >
       <div className="max-w-7xl w-full px-5">
         <div
-          className={`bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl max-w-md mx-auto w-full overflow-hidden transition-all duration-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+          className={`bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl max-w-md mx-auto w-full overflow-hidden transition-all duration-300 starting:opacity-0 starting:scale-95 ${isClosing ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header with Gradient */}
@@ -365,26 +342,11 @@ function TimeGrid({
 }
 
 function CurrentTimeLine({ earliestStart, latestEnd, pixelsPerHour = PIXELS_PER_HOUR }: { earliestStart: number; latestEnd: number; pixelsPerHour?: number }) {
-  const [position, setPosition] = useState<number | null>(null);
-
-  useEffect(() => {
-    const updatePosition = () => {
-      const now = getCurrentMinutes();
-      if (now < earliestStart || now > latestEnd) {
-        setPosition(null);
-        return;
-      }
-
-      const diff = now - earliestStart;
-      const pos = (diff / 60) * pixelsPerHour;
-      setPosition(pos);
-    };
-
-    updatePosition();
-    const interval = setInterval(updatePosition, 60000);
-
-    return () => clearInterval(interval);
-  }, [earliestStart, latestEnd, pixelsPerHour]);
+  const now = useNow();
+  const minutes = now === null ? null : getCurrentMinutes(now);
+  const position = minutes === null || minutes < earliestStart || minutes > latestEnd
+    ? null
+    : ((minutes - earliestStart) / 60) * pixelsPerHour;
 
   if (position === null) return null;
 
@@ -435,14 +397,7 @@ function DesktopCard({
   horizontalInfo?: boolean;
   onClick?: () => void;
 }) {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const checkActive = () => setIsActive(isSlotActive(slot));
-    checkActive();
-    const interval = setInterval(checkActive, 60000);
-    return () => clearInterval(interval);
-  }, [slot]);
+  const isActive = isSlotActive(slot, useNow());
 
   const colors = getColorClasses(color, isActive);
   const height = getSlotHeight(slot.start, slot.end, columnGap);
@@ -489,14 +444,7 @@ function MobileCard({
   pixelsPerHour?: number;
   onClick?: () => void;
 }) {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const checkActive = () => setIsActive(isSlotActive(slot));
-    checkActive();
-    const interval = setInterval(checkActive, 60000);
-    return () => clearInterval(interval);
-  }, [slot]);
+  const isActive = isSlotActive(slot, useNow());
 
   const colors = getColorClasses(color, isActive);
   const height = getSlotHeight(slot.start, slot.end, columnGap, pixelsPerHour);
@@ -718,7 +666,7 @@ export default function Lineup({ data }: LineupProps) {
         </div>
       </div>
 
-      <DJInfoModal slot={selectedSlot} color={selectedColor} onClose={handleCloseModal} />
+      {selectedSlot && <DJInfoModal slot={selectedSlot} color={selectedColor} onClose={handleCloseModal} />}
     </div>
   );
 }

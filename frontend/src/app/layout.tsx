@@ -2,12 +2,11 @@ import { Metadata } from 'next'
 import Alert from '@/components/layout/alert'
 import Footer from '@/components/layout/footer'
 import { Navbar } from '@/components/layout/navbar'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './global.css'
 
-export const revalidate = 10
 
 const faviconPath = process.env.NODE_ENV === 'production' ? '/favicon/production' : '/favicon/development'
 export const metadata: Metadata = {
@@ -45,7 +44,9 @@ export default async function RootLayout({children}: {
     <body>
     <Navbar/>
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-      <Alert/>
+      <Suspense>
+        <Alert/>
+      </Suspense>
       <main className="grow">{children}</main>
     </div>
     <Footer/>

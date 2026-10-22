@@ -4,7 +4,6 @@ import Container from '@/components/ui/container';
 import HeroPost from '@/components/blocks/hero-post';
 import MoreStories from '@/components/blocks/more-stories';
 
-export const revalidate = 10
 
 export default function Home() {
   return (

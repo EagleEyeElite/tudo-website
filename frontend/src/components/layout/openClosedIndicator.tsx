@@ -45,7 +45,14 @@ function ActivityIndicatorContent({ initialData }: OpenClosedIndicatorProps) {
     mutate('activity-status').catch(console.error);
   }, [pathname, mutate]);
 
-  if (error || !data?.open) {
+  return <ActivityIndicatorView open={!error && !!data?.open} />;
+}
+
+/**
+ * Static rendering of the indicator, also used as Suspense fallback while the pathname is unknown during prerendering
+ */
+export function ActivityIndicatorView({ open }: { open: boolean }) {
+  if (!open) {
     return (
       <CustomLink
         link={{text: "Öffnungszeiten", href: OPENING_HOURS_PATH, highlighted: true}}
