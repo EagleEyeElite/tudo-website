@@ -67,6 +67,8 @@ const config = async (): Promise<NextConfig> => {
   return {
     images: createImageConfig(),
     env: { WORDPRESS_AUTH_REFRESH_TOKEN:  await login() },
+    // Type checked with TypeScript 7 by the build script, the built-in check would use the TypeScript 6 API package
+    typescript: { ignoreBuildErrors: true },
     reactCompiler: true,
     cacheComponents: true,
     partialPrefetching: true,

@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --debug",
+    "build": "npm run typecheck && next build --debug",
+    "typecheck": "next typegen && tsc --noEmit",
     "start": "next start",
     "lint": "eslint .",
     "test": "jest",
