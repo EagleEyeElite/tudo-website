@@ -15,6 +15,9 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
+// Params are awaited before streaming starts, so unknown slugs still answer with a real 404 status
+export const instant = false;
+
 export async function generateStaticParams() {
   const allParentPagesSlugs = await getAllParentPagesAsSlug();
   return allParentPagesSlugs.map(category => ({ category }));

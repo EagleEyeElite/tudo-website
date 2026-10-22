@@ -16,6 +16,9 @@ import SectionSeparator from '@/components/blocks/section-separator';
 import React from 'react';
 
 
+// Params are awaited before streaming starts, so unknown slugs still answer with a real 404 status
+export const instant = false;
+
 export async function generateStaticParams() {
   // Get all category paths
   const parentSlugs = await getAllParentPagesAsSlug();
