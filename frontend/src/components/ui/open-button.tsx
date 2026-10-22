@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 export function OpenButton() {
   return <Link
+    prefetch={true}
     className={`
       group
       flex

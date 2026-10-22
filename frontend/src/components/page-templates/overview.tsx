@@ -25,7 +25,7 @@ export default function Overview({
         <ul className="flex flex-wrap justify-center gap-4">
           {childPages.map((childPage,index) => (
             <li key={index} className="py-4 w-full border-b border-gray-300 last:border-b-0">
-              <Link href={`/${path}/${childPage.slug}`} className="group">
+              <Link prefetch={true} href={`/${path}/${childPage.slug}`} className="group">
                 <div className="flex flex-col">
                   <h3 className="text-3xl mb-3 leading-snug self-start group-hover:underline">
                     {childPage.title!}

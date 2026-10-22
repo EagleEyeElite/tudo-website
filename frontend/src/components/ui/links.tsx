@@ -19,6 +19,7 @@ export function CustomLink({ link }) {
 
     return (
       <Link
+        prefetch={true}
         href={link.href}
         className={`mx-3 font-bold ${styling}`}
         {...externalAttrs}

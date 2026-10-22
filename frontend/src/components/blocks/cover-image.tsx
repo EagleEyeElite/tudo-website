@@ -39,7 +39,7 @@ export default function CoverImage(
     return image
 
   return (
-    <Link href={href} aria-label={title}>
+    <Link prefetch={true} href={href} aria-label={title}>
       {image}
     </Link>
   )

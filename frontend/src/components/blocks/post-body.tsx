@@ -11,7 +11,7 @@ function CustomLink({ link }) {
   const externalAttrs = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
-    <Link href={link.href} {...externalAttrs} className="inline-flex items-center underline">
+    <Link prefetch={true} href={link.href} {...externalAttrs} className="inline-flex items-center underline">
       {link.children}
       {isExternal && <MdOpenInNew/>}
     </Link>

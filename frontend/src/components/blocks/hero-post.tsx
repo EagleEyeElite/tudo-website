@@ -24,6 +24,7 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
           style={{margin: 0}}
         >
           <Link
+            prefetch={true}
             href={`/about-us/${slug}`}
             className="hover:underline inline-block align-middle"
           >
@@ -33,7 +34,7 @@ function HeroContent({ title, excerpt, slug, coverImage }: HeroPostProps) {
       </div>
 
       {coverImage && (
-        <Link href={`/about-us/${slug}`}>
+        <Link prefetch={true} href={`/about-us/${slug}`}>
           <AdaptiveMaxHeightImage
             alt={`Cover Image for ${title}`}
             priority={true}

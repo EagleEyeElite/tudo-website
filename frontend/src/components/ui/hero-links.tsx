@@ -46,7 +46,7 @@ const CustomLinkItem: React.FC<CustomLinkProps> = ({ link, isOpen, toggleDropdow
         >
           {link.links.map((subLink, index) => (
             <li key={index} className="hover:bg-gray-100">
-              <Link href={subLink.href} className="block w-full px-4 py-2">
+              <Link prefetch={true} href={subLink.href} className="block w-full px-4 py-2">
                 {subLink.text}
               </Link>
             </li>

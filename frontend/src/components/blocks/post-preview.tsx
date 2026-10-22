@@ -26,7 +26,7 @@ export default function PostPreview({
   return (
     <div>
       <CoverImage {...coverImage} />
-      <Link href={`/events/${slug}`} className="block hover:underline pt-5">
+      <Link prefetch={true} href={`/events/${slug}`} className="block hover:underline pt-5">
         <h3 className="text-3xl leading-snug">{title}</h3>
       </Link>
       <Date className="block text-lg pt-3" dateString={date} />
