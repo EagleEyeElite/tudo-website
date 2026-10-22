@@ -64,18 +64,39 @@ You can interact with the wordPress instance via wpcli. For example, to change t
 
 ## Deployment
 
-The Next.js application is deployed on Vercel. For continuous deployment, ensure your Vercel project is correctly set up to track your repository.
+### Frontend (Vercel)
+The Next.js application is deployed on Vercel, every push to `main` triggers a production deployment.
+The Vercel project needs these environment variables (see `frontend/.env.local.example`):
+`WORDPRESS_API_URL`, `WORDPRESS_ADMIN_USER`, `WORDPRESS_ADMIN_PASSWORD`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`,
+`ACTIVITY_INDICATOR_USER`, `ACTIVITY_INDICATOR_PASSWORD`, `NEXT_WORDPRESS_PREVIEW_SECRET` and `NEXT_PUBLIC_URL`.
 
-The backend services run with the production overrides (no published ports, external `proxy` network for the reverse proxy):
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm wp-auto-config update
-```
-The update sets a new JWT secret if the existing one is shorter than 32 characters. Redeploy the frontend afterwards, since it fetches its WordPress token at build time.
+The frontend fetches its WordPress token at build time, so redeploy it whenever the WordPress admin password or the JWT secret changes.
+
+### Backend (WordPress)
+The backend services run with the production overrides: no published ports, the services join the external `proxy` network of the reverse proxy, and phpMyAdmin is off.
+
+1. Create the `.env` from `.env.example` and set at least:
+   - `COMPOSE_PROJECT_NAME` (also the database name) and `ENVIRONMENT="prod"`
+   - `WORDPRESS_WEBSITE_URL` and `WORDPRESS_WEBSITE_URL_WITHOUT_HTTP` to the public WordPress domain
+   - new random values for all passwords, tokens and secrets, e.g. `openssl rand -hex 32` for `WORDPRESS_GRAPHQL_JWT_AUTH_SECRET_KEY` (at least 32 characters, the placeholder is rejected in production)
+2. Start the services and install, or update an existing installation:
+   ```bash
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   # first installation
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm wp-auto-config
+   # existing installation: update core, plugins and themes, keeps all content
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm wp-auto-config update
+   ```
+   The update sets a new JWT secret if the existing one is shorter than 32 characters, redeploy the frontend afterwards.
+3. Start phpMyAdmin only while you need it:
+   ```bash
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile phpmyadmin up -d phpmyadmin
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile phpmyadmin rm -sf phpmyadmin
+   ```
 
 ## Backups
 
-The state of wordPress cms site is stored in docker volumes (defined in docker-services/docker-compose.yml).
+The state of the wordPress cms site is stored in the docker volumes `wordpress` and `wordpress-db` (defined in `docker-compose.yml`).
 
 Backups are managed by the UpdraftPlus plugin.
 You can upload the backup files automatically to your cloud storage or download them locally.

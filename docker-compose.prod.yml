@@ -6,7 +6,10 @@ services:
     expose:
       - 80
 
+  # Off in production, start it only when needed:
+  # docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile phpmyadmin up -d phpmyadmin
   phpmyadmin:
+    profiles: ["phpmyadmin"]
     ports: !reset []
     expose:
       - 80

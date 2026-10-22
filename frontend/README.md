@@ -35,9 +35,8 @@ For content previews during development:
 
 ## Running Tests
 
-To ensure tests do not interact with production environments, they reference the `.env.example` file.
-
-This approach helps maintain a separation between your development and production environments, safeguarding against accidental modifications to live data.
+The tests use the same `../.env` as the development server and write to the activity indicator.
+To protect live data, they refuse to run unless `NEXT_PUBLIC_URL`, `WORDPRESS_API_URL` and `KV_REST_API_URL` point to localhost.
 
 Before running tests, make sure:
 
